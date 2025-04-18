@@ -1,4 +1,3 @@
-
 import React from 'react';
 import NavBar from '@/components/NavBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,9 +10,11 @@ import {
   CheckCircle2, 
   Clock, 
   Upload, 
-  MessageSquare 
+  MessageSquare,
+  Send
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Textarea } from '@/components/ui/textarea';
 
 const ModuleViewPage: React.FC = () => {
   return (

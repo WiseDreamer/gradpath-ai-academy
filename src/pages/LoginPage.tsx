@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Google, BookOpen, Mail } from 'lucide-react';
+import { Chrome, BookOpen, Mail } from 'lucide-react';
 import FormInput from '@/components/FormInput';
 import SocialButton from '@/components/SocialButton';
 import Logo from '@/components/Logo';
@@ -90,7 +90,7 @@ const LoginPage: React.FC = () => {
             </div>
             
             <div className="mt-4 space-y-2">
-              <SocialButton icon={Google} provider="Google" />
+              <SocialButton icon={Chrome} provider="Google" />
               <SocialButton icon={Mail} provider="Microsoft" />
             </div>
           </div>
