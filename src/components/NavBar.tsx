@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, LogOut } from 'lucide-react';
+import { Bell, User, LogOut, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,7 +15,7 @@ import Logo from './Logo';
 
 const NavBar: React.FC = () => {
   return (
-    <div className="border-b bg-white shadow-sm">
+    <div className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm">
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
         <Link to="/dashboard" className="flex items-center">
           <Logo />
@@ -24,11 +24,17 @@ const NavBar: React.FC = () => {
         <div className="flex items-center gap-6">
           <div className="hidden md:block">
             <div className="flex items-center gap-1">
-              <span className="text-sm font-medium text-gray-600">Oxford University</span>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Oxford University</span>
               <span className="px-2 py-1 text-xs font-medium text-white bg-gradpath-purple rounded-full">3rd Year</span>
             </div>
           </div>
           
+          <Link to="/chat">
+            <Button variant="ghost" size="icon">
+              <MessageSquare className="h-5 w-5" />
+            </Button>
+          </Link>
+
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
           </Button>
