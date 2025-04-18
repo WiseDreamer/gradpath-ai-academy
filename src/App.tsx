@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import VirtualClassPage from "./pages/VirtualClassPage";
 import ModuleViewPage from "./pages/ModuleViewPage";
 import ChatPage from "./pages/ChatPage";
 import NotFound from "./pages/NotFound";
+import GlobalChatPage from "./pages/GlobalChatPage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +27,7 @@ const App = () => (
           <Route path="/virtual-class" element={<VirtualClassPage />} />
           <Route path="/module/:id" element={<ModuleViewPage />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/global-chat" element={<GlobalChatPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

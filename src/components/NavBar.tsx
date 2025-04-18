@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bell, User, LogOut, MessageSquare } from 'lucide-react';
@@ -29,7 +28,7 @@ const NavBar: React.FC = () => {
             </div>
           </div>
           
-          <Link to="/chat">
+          <Link to="/global-chat">
             <Button variant="ghost" size="icon">
               <MessageSquare className="h-5 w-5" />
             </Button>
