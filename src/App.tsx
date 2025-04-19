@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ import ModuleViewPage from "./pages/ModuleViewPage";
 import ChatPage from "./pages/ChatPage";
 import NotFound from "./pages/NotFound";
 import GlobalChatPage from "./pages/GlobalChatPage";
+import MessagesPage from "./pages/MessagesPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,7 @@ const App = () => (
           <Route path="/module/:id" element={<ModuleViewPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/global-chat" element={<GlobalChatPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

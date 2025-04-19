@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MessageSquare, Search, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
@@ -17,11 +17,11 @@ const GlobalChatPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
-      {/* Header */}
+      {/* Header - Fixed at top */}
       <NavBar openMobileMenu={openMobileMenu} />
 
       {/* Main Content */}
-      <div className="container mx-auto pt-6 pb-16 flex gap-6">
+      <div className="container mx-auto pt-6 pb-16 flex gap-0 md:gap-6">
         <ChatSidebar />
         <ChatFeed />
         <OnlineSidebar />

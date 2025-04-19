@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { UserPlus, MessageSquare, Award, TrendingUp, Users } from 'lucide-react';
+import { UserPlus, MessageSquare, Award, TrendingUp, Users, Hash } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const onlineUsers = [
   { 
@@ -37,6 +38,8 @@ const trendingTopics = [
   { topic: 'Chemistry Lab Report', posts: 45 },
 ];
 
+const topics = ['Accounting', 'Mathematics', 'Chemistry', 'Physics', 'Economics', 'ComputerScience'];
+
 const OnlineSidebar: React.FC = () => {
   return (
     <aside className="hidden lg:block w-64 space-y-6">
@@ -64,6 +67,20 @@ const OnlineSidebar: React.FC = () => {
         <div className="flex items-center mb-4">
           <TrendingUp className="h-5 w-5 mr-2 text-gradpath-purple" />
           <h3 className="font-semibold">Trending</h3>
+        </div>
+        <div className="mb-4">
+          <h4 className="text-sm font-medium mb-2">Topics</h4>
+          <div className="space-y-2">
+            {topics.map((topic) => (
+              <button 
+                key={topic}
+                className="flex items-center w-full px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <Hash className="h-4 w-4 mr-2 text-gray-500" />
+                <span>{topic}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="space-y-3">
           {trendingTopics.map((topic) => (
@@ -113,9 +130,11 @@ const OnlineSidebar: React.FC = () => {
                 <p className="text-xs text-gray-400 truncate">{user.status}</p>
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                  <MessageSquare className="h-4 w-4" />
-                </Button>
+                <Link to="/messages">
+                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </Link>
                 <Button 
                   variant="ghost" 
                   size="icon" 

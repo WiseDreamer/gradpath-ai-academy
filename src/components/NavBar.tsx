@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, LogOut, MessageSquare, Search, Menu, Home, Mail, Info } from 'lucide-react';
+import { Bell, User, Menu, Home, Info, Mail, Search, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -20,7 +20,7 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ openMobileMenu }) => {
   return (
-    <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50">
+    <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="container mx-auto flex flex-col">
         {/* Top section */}
         <div className="flex items-center justify-between h-16 px-4">
@@ -45,11 +45,18 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu }) => {
           <div className="flex items-center gap-1 md:gap-2">
             {/* Center icons on desktop */}
             <div className="hidden md:flex items-center">
+              <Link to="/dashboard">
+                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                  <Home className="h-6 w-6" />
+                </Button>
+              </Link>
+              <Link to="/messages">
+                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                  <Mail className="h-6 w-6" />
+                </Button>
+              </Link>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Home className="h-6 w-6" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Info className="h-6 w-6" />
+                <Bell className="h-6 w-6" />
               </Button>
             </div>
             
@@ -62,15 +69,11 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu }) => {
               <Menu className="h-6 w-6" />
             </Button>
             
-            <Link to="/messages">
+            <Link to="/global-chat">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Mail className="h-6 w-6" />
+                <Info className="h-6 w-6" />
               </Button>
             </Link>
-
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <Bell className="h-6 w-6" />
-            </Button>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -90,7 +93,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu }) => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-red-500">
                   <Link to="/" className="flex items-center w-full">
-                    <LogOut className="mr-2 h-4 w-4" /> Log out
+                    Log out
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -100,23 +103,34 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu }) => {
         
         {/* Bottom section - Mobile navigation */}
         <div className="md:hidden h-12 flex items-center justify-between px-4 border-t border-white/20">
-          <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-            <Home className="h-6 w-6" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-            <User className="h-6 w-6" />
-          </Button>
+          <Link to="/dashboard">
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Home className="h-6 w-6" />
+            </Button>
+          </Link>
+          <Link to="/friends">
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Users className="h-6 w-6" />
+            </Button>
+          </Link>
           <Link to="/messages">
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
               <Mail className="h-6 w-6" />
             </Button>
           </Link>
-          <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-            <Info className="h-6 w-6" />
-          </Button>
+          <Link to="/global-chat">
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Info className="h-6 w-6" />
+            </Button>
+          </Link>
           <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
             <Bell className="h-6 w-6" />
           </Button>
+          <Link to="/profile">
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <User className="h-6 w-6" />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
