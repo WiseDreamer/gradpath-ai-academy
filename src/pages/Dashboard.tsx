@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, UploadCloud, CalendarDays, FileText, BookCopy, MessageSquare } from 'lucide-react';
-import NavBar from '@/components/NavBar';
+import { Bell, Menu, BookOpen, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
+import Logo from '@/components/Logo';
 
 const Dashboard: React.FC = () => {
   return (
@@ -13,18 +14,21 @@ const Dashboard: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Link to="/dashboard" className="flex items-center">
-                <BookOpen className="h-10 w-10 text-white" />
-                <span className="text-xl font-semibold ml-2 hidden sm:inline-block">GradPath</span>
-              </Link>
+              <Logo />
             </div>
-            
-            <div className="flex items-center gap-2">
+
+            <div className="flex items-center gap-3">
               <Link to="/global-chat">
-                <button className="px-4 py-2 bg-white/20 rounded-lg text-white hover:bg-white/30 transition-colors">
+                <Button variant="ghost" size="lg" className="text-white hover:bg-white/20">
                   Global Chat
-                </button>
+                </Button>
               </Link>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <Bell className="h-6 w-6" />
+              </Button>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <User className="h-6 w-6" />
+              </Button>
             </div>
           </div>
         </div>
