@@ -1,7 +1,17 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, Menu, BookOpen, User } from 'lucide-react';
+import {
+  Bell,
+  Menu,
+  BookOpen,
+  User,
+  UploadCloud,
+  CalendarDays,
+  FileText,
+  BookCopy,
+  MessageSquare,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
