@@ -64,7 +64,7 @@ const VirtualClassPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
       <NavBar variant="learning" />
       
-      <div className="w-full px-0 mx-0"> {\*I made a change here!*\}
+      <div className="w-full px-0 mx-0">
         <div className="mb-6">
           <h1 className="text-2xl font-bold">Linear Algebra - Virtual Class</h1>
           <p className="text-gray-600">University of Oxford, Mathematics</p>
