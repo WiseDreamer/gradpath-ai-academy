@@ -12,9 +12,9 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full px-0 mx-0">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 px-4">
             <div className="flex items-center gap-2">
-              <Logo />
+              <Logo clickable={false} />
             </div>
 
             <div className="flex items-center gap-2">
@@ -35,9 +35,9 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-full px-0 mx-0">
+      <div className="w-full px-4 mx-0">
         {/* Learning Resources Section */}
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">Learning Resources</h2>
+        <h2 className="text-xl font-semibold text-gray-800 text-center mt-4 mb-4">Learning Resources</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <DashboardCard
             title="Join Virtual Class"
@@ -89,21 +89,25 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Modules Section */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
-          <h3 className="font-semibold mb-3">Recent Modules</h3>
-          <div className="space-y-2">
-            {['Calculus I', 'Linear Algebra', 'Quantum Mechanics'].map((module) => (
-              <div key={module} className="p-2 hover:bg-gray-50 rounded-lg">
-                <p className="text-sm font-medium">{module}</p>
-                <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
-                  <div
-                    className="bg-gradpath-purple h-1.5 rounded-full"
-                    style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-                  />
-                </div>
+        <h3 className="font-semibold mb-4 text-center">Recent Modules</h3>
+        <div className="grid grid-cols-1 gap-3 mb-4">
+          {['Calculus I', 'Linear Algebra', 'Quantum Mechanics'].map((module) => (
+            <div key={module} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+              <p className="text-sm font-medium">{module}</p>
+              <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
+                <div
+                  className="bg-gradpath-purple h-1.5 rounded-full"
+                  style={{ width: `${Math.floor(Math.random() * 100)}%` }}
+                />
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex justify-center mb-8">
+          <Button variant="outline" className="w-full max-w-md">
+            View All Modules
+          </Button>
         </div>
       </div>
     </div>

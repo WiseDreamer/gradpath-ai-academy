@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Search, Menu, Home, Mail, Bell, User, HelpCircle } from 'lucide-react';
+import { Search, Menu, Mail, Bell, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
@@ -8,6 +9,7 @@ import ChatDrawer from '@/components/chat/ChatDrawer';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import Logo from '@/components/Logo';
+import { MessageCircle } from 'lucide-react';
 
 const GlobalChatPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -20,9 +22,7 @@ const GlobalChatPage: React.FC = () => {
           {/* Top section */}
           <div className="flex items-center justify-between h-16 px-4">
             <div className="flex items-center gap-4">
-              <Link to="/dashboard">
-                <Logo />
-              </Link>
+              <Logo clickable={false} />
               
               <div className="hidden md:flex w-64 lg:w-80">
                 <div className="relative w-full">
@@ -34,6 +34,11 @@ const GlobalChatPage: React.FC = () => {
                   />
                 </div>
               </div>
+            </div>
+            
+            {/* Center - messaging icon replaces text */}
+            <div className="flex md:hidden items-center">
+              <MessageCircle className="h-7 w-7 text-white" />
             </div>
             
             {/* Center icons */}
@@ -51,32 +56,20 @@ const GlobalChatPage: React.FC = () => {
               </Button>
             </div>
 
-            {/* Right icons */}
+            {/* Right icons - mobile shows only search and menu */}
             <div className="flex items-center gap-3">
-              <Link to="/dashboard">
-                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                  <Home className="h-7 w-7" />
-                </Button>
-              </Link>
+              <Button variant="ghost" size="icon" className="md:hidden h-12 w-12 rounded-full text-white hover:bg-white/20">
+                <Search className="h-7 w-7" />
+              </Button>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20" onClick={() => setIsDrawerOpen(true)}>
                 <Menu className="h-7 w-7" />
               </Button>
-              <Link to="/profile">
-                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                  <User className="h-7 w-7" />
-                </Button>
-              </Link>
             </div>
           </div>
           
-          {/* Mobile bottom section */}
+          {/* Mobile bottom section - consistent icons */}
           <div className="md:hidden h-12 flex items-center justify-between px-4 border-t border-white/20">
             <Link to="/dashboard">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Home className="h-7 w-7" />
-              </Button>
-            </Link>
-            <Link to="/messages">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                 <Mail className="h-7 w-7" />
               </Button>
@@ -87,11 +80,6 @@ const GlobalChatPage: React.FC = () => {
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
               <HelpCircle className="h-7 w-7" />
             </Button>
-            <Link to="/profile">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <User className="h-7 w-7" />
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
@@ -99,7 +87,7 @@ const GlobalChatPage: React.FC = () => {
       {/* Main Content */}
       <div className="flex pt-6 pb-16">
         <ChatSidebar />
-        <div className="flex-1 px-6">
+        <div className="flex-1 px-0 md:px-6">
           <ChatFeed />
         </div>
         <OnlineSidebar />

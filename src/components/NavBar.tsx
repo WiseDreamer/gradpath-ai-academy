@@ -18,13 +18,11 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-      <div className="container mx-auto flex flex-col px-4">
+      <div className="w-full px-4">
         {/* Top section */}
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <Link to="/dashboard" className="flex items-center">
-              <Logo />
-            </Link>
+            <Logo clickable={false} />
           </div>
 
           <div className="flex items-center gap-2">
