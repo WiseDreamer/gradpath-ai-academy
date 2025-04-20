@@ -129,14 +129,14 @@ const MessagesPage: React.FC = () => {
   const selectedContactData = contacts.find(c => c.id === selectedContact);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7]">
+    <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
       {/* Header */}
-      <NavBar openMobileMenu={openMobileMenu} />
+      <NavBar openMobileMenu={openMobileMenu} currentPage="messages" />
 
       {/* Main Content */}
-      <div className="container mx-auto pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
+      <div className="container mx-auto px-0 sm:px-6 pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
         {/* Contact List - Hide on mobile when a chat is selected */}
-        <div className={`w-full md:w-80 ${selectedContact ? 'hidden md:block' : ''}`}>
+        <div className={`w-full md:w-80 px-0 sm:px-4 ${selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full overflow-hidden">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">Messages</h2>
@@ -182,7 +182,7 @@ const MessagesPage: React.FC = () => {
         </div>
 
         {/* Chat Area - Show on mobile only when a chat is selected */}
-        <div className={`flex-1 ${!selectedContact ? 'hidden md:block' : ''}`}>
+        <div className={`flex-1 px-0 sm:px-4 ${!selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full flex flex-col overflow-hidden">
             {!selectedContact && (
               <div className="flex-1 flex items-center justify-center p-6 text-center">
