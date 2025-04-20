@@ -91,8 +91,10 @@
   }
 
   body {
-  @apply m-0 bg-background text-foreground;
+  margin: 0;
+  @apply bg-background text-foreground;
 }
+
 }
 
 .dashboard-card {
