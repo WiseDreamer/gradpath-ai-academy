@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Menu, Home, Mail, Bell, User, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -98,9 +97,11 @@ const GlobalChatPage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto pt-6 pb-16 flex overflow-x-hidden">
+      <div className="flex pt-6 pb-16">
         <ChatSidebar />
-        <ChatFeed />
+        <div className="flex-1 px-6">
+          <ChatFeed />
+        </div>
         <OnlineSidebar />
       </div>
 
