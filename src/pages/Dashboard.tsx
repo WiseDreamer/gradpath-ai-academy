@@ -1,43 +1,32 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Bell,
-  Menu,
-  BookOpen,
-  User,
-  Upload,
-  Calendar,
-  FileText,
-  Book,
-  MessageSquare,
-} from 'lucide-react';
+import { Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#F5F5F7]">
+    <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
       {/* Header */}
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-        <div className="container mx-auto px-0 sm:px-4">
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4 px-4 sm:px-0">
+            <div className="flex items-center gap-2">
               <Logo />
             </div>
 
-            <div className="flex items-center gap-3 px-4 sm:px-0">
+            <div className="flex items-center gap-2">
               <Link to="/global-chat">
                 <Button variant="ghost" size="lg" className="text-white hover:bg-white/20">
                   Global Chat
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <Bell className="h-6 w-6" />
+                <Bell className="h-7 w-7" />
               </Button>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <User className="h-6 w-6" />
+                <User className="h-7 w-7" />
               </Button>
             </div>
           </div>
@@ -45,10 +34,10 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-0 sm:px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         {/* Learning Resources Section */}
-        <h2 className="text-xl font-semibold text-gray-800 mb-6 px-4 sm:px-0">Learning Resources</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 px-4 sm:px-0">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">Learning Resources</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <DashboardCard
             title="Join Virtual Class"
             description="Jump into an interactive AI-powered virtual classroom"
@@ -99,7 +88,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Modules Section */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4 mx-4 sm:mx-0">
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
           <h3 className="font-semibold mb-3">Recent Modules</h3>
           <div className="space-y-2">
             {['Calculus I', 'Linear Algebra', 'Quantum Mechanics'].map((module) => (

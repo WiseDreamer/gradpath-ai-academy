@@ -61,8 +61,8 @@ const VirtualClassPage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <NavBar />
+    <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
+      <NavBar variant="learning" />
       
       <div className="container mx-auto px-4 py-6 flex-1 flex flex-col">
         <div className="mb-6">

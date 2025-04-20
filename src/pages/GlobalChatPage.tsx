@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Menu, Home, Mail, Bell, User, Users, BookOpen, HelpCircle } from 'lucide-react';
+import { Search, Menu, Home, Mail, Bell, User, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
@@ -14,10 +14,10 @@ const GlobalChatPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7]">
+    <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
       {/* Header */}
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-        <div className="container mx-auto flex flex-col">
+        <div className="container mx-auto flex flex-col px-0 sm:px-4">
           {/* Top section */}
           <div className="flex items-center justify-between h-16 px-4">
             <div className="flex items-center gap-4">
@@ -39,14 +39,16 @@ const GlobalChatPage: React.FC = () => {
             
             {/* Center icons */}
             <div className="hidden md:flex items-center gap-4">
+              <Link to="/messages">
+                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
+                  <Mail className="h-7 w-7" />
+                </Button>
+              </Link>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <Mail className="h-6 w-6" />
+                <Bell className="h-7 w-7" />
               </Button>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <Bell className="h-6 w-6" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <HelpCircle className="h-6 w-6" />
+                <HelpCircle className="h-7 w-7" />
               </Button>
             </div>
 
@@ -54,15 +56,17 @@ const GlobalChatPage: React.FC = () => {
             <div className="flex items-center gap-3">
               <Link to="/dashboard">
                 <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                  <Home className="h-6 w-6" />
+                  <Home className="h-7 w-7" />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20" onClick={() => setIsDrawerOpen(true)}>
-                <Menu className="h-6 w-6" />
+                <Menu className="h-7 w-7" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <User className="h-6 w-6" />
-              </Button>
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
+                  <User className="h-7 w-7" />
+                </Button>
+              </Link>
             </div>
           </div>
           
@@ -70,29 +74,31 @@ const GlobalChatPage: React.FC = () => {
           <div className="md:hidden h-12 flex items-center justify-between px-4 border-t border-white/20">
             <Link to="/dashboard">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Home className="h-6 w-6" />
+                <Home className="h-7 w-7" />
               </Button>
             </Link>
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <Users className="h-6 w-6" />
-            </Button>
             <Link to="/messages">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Mail className="h-6 w-6" />
+                <Mail className="h-7 w-7" />
               </Button>
             </Link>
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <Bell className="h-6 w-6" />
+              <Bell className="h-7 w-7" />
             </Button>
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <User className="h-6 w-6" />
+              <HelpCircle className="h-7 w-7" />
             </Button>
+            <Link to="/profile">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <User className="h-7 w-7" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto pt-6 pb-16 flex gap-0 md:gap-6 overflow-x-hidden">
+      <div className="container mx-auto pt-6 pb-16 flex overflow-x-hidden">
         <ChatSidebar />
         <ChatFeed />
         <OnlineSidebar />

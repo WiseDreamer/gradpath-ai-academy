@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Chrome, BookOpen, Mail } from 'lucide-react';
+import { Chrome, Mail } from 'lucide-react';
 import FormInput from '@/components/FormInput';
 import SocialButton from '@/components/SocialButton';
 import Logo from '@/components/Logo';
@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-100">
           <div className="text-center mb-6">
-            <Logo className="justify-center" />
+            <Logo color="purple" className="justify-center" />
             <h1 className="text-2xl font-bold mt-4">Welcome back</h1>
             <p className="text-sm text-gray-500 mt-1">Login to your account to continue learning</p>
           </div>
