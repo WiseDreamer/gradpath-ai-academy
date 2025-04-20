@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import WhiteboardArea from '@/components/WhiteboardArea';
@@ -36,7 +35,6 @@ const VirtualClassPage: React.FC = () => {
   const handleQuestionSubmit = () => {
     if (!question.trim()) return;
     
-    // Add user message
     const newMessage: Message = {
       id: Date.now().toString(),
       sender: 'user',
@@ -47,7 +45,6 @@ const VirtualClassPage: React.FC = () => {
     setMessages([...messages, newMessage]);
     setQuestion('');
     
-    // Simulate AI response after a delay
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -71,12 +68,10 @@ const VirtualClassPage: React.FC = () => {
         </div>
         
         <div className="flex flex-col md:flex-row gap-6 flex-1">
-          {/* Main whiteboard area - left side on desktop, top on mobile */}
           <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-[400px]">
             <WhiteboardArea />
           </div>
           
-          {/* Right sidebar - tabs for different functions */}
           <div className="w-full md:w-96 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
             <Tabs defaultValue="questions" className="w-full h-full flex flex-col">
               <TabsList className="grid w-full grid-cols-3">
