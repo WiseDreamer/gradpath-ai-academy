@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const ChatFeed: React.FC = () => {
   return (
-    <main className="w-full flex flex-col space-y-6 px-4 md:px-0">
+    <main className="w-full flex flex-col space-y-6 px-0">
       {/* Create Post Card */}
       <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
         <div className="flex items-center gap-3">

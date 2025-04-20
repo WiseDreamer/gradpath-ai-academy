@@ -24,10 +24,10 @@ const Dashboard: React.FC = () => {
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <Bell className="h-7 w-7" />
+                <Bell className="h-8 w-8" />
               </Button>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <User className="h-7 w-7" />
+                <User className="h-8 w-8" />
               </Button>
             </div>
           </div>

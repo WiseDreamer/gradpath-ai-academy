@@ -29,15 +29,18 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
             {variant === 'social' ? (
               <>
                 <Link to="/messages">
-                  <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                    <Mail className="h-7 w-7" />
+                  <Button variant="ghost" size="icon" className={cn(
+                    "rounded-full text-white hover:bg-white/20",
+                    isActive('/messages') && "bg-white/20"
+                  )}>
+                    <Mail className="h-8 w-8" />
                   </Button>
                 </Link>
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <Bell className="h-7 w-7" />
+                  <Bell className="h-8 w-8" />
                 </Button>
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <HelpCircle className="h-7 w-7" />
+                  <HelpCircle className="h-8 w-8" />
                 </Button>
               </>
             ) : (
@@ -47,21 +50,21 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                     "rounded-full text-white hover:bg-white/20",
                     isActive('/dashboard') && "bg-white/20"
                   )}>
-                    <Home className="h-7 w-7" />
+                    <Home className="h-8 w-8" />
                   </Button>
                 </Link>
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <Bell className="h-7 w-7" />
+                  <Bell className="h-8 w-8" />
                 </Button>
               </>
             )}
             
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 md:hidden">
-              <Search className="h-7 w-7" />
+              <Search className="h-8 w-8" />
             </Button>
             
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
-              <Menu className="h-7 w-7" />
+              <Menu className="h-8 w-8" />
             </Button>
             
             <Link to="/profile">
@@ -69,7 +72,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                 "rounded-full text-white hover:bg-white/20",
                 isActive('/profile') && "bg-white/20"
               )}>
-                <User className="h-7 w-7" />
+                <User className="h-8 w-8" />
               </Button>
             </Link>
           </div>
@@ -82,7 +85,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
               "rounded-full text-white hover:bg-white/20",
               isActive('/dashboard') && "bg-white/20"
             )}>
-              <Home className="h-7 w-7" />
+              <Home className="h-8 w-8" />
             </Button>
           </Link>
           
@@ -93,17 +96,17 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                   "rounded-full text-white hover:bg-white/20",
                   isActive('/messages') && "bg-white/20"
                 )}>
-                  <Mail className="h-7 w-7" />
+                  <Mail className="h-8 w-8" />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <HelpCircle className="h-7 w-7" />
+                <HelpCircle className="h-8 w-8" />
               </Button>
             </>
           ) : null}
           
           <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-            <Bell className="h-7 w-7" />
+            <Bell className="h-8 w-8" />
           </Button>
           
           <Link to="/profile">
@@ -111,7 +114,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
               "rounded-full text-white hover:bg-white/20",
               isActive('/profile') && "bg-white/20"
             )}>
-              <User className="h-7 w-7" />
+              <User className="h-8 w-8" />
             </Button>
           </Link>
         </div>

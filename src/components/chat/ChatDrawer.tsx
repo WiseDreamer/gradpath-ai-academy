@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Home, Settings, User, LogOut, Bookmark, Users, ChevronDown, Compass } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 interface ChatDrawerProps {
   isOpen: boolean;
@@ -34,14 +35,14 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, setIsOpen }) => {
   ];
 
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerContent className="h-[85vh]">
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetContent className="w-[300px] sm:max-w-[300px] overflow-y-auto">
         <DrawerHeader>
           <DrawerTitle>Menu</DrawerTitle>
           <DrawerClose className="absolute right-4 top-4" />
         </DrawerHeader>
         
-        <div className="px-4 py-2 flex flex-col h-full overflow-y-auto">
+        <div className="py-2 flex flex-col h-full overflow-y-auto">
           <div className="flex items-center gap-3 mb-4 p-2">
             <Avatar className="h-12 w-12">
               <AvatarFallback className="bg-gradpath-purple text-white">A</AvatarFallback>
@@ -100,8 +101,8 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, setIsOpen }) => {
             Log out
           </Button>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
 

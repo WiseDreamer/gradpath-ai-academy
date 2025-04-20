@@ -1,12 +1,13 @@
-
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import Logo from '@/components/Logo';
 import NavBar from '@/components/NavBar';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, Search } from 'lucide-react';
+import { Send, Search, Home, Bell, Mail, User, Menu, HelpCircle } from 'lucide-react';
 import ChatDrawer from '@/components/chat/ChatDrawer';
 
 // Mock contacts data
@@ -89,6 +90,7 @@ const MessagesPage: React.FC = () => {
   const [messages, setMessages] = useState(mockMessages);
   const [newMessage, setNewMessage] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const location = useLocation();
 
   const openMobileMenu = () => {
     setIsDrawerOpen(true);
@@ -130,18 +132,94 @@ const MessagesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
-      {/* Header */}
-      <NavBar openMobileMenu={openMobileMenu} currentPage="messages" />
+      {/* Custom header instead of using NavBar component */}
+      <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+        <div className="w-full px-4">
+          {/* Top section */}
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-2">
+              <Logo clickable={false} />
+            </div>
+
+            <div className="hidden md:flex items-center gap-2">
+              <Link to="/messages">
+                <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
+                  location.pathname === '/messages' ? 'bg-white/20' : ''
+                }`}>
+                  <Mail className="h-8 w-8" />
+                </Button>
+              </Link>
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Bell className="h-8 w-8" />
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <HelpCircle className="h-8 w-8" />
+              </Button>
+              <Link to="/dashboard">
+                <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
+                  location.pathname === '/dashboard' ? 'bg-white/20' : ''
+                }`}>
+                  <Home className="h-8 w-8" />
+                </Button>
+              </Link>
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
+                  location.pathname === '/profile' ? 'bg-white/20' : ''
+                }`}>
+                  <User className="h-8 w-8" />
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="md:hidden flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Search className="h-8 w-8" />
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+                <Menu className="h-8 w-8" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Bottom section for mobile */}
+          <div className="md:hidden h-14 flex items-center justify-between border-t border-white/20 px-4">
+            <Link to="/dashboard">
+              <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
+                location.pathname === '/dashboard' ? 'bg-white/20' : ''
+              }`}>
+                <Home className="h-8 w-8" />
+              </Button>
+            </Link>
+            <Link to="/messages">
+              <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
+                location.pathname === '/messages' ? 'bg-white/20' : ''
+              }`}>
+                <Mail className="h-8 w-8" />
+              </Button>
+            </Link>
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Bell className="h-8 w-8" />
+            </Button>
+            <Link to="/profile">
+              <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
+                location.pathname === '/profile' ? 'bg-white/20' : ''
+              }`}>
+                <User className="h-8 w-8" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-0 sm:px-6 pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
+      <div className="mx-0 px-0 pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
         {/* Contact List - Hide on mobile when a chat is selected */}
-        <div className={`w-full md:w-80 px-0 sm:px-4 ${selectedContact ? 'hidden md:block' : ''}`}>
-          <Card className="h-full overflow-hidden">
+        <div className={`w-full md:w-80 px-0 ${selectedContact ? 'hidden md:block' : ''}`}>
+          <Card className="h-full overflow-hidden rounded-none md:rounded-lg">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">Messages</h2>
               <div className="relative mt-2">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
                 <Input placeholder="Search contacts..." className="pl-9" />
               </div>
             </div>
@@ -182,8 +260,8 @@ const MessagesPage: React.FC = () => {
         </div>
 
         {/* Chat Area - Show on mobile only when a chat is selected */}
-        <div className={`flex-1 px-0 sm:px-4 ${!selectedContact ? 'hidden md:block' : ''}`}>
-          <Card className="h-full flex flex-col overflow-hidden">
+        <div className={`flex-1 px-0 ${!selectedContact ? 'hidden md:block' : ''}`}>
+          <Card className="h-full flex flex-col overflow-hidden rounded-none md:rounded-lg">
             {!selectedContact && (
               <div className="flex-1 flex items-center justify-center p-6 text-center">
                 <div>
@@ -268,7 +346,7 @@ const MessagesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer - update to make it smaller */}
       <ChatDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
     </div>
   );

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Menu, Mail, Bell, HelpCircle } from 'lucide-react';
+import { Search, Menu, Mail, Bell, HelpCircle, Home, User, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
@@ -9,7 +9,6 @@ import ChatDrawer from '@/components/chat/ChatDrawer';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import Logo from '@/components/Logo';
-import { MessageCircle } from 'lucide-react';
 
 const GlobalChatPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -26,7 +25,7 @@ const GlobalChatPage: React.FC = () => {
               
               <div className="hidden md:flex w-64 lg:w-80">
                 <div className="relative w-full">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
                   <Input
                     type="text"
                     placeholder="Search GradPath..."
@@ -38,31 +37,41 @@ const GlobalChatPage: React.FC = () => {
             
             {/* Center - messaging icon replaces text */}
             <div className="flex md:hidden items-center">
-              <MessageCircle className="h-7 w-7 text-white" />
+              <MessageCircle className="h-8 w-8 text-white" />
             </div>
             
             {/* Center icons */}
             <div className="hidden md:flex items-center gap-4">
               <Link to="/messages">
                 <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                  <Mail className="h-7 w-7" />
+                  <Mail className="h-8 w-8" />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <Bell className="h-7 w-7" />
+                <Bell className="h-8 w-8" />
               </Button>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <HelpCircle className="h-7 w-7" />
+                <HelpCircle className="h-8 w-8" />
               </Button>
+              <Link to="/dashboard">
+                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
+                  <Home className="h-8 w-8" />
+                </Button>
+              </Link>
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
+                  <User className="h-8 w-8" />
+                </Button>
+              </Link>
             </div>
 
             {/* Right icons - mobile shows only search and menu */}
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="md:hidden h-12 w-12 rounded-full text-white hover:bg-white/20">
-                <Search className="h-7 w-7" />
+                <Search className="h-8 w-8" />
               </Button>
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20" onClick={() => setIsDrawerOpen(true)}>
-                <Menu className="h-7 w-7" />
+                <Menu className="h-8 w-8" />
               </Button>
             </div>
           </div>
@@ -71,21 +80,28 @@ const GlobalChatPage: React.FC = () => {
           <div className="md:hidden h-12 flex items-center justify-between px-4 border-t border-white/20">
             <Link to="/dashboard">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Mail className="h-7 w-7" />
+                <Home className="h-8 w-8" />
+              </Button>
+            </Link>
+            <Link to="/messages">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Mail className="h-8 w-8" />
               </Button>
             </Link>
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <Bell className="h-7 w-7" />
+              <Bell className="h-8 w-8" />
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <HelpCircle className="h-7 w-7" />
-            </Button>
+            <Link to="/profile">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <User className="h-8 w-8" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex pt-6 pb-16">
+      <div className="flex pt-0">
         <ChatSidebar />
         <div className="flex-1 px-0 md:px-6">
           <ChatFeed />
