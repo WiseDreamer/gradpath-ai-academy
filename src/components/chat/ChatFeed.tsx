@@ -35,7 +35,7 @@ const ChatFeed: React.FC = () => {
       </div>
 
       {/* Chat Posts */}
-      <div className="space-y-4">
+      <div className="w-full px-0 mx-0">
         <ChatPost
           author="Alex Johnson"
           content="Has anyone worked through the latest Calculus practice problems? I'm stuck on the third one related to implicit differentiation."
