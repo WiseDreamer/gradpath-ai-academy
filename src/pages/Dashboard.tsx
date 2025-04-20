@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User } from 'lucide-react';
+import { Bell, User, BookOpen, Upload, Calendar, FileText, Book, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
