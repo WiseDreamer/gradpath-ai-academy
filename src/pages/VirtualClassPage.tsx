@@ -1,18 +1,15 @@
-
 import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
-import WhiteboardArea from '@/components/WhiteboardArea';
+import BackIcon from '@/components/BackIcon';
+import Logo from '@/components/Logo';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Send, MessageSquare, BookOpen, FileText, Home, Bell, User, Search, Menu } from 'lucide-react';
 import ChatMessage, { Message } from '@/components/ChatMessage';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Logo from '@/components/Logo';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-// Helper function for mobile detection
-// We now use useIsMobile() hook instead
+import { useNavigate } from "react-router-dom";
 
 const VirtualClassPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('questions');
@@ -60,36 +57,40 @@ const VirtualClassPage: React.FC = () => {
   };
 
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const iconProps = { size: 32, strokeWidth: 3 };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
       {/* Mobile fixed header with AppName, top-right icons, and bottom nav */}
       {isMobile ? (
         <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-          {/* Top section: logo, right-aligned search+menu */}
+          {/* Top section: back, logo, right-aligned search+menu */}
           <div className="flex items-center justify-between h-16 px-4">
             <div className="flex items-center gap-2">
+              <BackIcon />
               <Logo clickable={false} />
             </div>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <Search className="h-8 w-8" />
+                <Search {...iconProps} />
               </Button>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <Menu className="h-8 w-8" />
+                <Menu {...iconProps} />
               </Button>
             </div>
           </div>
           {/* Bottom nav section: home, notifications, profile */}
-          <div className="h-12 flex items-center justify-between border-t border-white/20 px-4">
+          <div className="h-14 flex items-center justify-between border-t border-white/20 px-4">
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-              <Home className="h-8 w-8" />
+              <Home {...iconProps} />
             </Button>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-              <Bell className="h-8 w-8" />
+              <Bell {...iconProps} />
             </Button>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-              <User className="h-8 w-8" />
+              <User {...iconProps} />
             </Button>
           </div>
         </div>
@@ -196,4 +197,3 @@ const VirtualClassPage: React.FC = () => {
 };
 
 export default VirtualClassPage;
-
