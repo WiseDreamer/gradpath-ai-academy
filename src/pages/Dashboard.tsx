@@ -10,8 +10,8 @@ import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
 
 const Dashboard: React.FC = () => {
-  const iconSize = 36;
-  const iconStrokeWidth = 3.6;
+  const iconSize = 40;
+  const iconStrokeWidth = 3.8;
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
@@ -25,14 +25,14 @@ const Dashboard: React.FC = () => {
             <div className="flex items-center gap-2">
               <Link to="/global-chat">
                 <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Global Chat">
-                  <MessageCircle className="h-14 w-14" strokeWidth={4} />
+                  <MessageCircle size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Notifications">
-                <Bell className="h-14 w-14" strokeWidth={4} />
+                <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
-                <User className="h-14 w-14" strokeWidth={4} />
+                <User size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </div>
           </div>
@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Join Virtual Class"
             description="Jump into an interactive AI-powered virtual classroom"
-            icon={(props) => <BookOpen {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
+            icon={BookOpen}
             to="/virtual-class"
             color="bg-gradpath-purple"
           />
@@ -55,7 +55,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Upload Module Resources"
             description="Upload lecture slides, notes, and study material"
-            icon={(props) => <Upload {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
+            icon={Upload}
             to="/upload"
             color="bg-gradpath-bright-blue"
           />
@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Study Plan"
             description="View and manage your personalized study schedule"
-            icon={(props) => <Calendar {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
+            icon={Calendar}
             to="/study-plan"
             color="bg-green-500"
           />
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Practice Questions"
             description="Test your knowledge with AI-generated practice questions"
-            icon={(props) => <FileText {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
+            icon={FileText}
             to="/practice"
             color="bg-amber-500"
           />
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Past Papers"
             description="Access and review previous examination papers"
-            icon={(props) => <Book {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
+            icon={Book}
             to="/past-papers"
             color="bg-red-500"
           />
@@ -87,7 +87,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Ask AI Tutor"
             description="Get instant answers to your academic questions"
-            icon={(props) => <MessageSquare {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
+            icon={MessageSquare}
             to="/chat"
             color="bg-indigo-600"
           />
