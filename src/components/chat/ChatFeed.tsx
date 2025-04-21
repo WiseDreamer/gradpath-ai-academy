@@ -67,12 +67,18 @@ const ChatFeed: React.FC = () => {
             />
           </div>
           <DialogFooter className="sm:justify-between">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button type="button" disabled={!postContent.trim()}>
+            <Button type="button" variant="secondary" onClick={() => setIsPostDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              type="button" 
+              disabled={!postContent.trim()}
+              onClick={() => {
+                // Handle post submission logic here
+                setPostContent('');
+                setIsPostDialogOpen(false);
+              }}
+            >
               Post
             </Button>
           </DialogFooter>
