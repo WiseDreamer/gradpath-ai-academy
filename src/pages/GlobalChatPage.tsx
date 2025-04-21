@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Menu, Mail, Bell, HelpCircle, Home, User, MessageCircle } from 'lucide-react';
+import { Search, Menu, Mail, Bell, HelpCircle, Home, User, MessageCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
@@ -35,13 +35,8 @@ const GlobalChatPage: React.FC = () => {
               </div>
             </div>
             
-            {/* Center - messaging icon replaces text */}
-            <div className="flex md:hidden items-center">
-              <MessageCircle className="h-8 w-8 text-white" />
-            </div>
-            
-            {/* Center icons */}
-            <div className="hidden md:flex items-center gap-4">
+            {/* On desktop: Move Home and Profile closer to Menu icon */}
+            <div className="hidden md:flex items-center gap-4 ml-auto">
               <Link to="/messages">
                 <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
                   <Mail className="h-8 w-8" />
@@ -53,6 +48,7 @@ const GlobalChatPage: React.FC = () => {
               <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
                 <HelpCircle className="h-8 w-8" />
               </Button>
+              {/* Move Home/Profile here at the end of the group */}
               <Link to="/dashboard">
                 <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20">
                   <Home className="h-8 w-8" />
@@ -63,10 +59,18 @@ const GlobalChatPage: React.FC = () => {
                   <User className="h-8 w-8" />
                 </Button>
               </Link>
+              <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full text-white hover:bg-white/20" onClick={() => setIsDrawerOpen(true)}>
+                <Menu className="h-8 w-8" />
+              </Button>
             </div>
 
-            {/* Right icons - mobile shows only search and menu */}
-            <div className="flex items-center gap-3">
+            {/* Center - messaging icon replaces text (retain for mobile only, no change) */}
+            <div className="flex md:hidden items-center">
+              <MessageCircle className="h-8 w-8 text-white" />
+            </div>
+            
+            {/* Mobile right icons: always show menu */}
+            <div className="flex items-center gap-3 md:hidden">
               <Button variant="ghost" size="icon" className="md:hidden h-12 w-12 rounded-full text-white hover:bg-white/20">
                 <Search className="h-8 w-8" />
               </Button>
@@ -76,8 +80,8 @@ const GlobalChatPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Mobile bottom section - consistent icons */}
-          <div className="md:hidden h-12 flex items-center justify-between px-4 border-t border-white/20">
+          {/* Mobile bottom section - consistent icons, add Friends, remove spacing */}
+          <div className="md:hidden h-12 flex items-center justify-between px-0 border-t border-white/20">
             <Link to="/dashboard">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                 <Home className="h-8 w-8" />
@@ -86,6 +90,12 @@ const GlobalChatPage: React.FC = () => {
             <Link to="/messages">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                 <Mail className="h-8 w-8" />
+              </Button>
+            </Link>
+            {/* Add Friends icon */}
+            <Link to="/friends">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Users className="h-8 w-8" />
               </Button>
             </Link>
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
@@ -102,6 +112,7 @@ const GlobalChatPage: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex pt-0">
+        {/* Remove side padding on mobile, and inside feed, remove spacing as well */}
         <ChatSidebar />
         <div className="flex-1 px-0 md:px-6">
           <ChatFeed />

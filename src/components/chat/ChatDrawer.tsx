@@ -35,7 +35,14 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, setIsOpen }) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="w-[300px] sm:max-w-[300px] overflow-y-auto">
+      {/* Add aria-describedby and visually hidden description for accessibility */}
+      <SheetContent
+        className="w-[300px] sm:max-w-[300px] overflow-y-auto"
+        aria-describedby="chat-drawer-desc"
+      >
+        <span id="chat-drawer-desc" className="sr-only">
+          Navigation and shortcuts menu for chats, friends, saved items, and groups.
+        </span>
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
           <SheetClose className="absolute right-4 top-4" />

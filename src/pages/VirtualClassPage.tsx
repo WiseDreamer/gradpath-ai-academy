@@ -9,6 +9,12 @@ import { Send, MessageSquare, BookOpen, FileText } from 'lucide-react';
 import ChatMessage, { Message } from '@/components/ChatMessage';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+// Helper function for mobile detection
+const useIsMobile = () => {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < 768;
+};
+
 const VirtualClassPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('questions');
   const [question, setQuestion] = useState<string>('');
@@ -57,11 +63,25 @@ const VirtualClassPage: React.FC = () => {
       setMessages(prev => [...prev, aiResponse]);
     }, 1000);
   };
-  
+
+  // On mobile, do not show extraneous icons in header; just render logo and nothing after it
+  // We assume NavBar uses 'variant="learning"' here, but on mobile we want a stripped-down top bar
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
-      <NavBar variant="learning" />
-      
+      {/* Mobile simple header if isMobile, else NavBar */}
+      {isMobile ? (
+        <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full flex items-center h-16 px-4">
+          <div className="flex items-center gap-2">
+            <Logo clickable={false} />
+          </div>
+          {/* Do not add any icons at the end for mobile */}
+        </div>
+      ) : (
+        <NavBar variant="learning" />
+      )}
+
       <div className="w-full px-4">
         <div className="mb-6">
           <h1 className="text-2xl font-bold">Linear Algebra - Virtual Class</h1>
@@ -78,7 +98,7 @@ const VirtualClassPage: React.FC = () => {
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="questions" onClick={() => setActiveTab('questions')}>
                   <MessageSquare className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">Q&A</span>
+                  <span className="hidden sm:inline">Q&amp;A</span>
                 </TabsTrigger>
                 <TabsTrigger value="notes" onClick={() => setActiveTab('notes')}>
                   <FileText className="h-4 w-4 mr-2" />
