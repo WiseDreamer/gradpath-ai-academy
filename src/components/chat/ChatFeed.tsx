@@ -12,8 +12,10 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 const ChatFeed: React.FC = () => {
+  const { toast } = useToast();
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const [postContent, setPostContent] = useState('');
   const [posts, setPosts] = useState([
@@ -75,13 +77,20 @@ const ChatFeed: React.FC = () => {
         author: "Alex Johnson",
         content: postContent,
         timestamp: "Just now",
-        reactions: {},
+        reactions: {
+          "👍": 0
+        },
         comments: []
       };
       
       setPosts([newPost, ...posts]);
       setPostContent('');
       setIsPostDialogOpen(false);
+      
+      toast({
+        title: "Post created",
+        description: "Your post has been published successfully",
+      });
     }
   };
 
