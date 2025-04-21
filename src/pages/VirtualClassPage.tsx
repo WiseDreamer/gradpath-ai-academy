@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Send, MessageSquare, BookOpen, FileText } from 'lucide-react';
 import ChatMessage, { Message } from '@/components/ChatMessage';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import Logo from '@/components/Logo'; // Fix for Logo not defined
 
 // Helper function for mobile detection
 const useIsMobile = () => {
@@ -76,7 +77,7 @@ const VirtualClassPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <Logo clickable={false} />
           </div>
-          {/* Do not add any icons at the end for mobile */}
+          {/* Removed icons Home, Bell, User per user request */}
         </div>
       ) : (
         <NavBar variant="learning" />
@@ -111,11 +112,14 @@ const VirtualClassPage: React.FC = () => {
               </TabsList>
               
               <TabsContent value="questions" className="flex-1 flex flex-col h-full">
-                <ScrollArea className="flex-1 p-4">
+                <ScrollArea className="flex-1 p-4" aria-describedby="questions-tab-desc">
                   {messages.map((msg) => (
                     <ChatMessage key={msg.id} message={msg} />
                   ))}
                 </ScrollArea>
+                <span id="questions-tab-desc" className="sr-only">
+                  Chat messages between user and AI tutor.
+                </span>
                 
                 <div className="p-3 border-t mt-auto">
                   <div className="flex gap-2">

@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, MessageCircle, BookOpen, Upload, Calendar, FileText, Book, MessageSquare } from 'lucide-react';
+import { Bell, User, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
@@ -18,17 +17,16 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Replace button text with icon only */}
+              {/* Replace 'Global Chat' text with icon */}
               <Link to="/global-chat">
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Global Chat">
                   <MessageCircle className="h-8 w-8" />
-                  <span className="sr-only">Global Chat</span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Notifications">
                 <Bell className="h-8 w-8" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
                 <User className="h-8 w-8" />
               </Button>
             </div>
