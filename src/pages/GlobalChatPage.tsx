@@ -1,4 +1,5 @@
 
+// Remove showInbox and onClose props from ChatSidebar usage because they're not in its IntrinsicAttributes
 import React, { useState } from 'react';
 import { Search, Menu, Mail, Bell, HelpCircle, Home, User, MessageCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -149,7 +150,7 @@ const GlobalChatPage: React.FC = () => {
       {/* Main Content */}
       <div className="flex pt-0">
         {/* Remove side padding on mobile, and inside feed, remove spacing as well */}
-        <ChatSidebar showInbox={showInbox} onClose={() => setShowInbox(false)} />
+        <ChatSidebar />
         <div className="flex-1 px-0 md:px-6">
           <ChatFeed />
         </div>
@@ -163,3 +164,4 @@ const GlobalChatPage: React.FC = () => {
 };
 
 export default GlobalChatPage;
+

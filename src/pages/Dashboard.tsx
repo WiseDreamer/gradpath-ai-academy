@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, MessageCircle } from 'lucide-react';
+import { Bell, User, MessageCircle, BookOpen, Upload, Calendar, FileText, Book, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
@@ -115,3 +116,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
