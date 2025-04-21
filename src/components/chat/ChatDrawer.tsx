@@ -1,17 +1,16 @@
 
 import React from 'react';
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Home, Settings, User, LogOut, Bookmark, Users, ChevronDown, Compass } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 interface ChatDrawerProps {
   isOpen: boolean;
@@ -37,10 +36,10 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, setIsOpen }) => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent className="w-[300px] sm:max-w-[300px] overflow-y-auto">
-        <DrawerHeader>
-          <DrawerTitle>Menu</DrawerTitle>
-          <DrawerClose className="absolute right-4 top-4" />
-        </DrawerHeader>
+        <SheetHeader>
+          <SheetTitle>Menu</SheetTitle>
+          <SheetClose className="absolute right-4 top-4" />
+        </SheetHeader>
         
         <div className="py-2 flex flex-col h-full overflow-y-auto">
           <div className="flex items-center gap-3 mb-4 p-2">
