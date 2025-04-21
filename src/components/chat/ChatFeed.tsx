@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from 'vaul'; 
+} from 'vaul/react'; 
 
 const ChatFeed: React.FC = () => {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
