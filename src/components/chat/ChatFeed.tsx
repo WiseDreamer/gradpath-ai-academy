@@ -126,15 +126,15 @@ const ChatFeed: React.FC = () => {
         </div>
         <div className="flex mt-3 pt-3 border-t">
           <Button variant="ghost" className="flex-1 rounded-lg justify-center">
-            <Image className="h-5 w-5 mr-2 text-blue-500" />
+            <Image className="h-8 w-8 mr-2 text-blue-500" />
             Photo
           </Button>
           <Button variant="ghost" className="flex-1 rounded-lg justify-center">
-            <Video className="h-5 w-5 mr-2 text-green-500" />
+            <Video className="h-8 w-8 mr-2 text-green-500" />
             Video
           </Button>
           <Button variant="ghost" className="flex-1 rounded-lg justify-center">
-            <Smile className="h-5 w-5 mr-2 text-yellow-500" />
+            <Smile className="h-8 w-8 mr-2 text-yellow-500" />
             Feeling
           </Button>
         </div>
