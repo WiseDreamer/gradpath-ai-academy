@@ -16,6 +16,74 @@ import {
 const ChatFeed: React.FC = () => {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const [postContent, setPostContent] = useState('');
+  const [posts, setPosts] = useState([
+    {
+      author: "Alex Johnson",
+      content: "Has anyone worked through the latest Calculus practice problems? I'm stuck on the third one related to implicit differentiation.",
+      timestamp: "2 hours ago",
+      reactions: {
+        "👍": 5,
+        "🤔": 2,
+        "❤️": 1
+      },
+      comments: [
+        {
+          author: "Sarah Lee",
+          content: "I can help! The key is to use the chain rule here. You need to differentiate both sides with respect to x, being careful with the y terms.",
+          timestamp: "1 hour ago"
+        },
+        {
+          author: "Michael Chen",
+          content: "I struggled with that one too. Make sure you're applying the product rule correctly when differentiating the xy term.",
+          timestamp: "45 minutes ago"
+        }
+      ]
+    },
+    {
+      author: "Maria Garcia",
+      content: "Looking for study partners for the upcoming AI exam. Anyone interested in forming a virtual study group this weekend? I'm particularly focused on neural networks and deep learning applications.",
+      timestamp: "3 hours ago",
+      reactions: {
+        "👋": 8,
+        "👍": 3,
+        "🔥": 2
+      },
+      comments: [
+        {
+          author: "David Wong",
+          content: "I'm interested! Been studying neural networks all week and could use some group discussion.",
+          timestamp: "2 hours ago"
+        }
+      ]
+    },
+    {
+      author: "James Smith",
+      content: "Just finished my research paper on quantum computing applications in cryptography. Would anyone be interested in peer reviewing it before submission? It's about 15 pages with diagrams.",
+      timestamp: "5 hours ago",
+      reactions: {
+        "🧠": 12,
+        "🔬": 5,
+        "🎉": 3
+      },
+      comments: []
+    }
+  ]);
+
+  const handleCreatePost = () => {
+    if (postContent.trim()) {
+      const newPost = {
+        author: "Alex Johnson",
+        content: postContent,
+        timestamp: "Just now",
+        reactions: {},
+        comments: []
+      };
+      
+      setPosts([newPost, ...posts]);
+      setPostContent('');
+      setIsPostDialogOpen(false);
+    }
+  };
 
   return (
     <main className="w-full flex flex-col space-y-6 px-0">
@@ -72,11 +140,7 @@ const ChatFeed: React.FC = () => {
             <Button 
               type="button" 
               disabled={!postContent.trim()}
-              onClick={() => {
-                // Handle post submission logic here
-                setPostContent('');
-                setIsPostDialogOpen(false);
-              }}
+              onClick={handleCreatePost}
             >
               Post
             </Button>
@@ -85,57 +149,17 @@ const ChatFeed: React.FC = () => {
       </Dialog>
 
       {/* Chat Posts */}
-      <div className="w-full">
-        <ChatPost
-          author="Alex Johnson"
-          content="Has anyone worked through the latest Calculus practice problems? I'm stuck on the third one related to implicit differentiation."
-          timestamp="2 hours ago"
-          reactions={{
-            "👍": 5,
-            "🤔": 2,
-            "❤️": 1
-          }}
-          comments={[
-            {
-              author: "Sarah Lee",
-              content: "I can help! The key is to use the chain rule here. You need to differentiate both sides with respect to x, being careful with the y terms.",
-              timestamp: "1 hour ago"
-            },
-            {
-              author: "Michael Chen",
-              content: "I struggled with that one too. Make sure you're applying the product rule correctly when differentiating the xy term.",
-              timestamp: "45 minutes ago"
-            }
-          ]}
-        />
-        <ChatPost
-          author="Maria Garcia"
-          content="Looking for study partners for the upcoming AI exam. Anyone interested in forming a virtual study group this weekend? I'm particularly focused on neural networks and deep learning applications."
-          timestamp="3 hours ago"
-          reactions={{
-            "👋": 8,
-            "👍": 3,
-            "🔥": 2
-          }}
-          comments={[
-            {
-              author: "David Wong",
-              content: "I'm interested! Been studying neural networks all week and could use some group discussion.",
-              timestamp: "2 hours ago"
-            }
-          ]}
-        />
-        <ChatPost
-          author="James Smith"
-          content="Just finished my research paper on quantum computing applications in cryptography. Would anyone be interested in peer reviewing it before submission? It's about 15 pages with diagrams."
-          timestamp="5 hours ago"
-          reactions={{
-            "🧠": 12,
-            "🔬": 5,
-            "🎉": 3
-          }}
-          comments={[]}
-        />
+      <div className="w-full space-y-4">
+        {posts.map((post, index) => (
+          <ChatPost
+            key={index}
+            author={post.author}
+            content={post.content}
+            timestamp={post.timestamp}
+            reactions={post.reactions}
+            comments={post.comments}
+          />
+        ))}
       </div>
     </main>
   );
