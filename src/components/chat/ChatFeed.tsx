@@ -1,11 +1,23 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Image, Video, Smile } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatPost from './ChatPost';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
 
 const ChatFeed: React.FC = () => {
+  const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
+  const [postContent, setPostContent] = useState('');
+
   return (
     <main className="w-full flex flex-col space-y-6 px-0">
       {/* Create Post Card */}
@@ -14,7 +26,10 @@ const ChatFeed: React.FC = () => {
           <Avatar className="h-10 w-10">
             <AvatarFallback className="bg-gradpath-purple text-white">A</AvatarFallback>
           </Avatar>
-          <div className="bg-gray-100 rounded-full flex-1 px-4 py-2.5 text-gray-500 cursor-pointer hover:bg-gray-200 transition-colors">
+          <div 
+            className="bg-gray-100 rounded-full flex-1 px-4 py-2.5 text-gray-500 cursor-pointer hover:bg-gray-200 transition-colors"
+            onClick={() => setIsPostDialogOpen(true)}
+          >
             Have something in mind, Alex?
           </div>
         </div>
@@ -33,6 +48,36 @@ const ChatFeed: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {/* Post Creation Dialog */}
+      <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Create a Post</DialogTitle>
+            <DialogDescription>
+              Share your thoughts with the community
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col space-y-4 py-4">
+            <textarea
+              className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+              placeholder="What's on your mind?"
+              value={postContent}
+              onChange={(e) => setPostContent(e.target.value)}
+            />
+          </div>
+          <DialogFooter className="sm:justify-between">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button type="button" disabled={!postContent.trim()}>
+              Post
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Chat Posts */}
       <div className="w-full">
