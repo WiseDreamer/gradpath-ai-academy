@@ -5,16 +5,14 @@ import WhiteboardArea from '@/components/WhiteboardArea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Send, MessageSquare, BookOpen, FileText } from 'lucide-react';
+import { Send, MessageSquare, BookOpen, FileText, Home, Bell, User, Search, Menu } from 'lucide-react';
 import ChatMessage, { Message } from '@/components/ChatMessage';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Logo from '@/components/Logo'; // Fix for Logo not defined
+import Logo from '@/components/Logo';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Helper function for mobile detection
-const useIsMobile = () => {
-  if (typeof window === "undefined") return false;
-  return window.innerWidth < 768;
-};
+// We now use useIsMobile() hook instead
 
 const VirtualClassPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('questions');
@@ -42,17 +40,14 @@ const VirtualClassPage: React.FC = () => {
   
   const handleQuestionSubmit = () => {
     if (!question.trim()) return;
-    
     const newMessage: Message = {
       id: Date.now().toString(),
       sender: 'user',
       content: question,
       timestamp: new Date(),
     };
-    
     setMessages([...messages, newMessage]);
     setQuestion('');
-    
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -60,24 +55,43 @@ const VirtualClassPage: React.FC = () => {
         content: `I'll help you understand ${question.substring(0, 30)}... Let me explain this concept in detail.`,
         timestamp: new Date(),
       };
-      
       setMessages(prev => [...prev, aiResponse]);
     }, 1000);
   };
 
-  // On mobile, do not show extraneous icons in header; just render logo and nothing after it
-  // We assume NavBar uses 'variant="learning"' here, but on mobile we want a stripped-down top bar
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
-      {/* Mobile simple header if isMobile, else NavBar */}
+      {/* Mobile fixed header with AppName, top-right icons, and bottom nav */}
       {isMobile ? (
-        <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full flex items-center h-16 px-4">
-          <div className="flex items-center gap-2">
-            <Logo clickable={false} />
+        <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+          {/* Top section: logo, right-aligned search+menu */}
+          <div className="flex items-center justify-between h-16 px-4">
+            <div className="flex items-center gap-2">
+              <Logo clickable={false} />
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <Search className="h-8 w-8" />
+              </Button>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <Menu className="h-8 w-8" />
+              </Button>
+            </div>
           </div>
-          {/* Removed icons Home, Bell, User per user request */}
+          {/* Bottom nav section: home, notifications, profile */}
+          <div className="h-12 flex items-center justify-between border-t border-white/20 px-4">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Home className="h-8 w-8" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Bell className="h-8 w-8" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <User className="h-8 w-8" />
+            </Button>
+          </div>
         </div>
       ) : (
         <NavBar variant="learning" />
@@ -120,7 +134,6 @@ const VirtualClassPage: React.FC = () => {
                 <span id="questions-tab-desc" className="sr-only">
                   Chat messages between user and AI tutor.
                 </span>
-                
                 <div className="p-3 border-t mt-auto">
                   <div className="flex gap-2">
                     <Textarea 
@@ -160,7 +173,6 @@ const VirtualClassPage: React.FC = () => {
                 <ScrollArea className="h-full">
                   <div className="p-4">
                     <h3 className="font-medium mb-4">Class Resources</h3>
-                    
                     <div className="space-y-3">
                       {['Linear Algebra Basics.pdf', 'Matrix Operations.pdf', 'Vector Spaces.pdf'].map((file) => (
                         <div 
@@ -184,3 +196,4 @@ const VirtualClassPage: React.FC = () => {
 };
 
 export default VirtualClassPage;
+
