@@ -1,30 +1,26 @@
 
 import React, { useState } from 'react';
-import { Search, Menu, Mail, Bell, HelpCircle, Home, User, Users, ArrowLeft } from 'lucide-react';
+import { 
+  Search, Menu, Mail, Bell, HelpCircle, Home, User, Users, ArrowLeft,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
 import OnlineSidebar from '@/components/chat/OnlineSidebar';
 import ChatDrawer from '@/components/chat/ChatDrawer';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
 import Logo from '@/components/Logo';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const GlobalChatPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [showInbox, setShowInbox] = useState(false);
-
-  const toggleInbox = () => {
-    setShowInbox((prev) => !prev);
-    setIsDrawerOpen(false);
-  };
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const iconProps = { size: 40, strokeWidth: 3.2 };
+  const iconSize = 36;
+  const iconStrokeWidth = 4;
 
   // Show back unless on dashboard
   const showBack = location.pathname !== "/dashboard";
@@ -42,11 +38,10 @@ const GlobalChatPage: React.FC = () => {
             <div className="flex items-center gap-4">
               {showBack && (
                 <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-2 rounded-full hover:bg-white/20">
-                  <ArrowLeft {...iconProps} />
+                  <ArrowLeft size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               )}
               <Logo clickable={false} />
-              {/* Remove: chat icon between logo and search */}
             </div>
             {!isMobile && (
               <div className="flex-1 flex items-center justify-center gap-8">
@@ -57,13 +52,13 @@ const GlobalChatPage: React.FC = () => {
                   aria-label="Inbox"
                   onClick={handleInbox}
                 >
-                  <Mail {...iconProps} />
+                  <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-20 w-20 rounded-full text-white hover:bg-white/20" aria-label="Notifications">
-                  <Bell {...iconProps} />
+                  <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-20 w-20 rounded-full text-white hover:bg-white/20" aria-label="Help">
-                  <HelpCircle {...iconProps} />
+                  <HelpCircle size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </div>
             )}
@@ -71,12 +66,12 @@ const GlobalChatPage: React.FC = () => {
               <div className="flex items-center gap-4 ml-auto">
                 <Link to="/dashboard">
                   <Button variant="ghost" size="icon" className="h-20 w-20 rounded-full text-white hover:bg-white/20 ml-auto">
-                    <Home {...iconProps} />
+                    <Home size={iconSize} strokeWidth={iconStrokeWidth} />
                   </Button>
                 </Link>
                 <Link to="/profile">
                   <Button variant="ghost" size="icon" className="h-20 w-20 rounded-full text-white hover:bg-white/20">
-                    <User {...iconProps} />
+                    <User size={iconSize} strokeWidth={iconStrokeWidth} />
                   </Button>
                 </Link>
                 <Button
@@ -86,7 +81,7 @@ const GlobalChatPage: React.FC = () => {
                   aria-label="Menu"
                   onClick={() => setIsDrawerOpen(true)}
                 >
-                  <Menu {...iconProps} />
+                  <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </div>
             )}
@@ -98,7 +93,7 @@ const GlobalChatPage: React.FC = () => {
                   className="h-20 w-20 rounded-full text-white hover:bg-white/20"
                   aria-label="Search"
                 >
-                  <Search {...iconProps} />
+                  <Search size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
                 <Button
                   variant="ghost"
@@ -107,7 +102,7 @@ const GlobalChatPage: React.FC = () => {
                   onClick={() => setIsDrawerOpen(true)}
                   aria-label="Menu"
                 >
-                  <Menu {...iconProps} />
+                  <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </div>
             )}
@@ -116,7 +111,7 @@ const GlobalChatPage: React.FC = () => {
             <div className="h-20 flex items-center justify-between border-t border-white/20 px-0">
               <Link to="/dashboard">
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <Home {...iconProps} />
+                  <Home size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Button
@@ -126,19 +121,19 @@ const GlobalChatPage: React.FC = () => {
                 onClick={handleInbox}
                 aria-label="Inbox"
               >
-                <Mail {...iconProps} />
+                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Link to="/friends">
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" aria-label="Friends">
-                  <Users {...iconProps} />
+                  <Users size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Bell {...iconProps} />
+                <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Link to="/profile">
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <User {...iconProps} />
+                  <User size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
             </div>
@@ -158,3 +153,4 @@ const GlobalChatPage: React.FC = () => {
 };
 
 export default GlobalChatPage;
+

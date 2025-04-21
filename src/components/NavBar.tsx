@@ -22,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
   const isActive = (path: string) => location.pathname === path || currentPage === path;
 
   // Bolder and larger icon props
-  const iconProps = { size: 40, strokeWidth: 3.2 };
+  const iconProps = { size: 36, strokeWidth: 4 };
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
@@ -55,7 +55,9 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                 </Button>
               </>
             ) : variant === 'ai-tutor' ? (
-              null
+              <>
+                {/* Removed home and notifications icons */}
+              </>
             ) : (
               <>
                 <Link to="/dashboard">

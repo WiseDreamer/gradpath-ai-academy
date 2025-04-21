@@ -1,11 +1,18 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, MessageCircle } from 'lucide-react';
+import { 
+  Bell, User, MessageCircle, 
+  BookOpen, Upload, Calendar, FileText, Book, MessageSquare 
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
 
 const Dashboard: React.FC = () => {
+  const iconSize = 36;
+  const iconStrokeWidth = 3.6;
+
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
       {/* Header */}
@@ -18,14 +25,14 @@ const Dashboard: React.FC = () => {
             <div className="flex items-center gap-2">
               <Link to="/global-chat">
                 <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Global Chat">
-                  <MessageCircle className="h-12 w-12" strokeWidth={3.2} />
+                  <MessageCircle className="h-14 w-14" strokeWidth={4} />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Notifications">
-                <Bell className="h-12 w-12" strokeWidth={3.2} />
+                <Bell className="h-14 w-14" strokeWidth={4} />
               </Button>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
-                <User className="h-12 w-12" strokeWidth={3.2} />
+                <User className="h-14 w-14" strokeWidth={4} />
               </Button>
             </div>
           </div>
@@ -40,7 +47,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Join Virtual Class"
             description="Jump into an interactive AI-powered virtual classroom"
-            icon={BookOpen}
+            icon={(props) => <BookOpen {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
             to="/virtual-class"
             color="bg-gradpath-purple"
           />
@@ -48,7 +55,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Upload Module Resources"
             description="Upload lecture slides, notes, and study material"
-            icon={Upload}
+            icon={(props) => <Upload {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
             to="/upload"
             color="bg-gradpath-bright-blue"
           />
@@ -56,7 +63,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Study Plan"
             description="View and manage your personalized study schedule"
-            icon={Calendar}
+            icon={(props) => <Calendar {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
             to="/study-plan"
             color="bg-green-500"
           />
@@ -64,7 +71,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Practice Questions"
             description="Test your knowledge with AI-generated practice questions"
-            icon={FileText}
+            icon={(props) => <FileText {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
             to="/practice"
             color="bg-amber-500"
           />
@@ -72,7 +79,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Past Papers"
             description="Access and review previous examination papers"
-            icon={Book}
+            icon={(props) => <Book {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
             to="/past-papers"
             color="bg-red-500"
           />
@@ -80,7 +87,7 @@ const Dashboard: React.FC = () => {
           <DashboardCard
             title="Ask AI Tutor"
             description="Get instant answers to your academic questions"
-            icon={MessageSquare}
+            icon={(props) => <MessageSquare {...props} size={iconSize} strokeWidth={iconStrokeWidth} />}
             to="/chat"
             color="bg-indigo-600"
           />
