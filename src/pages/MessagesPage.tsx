@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '@/components/Logo';
-import NavBar from '@/components/NavBar';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, Search, Home, Bell, Mail, User, Menu, HelpCircle } from 'lucide-react';
+import { Send, Search, Home, Bell, Mail, User, Menu, HelpCircle, Users, ChevronLeft } from 'lucide-react';
 import ChatDrawer from '@/components/chat/ChatDrawer';
+import { useNavigate } from 'react-router-dom';
 
 // Mock contacts data
 const contacts = [
@@ -91,6 +91,10 @@ const MessagesPage: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const iconSize = 28;
+  const iconStrokeWidth = 2.5;
 
   const openMobileMenu = () => {
     setIsDrawerOpen(true);
@@ -114,7 +118,6 @@ const MessagesPage: React.FC = () => {
     setMessages([...messages, newMsg]);
     setNewMessage('');
     
-    // Simulate reply after 1 second
     setTimeout(() => {
       const replyMsg = {
         id: `m${messages.length + 2}`,
@@ -129,15 +132,19 @@ const MessagesPage: React.FC = () => {
   };
 
   const selectedContactData = contacts.find(c => c.id === selectedContact);
+  const showBack = location.pathname !== "/dashboard";
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
-      {/* Custom header instead of using NavBar component */}
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full px-4">
-          {/* Top section */}
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
+              {showBack && (
+                <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-1 hover:bg-white/20">
+                  <ChevronLeft size={iconSize} strokeWidth={iconStrokeWidth} />
+                </Button>
+              )}
               <Logo clickable={false} />
             </div>
 
@@ -146,74 +153,76 @@ const MessagesPage: React.FC = () => {
                 <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
                   location.pathname === '/messages' ? 'bg-white/20' : ''
                 }`}>
-                  <Mail className="h-8 w-8" />
+                  <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Bell className="h-8 w-8" />
+                <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <HelpCircle className="h-8 w-8" />
+                <HelpCircle size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Link to="/dashboard">
                 <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
                   location.pathname === '/dashboard' ? 'bg-white/20' : ''
                 }`}>
-                  <Home className="h-8 w-8" />
+                  <Home size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Link to="/profile">
                 <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
                   location.pathname === '/profile' ? 'bg-white/20' : ''
                 }`}>
-                  <User className="h-8 w-8" />
+                  <User size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
             </div>
             
             <div className="md:hidden flex items-center gap-2">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Search className="h-8 w-8" />
+                <Search size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
-                <Menu className="h-8 w-8" />
+                <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </div>
           </div>
 
-          {/* Bottom section for mobile */}
           <div className="md:hidden h-14 flex items-center justify-between border-t border-white/20 px-4">
             <Link to="/dashboard">
               <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
                 location.pathname === '/dashboard' ? 'bg-white/20' : ''
               }`}>
-                <Home className="h-8 w-8" />
+                <Home size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </Link>
             <Link to="/messages">
               <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
                 location.pathname === '/messages' ? 'bg-white/20' : ''
               }`}>
-                <Mail className="h-8 w-8" />
+                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
+            </Link>
+            <Link to="/friends">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Users size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </Link>
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-              <Bell className="h-8 w-8" />
+              <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
             </Button>
             <Link to="/profile">
               <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
                 location.pathname === '/profile' ? 'bg-white/20' : ''
               }`}>
-                <User className="h-8 w-8" />
+                <User size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="mx-0 px-0 pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
-        {/* Contact List - Hide on mobile when a chat is selected */}
         <div className={`w-full md:w-80 px-0 ${selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full overflow-hidden rounded-none md:rounded-lg">
             <div className="p-4 border-b">
@@ -259,7 +268,6 @@ const MessagesPage: React.FC = () => {
           </Card>
         </div>
 
-        {/* Chat Area - Show on mobile only when a chat is selected */}
         <div className={`flex-1 px-0 ${!selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full flex flex-col overflow-hidden rounded-none md:rounded-lg">
             {!selectedContact && (
@@ -273,7 +281,6 @@ const MessagesPage: React.FC = () => {
             
             {selectedContact && (
               <>
-                {/* Chat Header */}
                 <div className="p-4 border-b flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Button 
@@ -296,7 +303,6 @@ const MessagesPage: React.FC = () => {
                   </div>
                 </div>
                 
-                {/* Messages */}
                 <ScrollArea className="flex-1 p-4">
                   <div className="space-y-4">
                     {messages.map((msg) => (
@@ -321,7 +327,6 @@ const MessagesPage: React.FC = () => {
                   </div>
                 </ScrollArea>
                 
-                {/* Input Area */}
                 <div className="p-4 border-t">
                   <div className="flex gap-2">
                     <Input 
@@ -346,7 +351,6 @@ const MessagesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer - update to make it smaller */}
       <ChatDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
     </div>
   );

@@ -10,8 +10,9 @@ import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
 
 const Dashboard: React.FC = () => {
-  const iconSize = 40;
-  const iconStrokeWidth = 3.8;
+  // Larger icon size with appropriate stroke width
+  const iconSize = 28;
+  const iconStrokeWidth = 2.5;
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">

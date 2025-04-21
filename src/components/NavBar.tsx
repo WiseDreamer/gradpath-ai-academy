@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ArrowLeft } from 'lucide-react';
+import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -21,17 +21,20 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
 
   const isActive = (path: string) => location.pathname === path || currentPage === path;
 
-  // Bolder and larger icon props
-  const iconProps = { size: 36, strokeWidth: 4 };
+  // Icon props with larger size but normal circle
+  const iconProps = { 
+    size: 28,  // Icon size
+    strokeWidth: 2.5  // Make lines bolder but not too thick
+  };
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="w-full px-4">
         <div className="flex items-center justify-between h-20">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             {showBack && (
-              <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-2 rounded-full hover:bg-white/20">
-                <ArrowLeft {...iconProps} />
+              <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-1 hover:bg-white/20">
+                <ChevronLeft {...iconProps} />
               </Button>
             )}
             <Logo clickable={false} />
@@ -56,7 +59,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
               </>
             ) : variant === 'ai-tutor' ? (
               <>
-                {/* Removed home and notifications icons */}
+                {/* No icons for AI tutor variant */}
               </>
             ) : (
               <>
