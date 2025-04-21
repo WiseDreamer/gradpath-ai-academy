@@ -14,11 +14,26 @@ import {
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 
+// Define proper post type to fix TypeScript errors
+type PostReaction = Record<string, number>;
+type Comment = {
+  author: string;
+  content: string;
+  timestamp: string;
+};
+type Post = {
+  author: string;
+  content: string;
+  timestamp: string;
+  reactions: PostReaction;
+  comments: Comment[];
+};
+
 const ChatFeed: React.FC = () => {
   const { toast } = useToast();
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const [postContent, setPostContent] = useState('');
-  const [posts, setPosts] = useState([
+  const [posts, setPosts] = useState<Post[]>([
     {
       author: "Alex Johnson",
       content: "Has anyone worked through the latest Calculus practice problems? I'm stuck on the third one related to implicit differentiation.",
@@ -73,7 +88,7 @@ const ChatFeed: React.FC = () => {
 
   const handleCreatePost = () => {
     if (postContent.trim()) {
-      const newPost = {
+      const newPost: Post = {
         author: "Alex Johnson",
         content: postContent,
         timestamp: "Just now",
@@ -125,7 +140,7 @@ const ChatFeed: React.FC = () => {
         </div>
       </div>
 
-      {/* Post Creation Dialog */}
+      {/* Post Creation Dialog - Fixed to ensure dialog components are properly nested */}
       <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
