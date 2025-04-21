@@ -10,7 +10,7 @@ import BackIcon from './BackIcon';
 interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
-  variant?: 'learning' | 'social';
+  variant?: 'learning' | 'social' | 'ai-tutor';
 }
 
 const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 'learning' }) => {
@@ -89,7 +89,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
         {/* Mobile nav */}
         <div className="md:hidden h-14 flex items-center justify-between border-t border-white/20">
           {/* Hide all icons in AI Tutor header */}
-          {(variant !== "ai-tutor") && (
+          {variant !== "ai-tutor" && (
             <>
               <Link to="/dashboard">
                 <Button variant="ghost" size="icon" className={cn(

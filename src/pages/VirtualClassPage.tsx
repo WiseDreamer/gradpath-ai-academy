@@ -10,6 +10,7 @@ import ChatMessage, { Message } from '@/components/ChatMessage';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from "react-router-dom";
+import WhiteboardArea from '@/components/WhiteboardArea';
 
 const VirtualClassPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('questions');
@@ -63,10 +64,8 @@ const VirtualClassPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
-      {/* Mobile fixed header with AppName, top-right icons, and bottom nav */}
       {isMobile ? (
         <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-          {/* Top section: back, logo, right-aligned search+menu */}
           <div className="flex items-center justify-between h-16 px-4">
             <div className="flex items-center gap-2">
               <BackIcon />
@@ -81,7 +80,6 @@ const VirtualClassPage: React.FC = () => {
               </Button>
             </div>
           </div>
-          {/* Bottom nav section: home, notifications, profile */}
           <div className="h-14 flex items-center justify-between border-t border-white/20 px-4">
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
               <Home {...iconProps} />

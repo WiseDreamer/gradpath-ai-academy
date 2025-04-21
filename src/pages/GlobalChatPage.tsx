@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Menu, Mail, Bell, HelpCircle, Home, User, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -58,7 +59,7 @@ const GlobalChatPage: React.FC = () => {
                   aria-label="Inbox"
                   onClick={toggleInbox}
                 >
-                  <Inbox {...iconProps} />
+                  <Mail {...iconProps} />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-14 w-14 rounded-full text-white hover:bg-white/20" aria-label="Notifications">
                   <Bell {...iconProps} />
@@ -130,7 +131,7 @@ const GlobalChatPage: React.FC = () => {
                 onClick={toggleInbox}
                 aria-label="Inbox"
               >
-                <Inbox {...iconProps} />
+                <Mail {...iconProps} />
               </Button>
               <Link to="/friends">
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" aria-label="Friends">
@@ -152,7 +153,7 @@ const GlobalChatPage: React.FC = () => {
       <div className="flex pt-0">
         <ChatSidebar />
         <div className="flex-1 px-0 md:px-6">
-          <ChatFeed showInbox={showInbox} />
+          <ChatFeed />
         </div>
         <OnlineSidebar />
       </div>
