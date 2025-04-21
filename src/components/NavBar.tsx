@@ -1,11 +1,10 @@
 
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Bell, User, Menu, Home, Mail, Search, HelpCircle } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
-import BackIcon from './BackIcon';
 
 interface NavBarProps {
   openMobileMenu?: () => void;
@@ -15,24 +14,28 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 'learning' }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Dashboards should NOT show back arrow
-  const showBack = !["/dashboard"].includes(location.pathname);
+  // Only show back if NOT on dashboard
+  const showBack = location.pathname !== "/dashboard";
 
   const isActive = (path: string) => location.pathname === path || currentPage === path;
 
-  // Icon props upgrade for ALL icons
-  const iconProps = { size: 32, strokeWidth: 3 };
+  // Bolder and larger icon props
+  const iconProps = { size: 40, strokeWidth: 3.2 };
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="w-full px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-2">
-            {showBack && <BackIcon />}
+            {showBack && (
+              <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-2 rounded-full hover:bg-white/20">
+                <ArrowLeft {...iconProps} />
+              </Button>
+            )}
             <Logo clickable={false} />
           </div>
-
           <div className="flex items-center gap-2">
             {variant === 'social' ? (
               <>
@@ -51,6 +54,8 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                   <HelpCircle {...iconProps} />
                 </Button>
               </>
+            ) : variant === 'ai-tutor' ? (
+              null
             ) : (
               <>
                 <Link to="/dashboard">
@@ -66,15 +71,20 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                 </Button>
               </>
             )}
+
+            {variant !== 'ai-tutor' && (
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 md:hidden">
+                <Search {...iconProps} />
+              </Button>
+            )}
             
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 md:hidden">
-              <Search {...iconProps} />
-            </Button>
-            
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
-              <Menu {...iconProps} />
-            </Button>
-            
+            {variant !== 'ai-tutor' && (
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+                <Menu {...iconProps} />
+              </Button>
+            )}
+
+            {/* Always show profile icon */}
             <Link to="/profile">
               <Button variant="ghost" size="icon" className={cn(
                 "rounded-full text-white hover:bg-white/20",
@@ -85,9 +95,8 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
             </Link>
           </div>
         </div>
-
         {/* Mobile nav */}
-        <div className="md:hidden h-14 flex items-center justify-between border-t border-white/20">
+        <div className="md:hidden h-16 flex items-center justify-between border-t border-white/20">
           {/* Hide all icons in AI Tutor header */}
           {variant !== "ai-tutor" && (
             <>

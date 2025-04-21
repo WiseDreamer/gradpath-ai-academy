@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, MessageCircle, BookOpen, Upload, Calendar, FileText, Book, MessageSquare } from 'lucide-react';
+import { Bell, User, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
@@ -12,23 +11,21 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full px-0 mx-0">
-          <div className="flex items-center justify-between h-16 px-4">
+          <div className="flex items-center justify-between h-20 px-4">
             <div className="flex items-center gap-2">
               <Logo clickable={false} />
             </div>
-
             <div className="flex items-center gap-2">
-              {/* Replace 'Global Chat' text with icon */}
               <Link to="/global-chat">
                 <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Global Chat">
-                  <MessageCircle className="h-8 w-8" />
+                  <MessageCircle className="h-12 w-12" strokeWidth={3.2} />
                 </Button>
               </Link>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Notifications">
-                <Bell className="h-8 w-8" />
+                <Bell className="h-12 w-12" strokeWidth={3.2} />
               </Button>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
-                <User className="h-8 w-8" />
+                <User className="h-12 w-12" strokeWidth={3.2} />
               </Button>
             </div>
           </div>
@@ -116,4 +113,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-
