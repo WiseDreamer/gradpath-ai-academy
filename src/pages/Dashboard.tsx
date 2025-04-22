@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -7,8 +8,12 @@ import {
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
+import { useAuth } from '@/components/AuthProvider';
+import UserProfile from '@/components/UserProfile';
+import PostsSection from '@/components/PostsSection';
 
 const Dashboard: React.FC = () => {
+  const { signOut } = useAuth();
   const iconSize = 28;
   const iconStrokeWidth = 2.5;
 
@@ -32,85 +37,81 @@ const Dashboard: React.FC = () => {
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
                 <User size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
+              <Button 
+                variant="outline" 
+                className="ml-2 text-white border-white hover:bg-white/20 hover:text-white"
+                onClick={signOut}
+              >
+                Sign Out
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="w-full px-4 mx-0">
-        <h2 className="text-xl font-semibold text-gray-800 text-center mt-4 mb-4">Learning Resources</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          <DashboardCard
-            title="Join Virtual Class"
-            description="Jump into an interactive AI-powered virtual classroom"
-            icon={BookOpen}
-            to="/virtual-class"
-            color="bg-gradpath-purple"
-          />
+      <div className="w-full px-4 mx-0 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Learning Resources</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <DashboardCard
+                title="Join Virtual Class"
+                description="Jump into an interactive AI-powered virtual classroom"
+                icon={BookOpen}
+                to="/virtual-class"
+                color="bg-gradpath-purple"
+              />
+              
+              <DashboardCard
+                title="Upload Module Resources"
+                description="Upload lecture slides, notes, and study material"
+                icon={Upload}
+                to="/upload"
+                color="bg-gradpath-bright-blue"
+              />
+              
+              <DashboardCard
+                title="Study Plan"
+                description="View and manage your personalized study schedule"
+                icon={Calendar}
+                to="/study-plan"
+                color="bg-green-500"
+              />
+              
+              <DashboardCard
+                title="Practice Questions"
+                description="Test your knowledge with AI-generated practice questions"
+                icon={FileText}
+                to="/practice"
+                color="bg-amber-500"
+              />
+            </div>
+            
+            <div className="mt-8">
+              <PostsSection />
+            </div>
+          </div>
           
-          <DashboardCard
-            title="Upload Module Resources"
-            description="Upload lecture slides, notes, and study material"
-            icon={Upload}
-            to="/upload"
-            color="bg-gradpath-bright-blue"
-          />
-          
-          <DashboardCard
-            title="Study Plan"
-            description="View and manage your personalized study schedule"
-            icon={Calendar}
-            to="/study-plan"
-            color="bg-green-500"
-          />
-          
-          <DashboardCard
-            title="Practice Questions"
-            description="Test your knowledge with AI-generated practice questions"
-            icon={FileText}
-            to="/practice"
-            color="bg-amber-500"
-          />
-          
-          <DashboardCard
-            title="Past Papers"
-            description="Access and review previous examination papers"
-            icon={Book}
-            to="/past-papers"
-            color="bg-red-500"
-          />
-          
-          <DashboardCard
-            title="Ask AI Tutor"
-            description="Get instant answers to your academic questions"
-            icon={MessageSquare}
-            to="/chat"
-            color="bg-indigo-600"
-          />
-        </div>
-
-        <h3 className="font-semibold mb-4 text-center">Recent Modules</h3>
-        <div className="grid grid-cols-1 gap-3 mb-4">
-          {['Calculus I', 'Linear Algebra', 'Quantum Mechanics'].map((module) => (
-            <div key={module} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
-              <p className="text-sm font-medium">{module}</p>
-              <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
-                <div
-                  className="bg-gradpath-purple h-1.5 rounded-full"
-                  style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-                />
+          <div className="space-y-6">
+            <UserProfile />
+            
+            <div>
+              <h3 className="font-semibold mb-4">Recent Modules</h3>
+              <div className="grid grid-cols-1 gap-3 mb-4">
+                {['Calculus I', 'Linear Algebra', 'Quantum Mechanics'].map((module) => (
+                  <div key={module} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+                    <p className="text-sm font-medium">{module}</p>
+                    <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
+                      <div
+                        className="bg-gradpath-purple h-1.5 rounded-full"
+                        style={{ width: `${Math.floor(Math.random() * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-        
-        <div className="flex justify-center mb-8">
-          <Button 
-            variant="ghost" 
-            className="w-full max-w-md bg-gradpath-purple text-white hover:bg-gradpath-purple/90"
-          >
-            View All Modules
-          </Button>
+          </div>
         </div>
       </div>
     </div>
