@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
@@ -15,17 +14,62 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 'learning' }) => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Only show back if NOT on dashboard
   const showBack = location.pathname !== "/dashboard";
 
   const isActive = (path: string) => location.pathname === path || currentPage === path;
 
-  // Increased icon sizes
   const iconProps = { 
-    size: 32,  // Increased from 28
+    size: 36,  // Increased icon size
     strokeWidth: 2.5
   };
+
+  if (variant === 'ai-tutor') {
+    return (
+      <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+        <div className="w-full">
+          {/* Top Section */}
+          <div className="flex items-center justify-between h-20 px-0">
+            <div className="flex items-center gap-1">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => navigate(-1)} 
+                className="hover:bg-white/20 ml-0 px-2"
+              >
+                <ChevronLeft {...iconProps} />
+              </Button>
+              <Logo clickable={false} />
+              <span className="text-lg font-medium ml-2">AI Tutor</span>
+            </div>
+            <div className="flex items-center gap-2 mr-2">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Search {...iconProps} />
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+                <Menu {...iconProps} />
+              </Button>
+            </div>
+          </div>
+          {/* Bottom Section */}
+          <div className="h-16 flex items-center justify-between border-t border-white/20 px-4">
+            <Link to="/dashboard">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Home {...iconProps} />
+              </Button>
+            </Link>
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Bell {...iconProps} />
+            </Button>
+            <Link to="/profile">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <User {...iconProps} />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
