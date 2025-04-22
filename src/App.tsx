@@ -1,5 +1,23 @@
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { AuthProvider } from "./components/AuthProvider";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import Dashboard from "./pages/Dashboard";
+import VirtualClassPage from "./pages/VirtualClassPage";
+import ModuleViewPage from "./pages/ModuleViewPage";
+import ChatPage from "./pages/ChatPage";
+import GlobalChatPage from "./pages/GlobalChatPage";
+import MessagesPage from "./pages/MessagesPage";
+import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Create a client
+const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
