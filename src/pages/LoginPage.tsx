@@ -7,34 +7,49 @@ import { Chrome, Mail } from 'lucide-react';
 import FormInput from '@/components/FormInput';
 import SocialButton from '@/components/SocialButton';
 import Logo from '@/components/Logo';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{email?: string; password?: string}>({});
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simple validation
+    setIsLoading(true);
     const newErrors: {email?: string; password?: string} = {};
     
-    if (!email) {
-      newErrors.email = 'Email is required';
-    }
-    
-    if (!password) {
-      newErrors.password = 'Password is required';
-    }
+    if (!email) newErrors.email = 'Email is required';
+    if (!password) newErrors.password = 'Password is required';
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setIsLoading(false);
       return;
     }
-    
-    // Navigate to dashboard (would normally authenticate first)
-    navigate('/dashboard');
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      navigate('/dashboard');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -56,6 +71,7 @@ const LoginPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               error={errors.email}
+              disabled={isLoading}
             />
             
             <FormInput
@@ -66,6 +82,7 @@ const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               error={errors.password}
+              disabled={isLoading}
             />
             
             <div className="flex justify-between items-center text-sm">
@@ -74,8 +91,8 @@ const LoginPage: React.FC = () => {
               </Link>
             </div>
             
-            <Button type="submit" className="w-full">
-              Login
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
           

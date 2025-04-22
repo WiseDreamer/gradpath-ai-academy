@@ -1,16 +1,11 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import FormInput from '@/components/FormInput';
 import Logo from '@/components/Logo';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const universities = [
   "University of Oxford",
@@ -27,6 +22,8 @@ const studyYears = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year", 
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -47,47 +44,57 @@ const RegisterPage: React.FC = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     // Validation
     const newErrors: Record<string, string> = {};
     
-    if (!formData.fullName) {
-      newErrors.fullName = 'Full name is required';
-    }
-    
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
-    
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-    
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-    
-    if (!formData.university) {
-      newErrors.university = 'Please select your university';
-    }
-    
-    if (!formData.yearOfStudy) {
-      newErrors.yearOfStudy = 'Please select your year of study';
-    }
+    if (!formData.fullName) newErrors.fullName = 'Full name is required';
+    if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.password) newErrors.password = 'Password is required';
+    if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    if (!formData.university) newErrors.university = 'Please select your university';
+    if (!formData.yearOfStudy) newErrors.yearOfStudy = 'Please select your year of study';
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setIsLoading(false);
       return;
     }
-    
-    // Navigate to dashboard (would normally create account first)
-    navigate('/dashboard');
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.fullName,
+            university: formData.university,
+            year_of_study: formData.yearOfStudy
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Registration successful",
+        description: "Welcome to GradPath! Please check your email to verify your account.",
+      });
+      
+      navigate('/dashboard');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
