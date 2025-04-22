@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
@@ -98,7 +99,49 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
               </Button>
             )}
 
-            {/* Always show profile icon */}
+            {/* Always show profile icon for learning and social variants */}
+            {variant !== 'ai-tutor' && (
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className={cn(
+                  "rounded-full text-white hover:bg-white/20",
+                  isActive('/profile') && "bg-white/20"
+                )}>
+                  <User {...iconProps} />
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+        {/* Mobile nav */}
+        {variant !== 'ai-tutor' && (
+          <div className="md:hidden h-16 flex items-center justify-between border-t border-white/20">
+            {/* Only render mobile navigation for non-ai-tutor variants */}
+            <Link to="/dashboard">
+              <Button variant="ghost" size="icon" className={cn(
+                "rounded-full text-white hover:bg-white/20",
+                isActive('/dashboard') && "bg-white/20"
+              )}>
+                <Home {...iconProps} />
+              </Button>
+            </Link>
+            {variant === 'social' ? (
+              <>
+                <Link to="/messages">
+                  <Button variant="ghost" size="icon" className={cn(
+                    "rounded-full text-white hover:bg-white/20",
+                    isActive('/messages') && "bg-white/20"
+                  )}>
+                    <Mail {...iconProps} />
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                  <HelpCircle {...iconProps} />
+                </Button>
+              </>
+            ) : null}
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Bell {...iconProps} />
+            </Button>
             <Link to="/profile">
               <Button variant="ghost" size="icon" className={cn(
                 "rounded-full text-white hover:bg-white/20",
@@ -107,50 +150,6 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                 <User {...iconProps} />
               </Button>
             </Link>
-          </div>
-        </div>
-        {/* Mobile nav */}
-        {variant !== 'ai-tutor' && (
-          <div className="md:hidden h-16 flex items-center justify-between border-t border-white/20">
-            {/* Hide all icons in AI Tutor header */}
-            {variant !== "ai-tutor" && (
-              <>
-                <Link to="/dashboard">
-                  <Button variant="ghost" size="icon" className={cn(
-                    "rounded-full text-white hover:bg-white/20",
-                    isActive('/dashboard') && "bg-white/20"
-                  )}>
-                    <Home {...iconProps} />
-                  </Button>
-                </Link>
-                {variant === 'social' ? (
-                  <>
-                    <Link to="/messages">
-                      <Button variant="ghost" size="icon" className={cn(
-                        "rounded-full text-white hover:bg-white/20",
-                        isActive('/messages') && "bg-white/20"
-                      )}>
-                        <Mail {...iconProps} />
-                      </Button>
-                    </Link>
-                    <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                      <HelpCircle {...iconProps} />
-                    </Button>
-                  </>
-                ) : null}
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <Bell {...iconProps} />
-                </Button>
-                <Link to="/profile">
-                  <Button variant="ghost" size="icon" className={cn(
-                    "rounded-full text-white hover:bg-white/20",
-                    isActive('/profile') && "bg-white/20"
-                  )}>
-                    <User {...iconProps} />
-                  </Button>
-                </Link>
-              </>
-            )}
           </div>
         )}
       </div>

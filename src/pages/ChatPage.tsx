@@ -65,7 +65,6 @@ const ChatPage: React.FC = () => {
     }
   };
   
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
