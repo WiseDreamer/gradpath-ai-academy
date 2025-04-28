@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { 
   Bell, User, MessageCircle, 
   ChevronLeft, Menu, Calendar, 
@@ -48,14 +47,6 @@ const Dashboard: React.FC = () => {
                   <User size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="text-white hover:bg-white/20"
-                aria-label="Sign Out"
-              >
-                <LogOut size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
