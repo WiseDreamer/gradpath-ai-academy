@@ -22,23 +22,40 @@ const WhiteboardArea: React.FC = () => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const isDrawing = useRef(false);
 
+  // Initialize the canvas immediately when the component mounts
   useEffect(() => {
     if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    canvas.width = canvas.offsetWidth * 2;
-    canvas.height = canvas.offsetHeight * 2;
-    canvas.style.width = `${canvas.offsetWidth}px`;
-    canvas.style.height = `${canvas.offsetHeight}px`;
     
+    const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
+    
     if (!context) return;
     
-    context.scale(2, 2);
+    // Set initial context properties
     context.lineCap = 'round';
     context.strokeStyle = penColor;
     context.lineWidth = penSize;
     contextRef.current = context;
   }, []);
+  
+  // Update context when tool settings change
+  useEffect(() => {
+    if (!contextRef.current) return;
+    
+    if (activeTool === 'pen') {
+      contextRef.current.strokeStyle = penColor;
+      contextRef.current.lineWidth = penSize;
+      contextRef.current.globalAlpha = 1;
+    } else if (activeTool === 'highlighter') {
+      contextRef.current.strokeStyle = highlighterColor;
+      contextRef.current.lineWidth = penSize * 3;
+      contextRef.current.globalAlpha = 0.5;
+    } else if (activeTool === 'eraser') {
+      contextRef.current.strokeStyle = themeMode === 'light' ? '#FFFFFF' : '#2d2d2d';
+      contextRef.current.lineWidth = penSize * 2;
+      contextRef.current.globalAlpha = 1;
+    }
+  }, [activeTool, penColor, highlighterColor, penSize, themeMode]);
   
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -54,11 +71,9 @@ const WhiteboardArea: React.FC = () => {
   };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (activeTool === 'none') return;
+    if (activeTool === 'none' || !contextRef.current || !canvasRef.current) return;
     
     const canvas = canvasRef.current;
-    if (!canvas || !contextRef.current) return;
-    
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -66,30 +81,12 @@ const WhiteboardArea: React.FC = () => {
     contextRef.current.beginPath();
     contextRef.current.moveTo(x, y);
     isDrawing.current = true;
-    
-    if (contextRef.current) {
-      if (activeTool === 'pen') {
-        contextRef.current.strokeStyle = penColor;
-        contextRef.current.lineWidth = penSize;
-        contextRef.current.globalAlpha = 1;
-      } else if (activeTool === 'highlighter') {
-        contextRef.current.strokeStyle = highlighterColor;
-        contextRef.current.lineWidth = penSize * 3;
-        contextRef.current.globalAlpha = 0.5;
-      } else if (activeTool === 'eraser') {
-        contextRef.current.strokeStyle = themeMode === 'light' ? '#FFFFFF' : '#000000';
-        contextRef.current.lineWidth = penSize * 2;
-        contextRef.current.globalAlpha = 1;
-      }
-    }
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing.current || activeTool === 'none') return;
+    if (!isDrawing.current || activeTool === 'none' || !contextRef.current || !canvasRef.current) return;
     
     const canvas = canvasRef.current;
-    if (!canvas || !contextRef.current) return;
-    
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -107,6 +104,7 @@ const WhiteboardArea: React.FC = () => {
 
   const clearCanvas = () => {
     if (!canvasRef.current || !contextRef.current) return;
+    
     const canvas = canvasRef.current;
     contextRef.current.clearRect(0, 0, canvas.width, canvas.height);
   };
@@ -117,22 +115,15 @@ const WhiteboardArea: React.FC = () => {
   
   const handleThemeChange = (theme: ThemeMode) => {
     setThemeMode(theme);
+    
+    // Update canvas background and pen colors for the new theme
     if (!canvasRef.current || !contextRef.current) return;
     
-    const canvas = canvasRef.current;
-    const context = contextRef.current;
-    
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    
     if (theme === 'dark') {
-      canvas.style.backgroundColor = '#2d2d2d';
       setPenColor('#ffffff');
     } else {
-      canvas.style.backgroundColor = '#ffffff';
       setPenColor('#000000');
     }
-    
-    context.putImageData(imageData, 0, 0);
   };
 
   const toggleFullscreen = () => {
