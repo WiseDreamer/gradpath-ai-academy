@@ -3,14 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Bell, User, MessageCircle, 
-  BookOpen, Upload, Calendar, FileText, Book, MessageSquare 
+  BookOpen, Upload, Calendar, FileText, LogOut 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
 import { useAuth } from '@/components/AuthProvider';
-import UserProfile from '@/components/UserProfile';
-import PostsSection from '@/components/PostsSection';
+import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 
 const Dashboard: React.FC = () => {
   const { signOut } = useAuth();
@@ -34,15 +33,19 @@ const Dashboard: React.FC = () => {
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Notifications">
                 <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
-                <User size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
+                  <User size={iconSize} strokeWidth={iconStrokeWidth} />
+                </Button>
+              </Link>
               <Button 
-                variant="outline" 
-                className="ml-2 text-white border-white hover:bg-white/20 hover:text-white"
+                variant="ghost" 
+                size="icon"
+                className="text-white hover:bg-white/20"
                 onClick={signOut}
+                aria-label="Sign Out"
               >
-                Sign Out
+                <LogOut size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </div>
           </div>
@@ -88,28 +91,7 @@ const Dashboard: React.FC = () => {
             </div>
             
             <div className="mt-8">
-              <PostsSection />
-            </div>
-          </div>
-          
-          <div className="space-y-6">
-            <UserProfile />
-            
-            <div>
-              <h3 className="font-semibold mb-4">Recent Modules</h3>
-              <div className="grid grid-cols-1 gap-3 mb-4">
-                {['Calculus I', 'Linear Algebra', 'Quantum Mechanics'].map((module) => (
-                  <div key={module} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
-                    <p className="text-sm font-medium">{module}</p>
-                    <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
-                      <div
-                        className="bg-gradpath-purple h-1.5 rounded-full"
-                        style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <AiTutorTab />
             </div>
           </div>
         </div>
