@@ -126,7 +126,7 @@ const WhiteboardArea: React.FC = () => {
   };
 
   return (
-    <div className={`flex flex-col h-full ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''}`}>
+    <div className={`flex flex-col h-full ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''} relative`}>
       <WhiteboardToolbar
         activeTool={activeTool}
         handleToolChange={handleToolChange}
@@ -159,8 +159,10 @@ const WhiteboardArea: React.FC = () => {
       <WhiteboardControlBar
         isPlaying={isPlaying}
         isHandRaised={isHandRaised}
+        isMicOn={isMicOn}
         togglePlay={togglePlay}
         raiseHand={raiseHand}
+        toggleMic={toggleMic}
       />
     </div>
   );

@@ -43,7 +43,7 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   });
 
   return (
-    <div className="whiteboard flex-1 relative overflow-hidden h-full">
+    <div className="whiteboard flex-1 relative overflow-hidden h-full pb-16">
       <TeachingDisplay 
         isPlaying={isPlaying}
         isHandRaised={isHandRaised}
