@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -27,17 +26,13 @@ const AiTutorTab = () => {
     <div className="space-y-8">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow duration-200">
-            <CardContent className="p-6 flex items-center gap-4">
-              <div className="bg-gradpath-purple p-3 rounded-full">
-                <MessageSquare className="h-6 w-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">Ask AI Tutor</h3>
-                <p className="text-sm text-gray-500">Get instant help with your questions</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col items-center border border-gray-100 dark:border-gray-700 hover:scale-[1.02] cursor-pointer">
+            <div className="p-3 rounded-full bg-gradpath-purple transition-transform group-hover:scale-110">
+              <MessageSquare className="h-10 w-10 text-white" strokeWidth={2.5} />
+            </div>
+            <h3 className="font-semibold text-lg mt-4 text-gray-800 dark:text-gray-200">Ask AI Tutor</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">Get instant help with your questions</p>
+          </div>
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[500px] h-[600px] flex flex-col">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -17,7 +16,7 @@ const Dashboard: React.FC = () => {
   const iconStrokeWidth = 2.5;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
+    <div className="min-h-screen bg-[#F5F5F7]">
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full px-0 mx-0">
           <div className="flex items-center justify-between h-20 px-4">
@@ -52,47 +51,45 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full px-4 mx-0 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Learning Resources</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <DashboardCard
-                title="Join Virtual Class"
-                description="Jump into an interactive AI-powered virtual classroom"
-                icon={BookOpen}
-                to="/virtual-class"
-                color="bg-gradpath-purple"
-              />
-              
-              <DashboardCard
-                title="Upload Module Resources"
-                description="Upload lecture slides, notes, and study material"
-                icon={Upload}
-                to="/upload"
-                color="bg-gradpath-bright-blue"
-              />
-              
-              <DashboardCard
-                title="Study Plan"
-                description="View and manage your personalized study schedule"
-                icon={Calendar}
-                to="/study-plan"
-                color="bg-green-500"
-              />
-              
-              <DashboardCard
-                title="Practice Questions"
-                description="Test your knowledge with AI-generated practice questions"
-                icon={FileText}
-                to="/practice"
-                color="bg-amber-500"
-              />
-            </div>
+      <div className="container mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Learning Resources</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <DashboardCard
+              title="Join Virtual Class"
+              description="Jump into an interactive AI-powered virtual classroom"
+              icon={BookOpen}
+              to="/virtual-class"
+              color="bg-gradpath-purple"
+            />
             
-            <div className="mt-8">
-              <AiTutorTab />
-            </div>
+            <DashboardCard
+              title="Upload Module Resources"
+              description="Upload lecture slides, notes, and study material"
+              icon={Upload}
+              to="/upload"
+              color="bg-gradpath-bright-blue"
+            />
+            
+            <DashboardCard
+              title="Study Plan"
+              description="View and manage your personalized study schedule"
+              icon={Calendar}
+              to="/study-plan"
+              color="bg-green-500"
+            />
+            
+            <DashboardCard
+              title="Practice Questions"
+              description="Test your knowledge with AI-generated practice questions"
+              icon={FileText}
+              to="/practice"
+              color="bg-amber-500"
+            />
+          </div>
+          
+          <div className="mt-8">
+            <AiTutorTab />
           </div>
         </div>
       </div>
