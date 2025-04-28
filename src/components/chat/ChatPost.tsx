@@ -70,8 +70,21 @@ const ChatPost: React.FC<ChatPostProps> = ({
           .order('created_at', { ascending: true });
 
         if (commentsError) throw commentsError;
-        setComments(commentsData || []);
-        setCommentCount(commentsData?.length || 0);
+        
+        // Handle the comments - ensure they match our interface
+        const processedComments: Comment[] = commentsData?.map((comment: any) => ({
+          id: comment.id,
+          post_id: comment.post_id,
+          content: comment.content,
+          created_at: comment.created_at,
+          profiles: comment.profiles || { 
+            username: 'Anonymous', 
+            avatar_url: null 
+          }
+        })) || [];
+        
+        setComments(processedComments);
+        setCommentCount(processedComments.length);
 
         // Fetch reactions
         const { data: reactionsData, error: reactionsError } = await supabase
@@ -89,7 +102,9 @@ const ChatPost: React.FC<ChatPostProps> = ({
         const userReacts: string[] = [];
         
         reactionsData?.forEach((reaction) => {
-          reactionCounts[reaction.type as keyof typeof reactionCounts]++;
+          if (reaction.type in reactionCounts) {
+            reactionCounts[reaction.type as keyof typeof reactionCounts]++;
+          }
           if (reaction.user_id === user?.id) {
             userReacts.push(reaction.type);
           }

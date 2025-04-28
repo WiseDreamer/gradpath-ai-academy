@@ -41,7 +41,20 @@ export default function PostsSection() {
           .order('created_at', { ascending: false });
         
         if (error) throw error;
-        setPosts(data || []);
+        
+        // Process the data to ensure it matches our interface
+        const processedPosts: Post[] = data?.map((post: any) => ({
+          id: post.id,
+          content: post.content,
+          created_at: post.created_at,
+          user_id: post.user_id,
+          profiles: post.profiles || {
+            username: 'Anonymous',
+            avatar_url: null
+          }
+        })) || [];
+        
+        setPosts(processedPosts);
       } catch (error: any) {
         console.error('Error fetching posts:', error);
         toast({
