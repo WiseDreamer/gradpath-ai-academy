@@ -23,8 +23,14 @@ const Dashboard: React.FC = () => {
         <div className="w-full px-0 mx-0">
           <div className="flex items-center justify-between h-20 px-4">
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-2">
-                <ChevronLeft size={iconSize} strokeWidth={iconStrokeWidth} />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={signOut}
+                className="text-white hover:bg-white/20"
+                aria-label="Sign Out"
+              >
+                <LogOut size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Logo clickable={false} />
             </div>
@@ -46,7 +52,6 @@ const Dashboard: React.FC = () => {
                 variant="ghost" 
                 size="icon"
                 className="text-white hover:bg-white/20"
-                onClick={signOut}
                 aria-label="Sign Out"
               >
                 <LogOut size={iconSize} strokeWidth={iconStrokeWidth} />
