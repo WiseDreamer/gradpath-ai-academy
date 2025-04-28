@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { WhiteboardToolbar, WhiteboardCanvas, WhiteboardControlBar } from '@/components/whiteboard';
 
@@ -136,34 +137,36 @@ const WhiteboardArea: React.FC = () => {
         toggleFullscreen={toggleFullscreen}
       />
       
-      <WhiteboardCanvas
-        activeTool={activeTool}
-        penColor={penColor}
-        highlighterColor={highlighterColor}
-        penSize={penSize}
-        themeMode={themeMode}
-        canvasRef={canvasRef}
-        contextRef={contextRef}
-        isDrawing={isDrawing}
-        startDrawing={startDrawing}
-        draw={draw}
-        finishDrawing={finishDrawing}
-        isPlaying={isPlaying}
-        isHandRaised={isHandRaised}
-        toggleMic={toggleMic}
-        isMicOn={isMicOn}
-        setIsHandRaised={setIsHandRaised}
-        setIsPlaying={setIsPlaying}
-      />
-      
-      <WhiteboardControlBar
-        isPlaying={isPlaying}
-        isHandRaised={isHandRaised}
-        isMicOn={isMicOn}
-        togglePlay={togglePlay}
-        raiseHand={raiseHand}
-        toggleMic={toggleMic}
-      />
+      <div className="flex-1 relative overflow-hidden">
+        <WhiteboardCanvas
+          activeTool={activeTool}
+          penColor={penColor}
+          highlighterColor={highlighterColor}
+          penSize={penSize}
+          themeMode={themeMode}
+          canvasRef={canvasRef}
+          contextRef={contextRef}
+          isDrawing={isDrawing}
+          startDrawing={startDrawing}
+          draw={draw}
+          finishDrawing={finishDrawing}
+          isPlaying={isPlaying}
+          isHandRaised={isHandRaised}
+          toggleMic={toggleMic}
+          isMicOn={isMicOn}
+          setIsHandRaised={setIsHandRaised}
+          setIsPlaying={setIsPlaying}
+        />
+        
+        <WhiteboardControlBar
+          isPlaying={isPlaying}
+          isHandRaised={isHandRaised}
+          isMicOn={isMicOn}
+          togglePlay={togglePlay}
+          raiseHand={raiseHand}
+          toggleMic={toggleMic}
+        />
+      </div>
     </div>
   );
 };

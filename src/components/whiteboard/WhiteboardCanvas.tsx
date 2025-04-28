@@ -43,17 +43,7 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   });
 
   return (
-    <div className="whiteboard flex-1 relative overflow-hidden h-full pb-16">
-      <TeachingDisplay 
-        isPlaying={isPlaying}
-        isHandRaised={isHandRaised}
-        toggleMic={toggleMic}
-        isMicOn={isMicOn}
-        setIsHandRaised={setIsHandRaised}
-        setIsPlaying={setIsPlaying}
-        themeMode={themeMode}
-      />
-      
+    <div className="whiteboard flex-1 relative overflow-hidden h-full">
       <CanvasElement
         canvasRef={canvasRef}
         themeMode={themeMode}
@@ -63,6 +53,16 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
         handleTouchStart={handleTouchStart}
         handleTouchMove={handleTouchMove}
         handleTouchEnd={handleTouchEnd}
+      />
+      
+      <TeachingDisplay 
+        isPlaying={isPlaying}
+        isHandRaised={isHandRaised}
+        toggleMic={toggleMic}
+        isMicOn={isMicOn}
+        setIsHandRaised={setIsHandRaised}
+        setIsPlaying={setIsPlaying}
+        themeMode={themeMode}
       />
     </div>
   );

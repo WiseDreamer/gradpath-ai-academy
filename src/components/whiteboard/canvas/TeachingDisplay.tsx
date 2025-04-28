@@ -1,6 +1,7 @@
-
 import React from 'react';
 import { TeachingStatusProps } from '../types';
+import { Button } from '@/components/ui/button';
+import { Mic, MicOff } from 'lucide-react';
 
 export const TeachingDisplay: React.FC<TeachingStatusProps> = ({
   isPlaying,
@@ -8,12 +9,13 @@ export const TeachingDisplay: React.FC<TeachingStatusProps> = ({
   toggleMic,
   isMicOn,
   setIsHandRaised,
-  setIsPlaying
+  setIsPlaying,
+  themeMode
 }) => {
   if (isPlaying) {
     return (
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <div className="animate-fade-in mb-8 text-center pt-10">
+      <div className="absolute inset-0 z-10 pointer-events-none flex justify-center">
+        <div className="animate-fade-in mt-10 text-center">
           <h2 className="text-xl font-semibold mb-3">Today's Topic: Linear Algebra Fundamentals</h2>
           <p className="text-gray-600">The AI tutor is currently explaining vector spaces and linear transformations</p>
         </div>
@@ -79,6 +81,3 @@ const PausedView: React.FC<{
     </div>
   );
 };
-
-import { Button } from '@/components/ui/button';
-import { Mic, MicOff } from 'lucide-react';
