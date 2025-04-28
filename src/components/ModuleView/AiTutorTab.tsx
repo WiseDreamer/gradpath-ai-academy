@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, MessageSquare, BarChart2 } from 'lucide-react';
+import { Send, MessageSquare, BarChart2, BookOpen } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import DashboardCard from '@/components/DashboardCard';
 import {
