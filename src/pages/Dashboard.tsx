@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Bell, User, MessageCircle, 
-  BookOpen, Upload, Calendar, FileText, LogOut 
+  ChevronLeft, Menu, Calendar, 
+  FileText, LogOut 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
@@ -21,6 +23,9 @@ const Dashboard: React.FC = () => {
         <div className="w-full px-0 mx-0">
           <div className="flex items-center justify-between h-20 px-4">
             <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-2">
+                <ChevronLeft size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
               <Logo clickable={false} />
             </div>
             <div className="flex items-center gap-2">
@@ -45,6 +50,14 @@ const Dashboard: React.FC = () => {
                 aria-label="Sign Out"
               >
                 <LogOut size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-white hover:bg-white/20"
+                aria-label="Menu"
+              >
+                <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </div>
           </div>
