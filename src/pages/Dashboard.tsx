@@ -30,7 +30,7 @@ const Dashboard: React.FC = () => {
                 className="text-white hover:bg-white/20"
                 aria-label="Sign Out"
               >
-                <LogOut size={iconSize} strokeWidth={iconStrokeWidth} />
+                <LogOut size={iconSize} strokeWidth={iconStrokeWidth} className="transform scale-x-[-1]" />
               </Button>
               <Logo clickable={false} />
             </div>
