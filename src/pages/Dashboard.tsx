@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Bell, User, MessageCircle, 
   ChevronLeft, Menu, Calendar, 
-  FileText, LogOut 
+  FileText, LogOut, BookOpen,
+  Upload 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
