@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { WhiteboardToolbar, WhiteboardCanvas, WhiteboardControlBar } from '@/components/whiteboard';
 
@@ -22,7 +21,6 @@ const WhiteboardArea: React.FC = () => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const isDrawing = useRef(false);
 
-  // Initialize the canvas immediately when the component mounts
   useEffect(() => {
     if (!canvasRef.current) return;
     
@@ -31,14 +29,12 @@ const WhiteboardArea: React.FC = () => {
     
     if (!context) return;
     
-    // Set initial context properties
     context.lineCap = 'round';
     context.strokeStyle = penColor;
     context.lineWidth = penSize;
     contextRef.current = context;
   }, []);
   
-  // Update context when tool settings change
   useEffect(() => {
     if (!contextRef.current) return;
     
@@ -116,7 +112,6 @@ const WhiteboardArea: React.FC = () => {
   const handleThemeChange = (theme: ThemeMode) => {
     setThemeMode(theme);
     
-    // Update canvas background and pen colors for the new theme
     if (!canvasRef.current || !contextRef.current) return;
     
     if (theme === 'dark') {

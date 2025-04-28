@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff } from 'lucide-react';
@@ -27,6 +26,9 @@ interface WhiteboardCanvasProps {
 
 const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   activeTool,
+  penColor,
+  highlighterColor,
+  penSize,
   themeMode,
   canvasRef,
   contextRef,
@@ -41,7 +43,6 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   setIsHandRaised,
   setIsPlaying
 }) => {
-  // Ensure canvas is accessible and properly initialized
   useEffect(() => {
     if (!canvasRef.current) return;
     
@@ -51,11 +52,9 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
     if (!context) return;
     
     const resizeCanvas = () => {
-      // Store current drawing
       const tempCanvas = document.createElement('canvas');
       const tempContext = tempCanvas.getContext('2d');
       
-      // Only copy the existing canvas if it has valid dimensions
       if (canvas.width > 0 && canvas.height > 0) {
         tempCanvas.width = canvas.width;
         tempCanvas.height = canvas.height;
@@ -64,51 +63,41 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
         }
       }
       
-      // Set canvas display size
       canvas.style.width = '100%';
       canvas.style.height = '100%';
       
-      // Set actual size in memory (scaled for higher resolution)
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * 2;
       canvas.height = rect.height * 2;
       
-      // Normalize coordinate system
       context.scale(2, 2);
       context.lineCap = 'round';
       context.lineJoin = 'round';
       
-      // Update the contextRef for drawing operations
       contextRef.current = context;
       
-      // Restore drawing but only if the temp canvas had valid dimensions
       if (tempCanvas.width > 0 && tempCanvas.height > 0 && tempContext) {
         context.drawImage(tempCanvas, 0, 0);
       }
     };
 
-    // Initial resize
     resizeCanvas();
     
-    // Add event listener
     window.addEventListener('resize', resizeCanvas);
     
-    // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
   }, [canvasRef, contextRef]);
 
-  // Add touch support for mobile
   const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !contextRef.current || activeTool === 'none') return;
     
-    e.preventDefault(); // Prevent scrolling while drawing
+    e.preventDefault();
     const touch = e.touches[0];
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
     
-    // Convert touch position to canvas coordinates
     const x = touch.clientX - rect.left;
     const y = touch.clientY - rect.top;
     
@@ -116,7 +105,6 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
     contextRef.current.moveTo(x, y);
     isDrawing.current = true;
     
-    // Set drawing properties based on the active tool
     if (contextRef.current) {
       if (activeTool === 'pen') {
         contextRef.current.strokeStyle = penColor;
