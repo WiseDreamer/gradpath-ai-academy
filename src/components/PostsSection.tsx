@@ -8,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import ChatPost from './chat/ChatPost';
 
-// Update the Post interface to match the actual query result
 interface Post {
   id: string;
   content: string;
@@ -33,25 +32,16 @@ export default function PostsSection() {
       try {
         setIsLoading(true);
         
-        // Updated query to handle potential null profiles
         const { data, error } = await supabase
           .from('posts')
           .select(`
             *,
             profiles (username, avatar_url)
           `)
-          .order('created_at', { ascending: false })
-          .limit(10);
+          .order('created_at', { ascending: false });
         
         if (error) throw error;
-
-        // Safely type the data
-        const typedPosts = (data as Post[]).map(post => ({
-          ...post,
-          profiles: post.profiles ?? null
-        }));
-
-        setPosts(typedPosts);
+        setPosts(data || []);
       } catch (error: any) {
         console.error('Error fetching posts:', error);
         toast({
@@ -66,7 +56,6 @@ export default function PostsSection() {
 
     fetchPosts();
 
-    // Set up real-time subscription
     const channel = supabase
       .channel('public:posts')
       .on('postgres_changes', 
@@ -150,14 +139,13 @@ export default function PostsSection() {
         {isLoading ? (
           <div className="text-center py-8">Loading posts...</div>
         ) : posts.length > 0 ? (
-          posts.map(post => (
+          posts.map((post) => (
             <ChatPost
               key={post.id}
+              id={post.id}
               author={post.profiles?.username ?? 'Anonymous'}
               content={post.content}
               timestamp={new Date(post.created_at).toLocaleString()}
-              reactions={{ '👍': 0, '❤️': 0 }}
-              comments={[]}
             />
           ))
         ) : (

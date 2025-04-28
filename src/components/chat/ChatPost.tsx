@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle, ThumbsUp, Heart, Send } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,6 @@ import { useToast } from '@/hooks/use-toast';
 interface Comment {
   id: string;
   post_id: string;
-  user_id: string;
   content: string;
   created_at: string;
   profiles: {
@@ -24,8 +23,8 @@ interface Comment {
 interface Reaction {
   id: string;
   post_id: string;
+  type: string;
   user_id: string;
-  type: '👍' | '❤️';
 }
 
 interface ChatPostProps {
@@ -33,9 +32,6 @@ interface ChatPostProps {
   author: string;
   content: string;
   timestamp: string;
-  reactions: Record<string, number>;
-  comments: Comment[];
-  onReactionUpdate?: () => void;
 }
 
 const ChatPost: React.FC<ChatPostProps> = ({
@@ -43,16 +39,92 @@ const ChatPost: React.FC<ChatPostProps> = ({
   author,
   content,
   timestamp,
-  reactions,
-  comments: initialComments,
-  onReactionUpdate
 }) => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [showComments, setShowComments] = useState(initialComments.length > 0);
-  const [comments, setComments] = useState<Comment[]>(initialComments);
+  const [showComments, setShowComments] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [reactions, setReactions] = useState<{ [key: string]: number }>({
+    '👍': 0,
+    '❤️': 0,
+  });
+  const [userReactions, setUserReactions] = useState<string[]>([]);
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
+
+  // Fetch initial data
+  useEffect(() => {
+    async function fetchPostData() {
+      if (!id) return;
+
+      try {
+        // Fetch comments
+        const { data: commentsData, error: commentsError } = await supabase
+          .from('comments')
+          .select(`
+            *,
+            profiles (username, avatar_url)
+          `)
+          .eq('post_id', id)
+          .order('created_at', { ascending: true });
+
+        if (commentsError) throw commentsError;
+        setComments(commentsData || []);
+        setCommentCount(commentsData?.length || 0);
+
+        // Fetch reactions
+        const { data: reactionsData, error: reactionsError } = await supabase
+          .from('reactions')
+          .select('*')
+          .eq('post_id', id);
+
+        if (reactionsError) throw reactionsError;
+        
+        // Count reactions
+        const reactionCounts = {
+          '👍': 0,
+          '❤️': 0,
+        };
+        const userReacts: string[] = [];
+        
+        reactionsData?.forEach((reaction) => {
+          reactionCounts[reaction.type as keyof typeof reactionCounts]++;
+          if (reaction.user_id === user?.id) {
+            userReacts.push(reaction.type);
+          }
+        });
+
+        setReactions(reactionCounts);
+        setUserReactions(userReacts);
+      } catch (error: any) {
+        console.error('Error fetching post data:', error);
+      }
+    }
+
+    fetchPostData();
+
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('post_updates')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'comments', filter: `post_id=eq.${id}` },
+        () => {
+          fetchPostData();
+        }
+      )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'reactions', filter: `post_id=eq.${id}` },
+        () => {
+          fetchPostData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [id, user?.id]);
 
   const handleAddComment = async () => {
     if (!newComment.trim() || !user) return;
@@ -70,10 +142,6 @@ const ChatPost: React.FC<ChatPostProps> = ({
       if (error) throw error;
       
       setNewComment('');
-      toast({
-        title: "Comment added",
-        description: "Your comment has been posted successfully!",
-      });
     } catch (error: any) {
       console.error('Error adding comment:', error);
       toast({
@@ -90,24 +158,20 @@ const ChatPost: React.FC<ChatPostProps> = ({
     if (!user) return;
 
     try {
-      const { data: existingReaction, error: fetchError } = await supabase
-        .from('reactions')
-        .select()
-        .eq('post_id', id)
-        .eq('user_id', user.id)
-        .eq('type', type)
-        .single();
+      const hasReacted = userReactions.includes(type);
 
-      if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-
-      if (existingReaction) {
+      if (hasReacted) {
+        // Remove reaction
         const { error } = await supabase
           .from('reactions')
           .delete()
-          .eq('id', existingReaction.id);
+          .eq('post_id', id)
+          .eq('user_id', user.id)
+          .eq('type', type);
 
         if (error) throw error;
       } else {
+        // Add reaction
         const { error } = await supabase
           .from('reactions')
           .insert({
@@ -118,11 +182,7 @@ const ChatPost: React.FC<ChatPostProps> = ({
 
         if (error) throw error;
       }
-
-      if (onReactionUpdate) {
-        onReactionUpdate();
-      }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error handling reaction:', error);
       toast({
         title: "Error",
@@ -131,39 +191,6 @@ const ChatPost: React.FC<ChatPostProps> = ({
       });
     }
   };
-
-  // Subscribe to new comments
-  React.useEffect(() => {
-    const channel = supabase
-      .channel(`post_${id}_comments`)
-      .on('postgres_changes', 
-        {
-          event: '*',
-          schema: 'public',
-          table: 'comments',
-          filter: `post_id=eq.${id}`
-        },
-        async () => {
-          const { data, error } = await supabase
-            .from('comments')
-            .select(`
-              *,
-              profiles (username, avatar_url)
-            `)
-            .eq('post_id', id)
-            .order('created_at', { ascending: true });
-
-          if (!error && data) {
-            setComments(data);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [id]);
 
   return (
     <Card className="bg-white/80 backdrop-blur-sm shadow-sm border">
@@ -184,27 +211,30 @@ const ChatPost: React.FC<ChatPostProps> = ({
       <CardFooter className="flex flex-col gap-4 pt-0">
         <div className="flex items-center justify-between w-full border-t border-b py-2">
           <div className="flex -space-x-1">
-            <button
-              className="px-3 py-1 text-sm rounded-full hover:bg-gray-100 transition-colors"
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`px-3 py-1 text-sm rounded-full ${userReactions.includes('👍') ? 'bg-gray-100' : ''}`}
               onClick={() => handleReaction('👍')}
             >
-              👍 {reactions['👍'] || 0}
-            </button>
-            <button
-              className="px-3 py-1 text-sm rounded-full hover:bg-gray-100 transition-colors"
+              👍 {reactions['👍']}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`px-3 py-1 text-sm rounded-full ${userReactions.includes('❤️') ? 'bg-gray-100' : ''}`}
               onClick={() => handleReaction('❤️')}
             >
-              ❤️ {reactions['❤️'] || 0}
-            </button>
+              ❤️ {reactions['❤️']}
+            </Button>
           </div>
           <Button 
             variant="ghost" 
-            size="sm" 
-            className="ml-auto"
+            size="sm"
             onClick={() => setShowComments(!showComments)}
           >
             <MessageCircle className="h-4 w-4 mr-2" />
-            {comments.length} Comments
+            {commentCount} Comments
           </Button>
         </div>
 
@@ -231,7 +261,7 @@ const ChatPost: React.FC<ChatPostProps> = ({
             
             <div className="flex items-start gap-3 mt-4">
               <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-gradpath-purple/10 text-gradpath-purple">A</AvatarFallback>
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <div className="flex-1 flex">
                 <Input 

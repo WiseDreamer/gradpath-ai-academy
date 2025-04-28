@@ -15,7 +15,7 @@ export default function ChatFeed() {
   const { toast } = useToast();
 
   return (
-    <main className="w-full flex flex-col space-y-6 px-0">
+    <main className="w-full flex flex-col space-y-6 px-4 md:px-6 py-6">
       <PostsSection />
     </main>
   );
