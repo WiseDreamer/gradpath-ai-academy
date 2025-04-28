@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
             <p className="text-sm text-gray-500 mt-1">Login to your account to continue learning</p>
           </div>
           
-          <form onSubmit={handleSubmit} className="space-y-4 bg-[gradpath-bright-blue] bg-cyan-100">
+          <form onSubmit={handleSubmit} className="space-y-4 bg-[gradpath-bright-blue] bg-purple-100">
             <FormInput label="Email" id="email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} error={errors.email} disabled={isLoading} />
             
             <FormInput label="Password" id="password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} error={errors.password} disabled={isLoading} />
