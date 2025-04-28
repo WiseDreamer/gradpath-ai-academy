@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Pause, Play, Mic, MicOff, Hand, Pen, Settings, Undo, Highlighter, Brush, Maximize, Minimize } from 'lucide-react';
@@ -270,7 +271,7 @@ const WhiteboardArea: React.FC = () => {
         </TooltipProvider>
       </div>
 
-      <div className="whiteboard flex-1 rounded-lg p-2 flex flex-col justify-center items-center relative">
+      <div className="whiteboard flex-1 relative overflow-hidden">
         {isPlaying ? (
           <div className="absolute inset-0 z-10 pointer-events-none">
             <div className="animate-fade-in mb-8 text-center pt-10">
@@ -316,13 +317,13 @@ const WhiteboardArea: React.FC = () => {
           onMouseMove={draw}
           onMouseUp={finishDrawing}
           onMouseLeave={finishDrawing}
-          className="w-full h-full cursor-crosshair z-0"
+          className="w-full h-full absolute top-0 left-0 cursor-crosshair z-0"
           style={{ backgroundColor: themeMode === 'light' ? '#ffffff' : '#2d2d2d' }}
         />
       </div>
       
-      <div className="sticky bottom-0 w-full bg-white border-t">
-        <div className="flex justify-between items-center p-3">
+      <div className="w-full bg-white border-t z-10 py-3 px-3">
+        <div className="flex justify-between items-center">
           <div className="flex gap-2">
             <Button
               variant="outline"
