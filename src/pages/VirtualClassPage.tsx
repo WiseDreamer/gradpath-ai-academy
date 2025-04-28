@@ -105,7 +105,7 @@ const VirtualClassPage: React.FC = () => {
           </div>
 
           <div className="w-full md:w-96 flex flex-col">
-            <div className="bg-white rounded-t-xl shadow-sm border border-gray-100 p-4">
+            <div className="order-first md:order-none bg-white rounded-t-xl shadow-sm border border-gray-100 p-4">
               <h1 className="text-2xl font-bold text-center">Linear Algebra - Virtual Class</h1>
               <p className="text-gray-600 text-center">University of Oxford, Mathematics</p>
             </div>

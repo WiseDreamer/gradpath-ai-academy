@@ -1,7 +1,6 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Pause, Play, Mic, MicOff, Hand, Pen, Settings, Undo, Highlighter, Brush } from 'lucide-react';
+import { Pause, Play, Mic, MicOff, Hand, Pen, Settings, Undo, Highlighter, Brush, Maximize, Minimize } from 'lucide-react';
 import { 
   Tooltip, 
   TooltipTrigger, 
@@ -25,6 +24,7 @@ const WhiteboardArea: React.FC = () => {
   const [isMicOn, setIsMicOn] = useState(false);
   const [isHandRaised, setIsHandRaised] = useState(false);
   const [activeTool, setActiveTool] = useState<Tool>('none');
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [penColor, setPenColor] = useState('#000000');
   const [highlighterColor, setHighlighterColor] = useState('#ffeb3b');
   const [penSize, setPenSize] = useState(2);
@@ -80,7 +80,6 @@ const WhiteboardArea: React.FC = () => {
     contextRef.current.moveTo(x, y);
     isDrawing.current = true;
     
-    // Set drawing styles based on active tool
     if (contextRef.current) {
       if (activeTool === 'pen') {
         contextRef.current.strokeStyle = penColor;
@@ -136,10 +135,8 @@ const WhiteboardArea: React.FC = () => {
     const canvas = canvasRef.current;
     const context = contextRef.current;
     
-    // Save current canvas content
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     
-    // Apply theme
     if (theme === 'dark') {
       canvas.style.backgroundColor = '#2d2d2d';
       setPenColor('#ffffff');
@@ -148,15 +145,17 @@ const WhiteboardArea: React.FC = () => {
       setPenColor('#000000');
     }
     
-    // Restore canvas content
     context.putImageData(imageData, 0, 0);
   };
 
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
   return (
-    <div className="flex flex-col h-full">
+    <div className={`flex flex-col h-full ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''}`}>
       <div className="p-2 border-b flex justify-end space-x-2">
         <TooltipProvider>
-          {/* Pen Tool */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button 
@@ -174,7 +173,6 @@ const WhiteboardArea: React.FC = () => {
             </TooltipContent>
           </Tooltip>
 
-          {/* Highlighter Tool */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button 
@@ -192,7 +190,6 @@ const WhiteboardArea: React.FC = () => {
             </TooltipContent>
           </Tooltip>
 
-          {/* Settings */}
           <Tooltip>
             <DropdownMenu>
               <TooltipTrigger asChild>
@@ -231,7 +228,6 @@ const WhiteboardArea: React.FC = () => {
             </TooltipContent>
           </Tooltip>
 
-          {/* Undo Button */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button 
@@ -246,6 +242,29 @@ const WhiteboardArea: React.FC = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p>Undo last action</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={toggleFullscreen}
+                className="flex items-center gap-1"
+              >
+                {isFullscreen ? (
+                  <Minimize className="h-4 w-4" />
+                ) : (
+                  <Maximize className="h-4 w-4" />
+                )}
+                <span className="hidden md:inline">
+                  {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+                </span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{isFullscreen ? 'Exit fullscreen mode' : 'Enter fullscreen mode'}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -302,34 +321,36 @@ const WhiteboardArea: React.FC = () => {
         />
       </div>
       
-      <div className="flex justify-between items-center p-3 border-t">
-        <div className="flex gap-2">
+      <div className="sticky bottom-0 w-full bg-white border-t">
+        <div className="flex justify-between items-center p-3">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={togglePlay}
+            >
+              {isPlaying ? (
+                <>
+                  <Pause className="mr-2 h-4 w-4" /> Pause
+                </>
+              ) : (
+                <>
+                  <Play className="mr-2 h-4 w-4" /> Play
+                </>
+              )}
+            </Button>
+          </div>
+          
           <Button
-            variant="outline"
+            variant={isHandRaised ? "secondary" : "outline"}
             size="sm"
-            onClick={togglePlay}
+            onClick={raiseHand}
+            className={isHandRaised ? "bg-gradpath-soft-green text-gradpath-dark-purple" : ""}
           >
-            {isPlaying ? (
-              <>
-                <Pause className="mr-2 h-4 w-4" /> Pause
-              </>
-            ) : (
-              <>
-                <Play className="mr-2 h-4 w-4" /> Play
-              </>
-            )}
+            <Hand className="mr-2 h-4 w-4" />
+            {isHandRaised ? "Hand Raised" : "Raise Hand"}
           </Button>
         </div>
-        
-        <Button
-          variant={isHandRaised ? "secondary" : "outline"}
-          size="sm"
-          onClick={raiseHand}
-          className={isHandRaised ? "bg-gradpath-soft-green text-gradpath-dark-purple" : ""}
-        >
-          <Hand className="mr-2 h-4 w-4" />
-          {isHandRaised ? "Hand Raised" : "Raise Hand"}
-        </Button>
       </div>
     </div>
   );
