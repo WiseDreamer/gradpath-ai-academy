@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import BackIcon from '@/components/BackIcon';
@@ -97,7 +98,7 @@ const VirtualClassPage: React.FC = () => {
       )}
 
       <div className="w-full px-4">
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold">Linear Algebra - Virtual Class</h1>
           <p className="text-gray-600">University of Oxford, Mathematics</p>
         </div>
