@@ -29,6 +29,7 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   activeTool,
   themeMode,
   canvasRef,
+  contextRef,
   isDrawing,
   startDrawing,
   draw,
@@ -43,7 +44,7 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   // Ensure canvas is accessible and properly initialized
   useEffect(() => {
     const handleResize = () => {
-      if (!canvasRef.current || !canvasRef.current.getContext('2d')) return;
+      if (!canvasRef.current) return;
       
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
@@ -67,6 +68,7 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
       // Restore context properties and drawings
       context.scale(2, 2);
       context.lineCap = 'round';
+      contextRef.current = context; // Make sure to set the context reference
       
       if (tempContext) {
         context.drawImage(tempCanvas, 0, 0);
@@ -79,7 +81,7 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [canvasRef]);
+  }, [canvasRef, contextRef]);
 
   return (
     <div className="whiteboard flex-1 relative overflow-hidden h-full">
