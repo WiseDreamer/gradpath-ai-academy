@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -14,8 +15,8 @@ import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 
 const Dashboard: React.FC = () => {
   const { signOut } = useAuth();
-  const iconSize = 28;
-  const iconStrokeWidth = 2.5;
+  const iconSize = 32; // Increased from 28
+  const iconStrokeWidth = 2.2; // Slightly reduced to balance the larger size
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
