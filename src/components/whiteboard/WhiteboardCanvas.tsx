@@ -1,5 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Mic, MicOff } from 'lucide-react';
 
 type Tool = 'pen' | 'highlighter' | 'eraser' | 'none';
 
@@ -38,8 +40,49 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   setIsHandRaised,
   setIsPlaying
 }) => {
+  // Ensure canvas is accessible and properly initialized
+  useEffect(() => {
+    const handleResize = () => {
+      if (!canvasRef.current || !canvasRef.current.getContext('2d')) return;
+      
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      
+      // Save current drawings if needed
+      const tempCanvas = document.createElement('canvas');
+      const tempContext = tempCanvas.getContext('2d');
+      if (tempContext) {
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        tempContext.drawImage(canvas, 0, 0);
+      }
+      
+      // Resize canvas
+      canvas.width = canvas.offsetWidth * 2;
+      canvas.height = canvas.offsetHeight * 2;
+      canvas.style.width = `${canvas.offsetWidth}px`;
+      canvas.style.height = `${canvas.offsetHeight}px`;
+      
+      // Restore context properties and drawings
+      context.scale(2, 2);
+      context.lineCap = 'round';
+      
+      if (tempContext) {
+        context.drawImage(tempCanvas, 0, 0);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [canvasRef]);
+
   return (
-    <div className="whiteboard flex-1 relative overflow-hidden">
+    <div className="whiteboard flex-1 relative overflow-hidden h-full">
       {isPlaying ? (
         <div className="absolute inset-0 z-10 pointer-events-none">
           <div className="animate-fade-in mb-8 text-center pt-10">
@@ -91,9 +134,5 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
     </div>
   );
 };
-
-// Add necessary imports
-import { Button } from '@/components/ui/button';
-import { Mic, MicOff } from 'lucide-react';
 
 export default WhiteboardCanvas;
