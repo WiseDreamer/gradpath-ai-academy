@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload } from 'lucide-react';
+import { Bell, User, MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <DashboardCard title="Ask AI Tutor" description="Get instant help with your questions" icon={MessageCircle} to="#" color="bg-gradpath-purple" />
             
-            <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart2} to="/performance" color="bg-green-500" />
+            <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart} to="/performance" color="bg-green-500" />
           </div>
 
           <div className="mt-0 mb-2">
