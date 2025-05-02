@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, ThumbsUp, Heart, Send } from 'lucide-react';
+import { MessageCircle, ThumbsUp, Heart, Send, MoreHorizontal, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
@@ -8,6 +8,13 @@ import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/components/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface Comment {
   id: string;
@@ -52,11 +59,12 @@ const ChatPost: React.FC<ChatPostProps> = ({
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
+  const [isHidden, setIsHidden] = useState(false);
 
   // Fetch initial data
   useEffect(() => {
     async function fetchPostData() {
-      if (!id) return;
+      if (!id || isHidden) return;
 
       try {
         // Fetch comments
@@ -139,7 +147,7 @@ const ChatPost: React.FC<ChatPostProps> = ({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id, user?.id]);
+  }, [id, user?.id, isHidden]);
 
   const handleAddComment = async () => {
     if (!newComment.trim() || !user) return;
@@ -207,15 +215,70 @@ const ChatPost: React.FC<ChatPostProps> = ({
     }
   };
 
+  const handleHidePost = () => {
+    setIsHidden(true);
+    toast({
+      title: "Post hidden",
+      description: "This post will no longer appear in your feed",
+    });
+  };
+
+  if (isHidden) {
+    return null;
+  }
+
   return (
-    <Card className="bg-white/80 backdrop-blur-sm shadow-sm border">
-      <CardHeader className="flex flex-row items-center gap-4 pb-3">
-        <Avatar>
-          <AvatarFallback className="bg-gradpath-purple text-white">{author[0]}</AvatarFallback>
-        </Avatar>
-        <div>
-          <h3 className="font-semibold">{author}</h3>
-          <p className="text-sm text-gray-500">{timestamp}</p>
+    <Card className="bg-white/80 backdrop-blur-sm shadow-sm border w-full rounded-none md:rounded-md">
+      <CardHeader className="flex flex-row items-center justify-between pb-3">
+        <div className="flex items-center gap-4">
+          <Avatar>
+            <AvatarFallback className="bg-gradpath-purple text-white">{author[0]}</AvatarFallback>
+          </Avatar>
+          <div>
+            <h3 className="font-semibold">{author}</h3>
+            <p className="text-sm text-gray-500">{timestamp}</p>
+          </div>
+        </div>
+
+        {/* Post actions */}
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                <MoreHorizontal className="h-5 w-5" />
+                <span className="sr-only">More options</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem>
+                Interested in this topic
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                Not interested in this topic
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                Save post
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                Show more from this author
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                Report post
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            onClick={handleHidePost}
+          >
+            <X className="h-5 w-5" />
+            <span className="sr-only">Hide post</span>
+          </Button>
         </div>
       </CardHeader>
       

@@ -122,7 +122,7 @@ export default function PostsSection() {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-white/80 backdrop-blur-sm shadow-sm border">
+      <Card className="bg-white/80 backdrop-blur-sm shadow-sm border w-full rounded-none md:rounded-md">
         <CardHeader>
           <CardTitle>Create a Post</CardTitle>
         </CardHeader>
@@ -152,15 +152,17 @@ export default function PostsSection() {
         {isLoading ? (
           <div className="text-center py-8">Loading posts...</div>
         ) : posts.length > 0 ? (
-          posts.map((post) => (
-            <ChatPost
-              key={post.id}
-              id={post.id}
-              author={post.profiles?.username ?? 'Anonymous'}
-              content={post.content}
-              timestamp={new Date(post.created_at).toLocaleString()}
-            />
-          ))
+          <div className="space-y-4">
+            {posts.map((post) => (
+              <ChatPost
+                key={post.id}
+                id={post.id}
+                author={post.profiles?.username ?? 'Anonymous'}
+                content={post.content}
+                timestamp={new Date(post.created_at).toLocaleString()}
+              />
+            ))}
+          </div>
         ) : (
           <div className="text-center py-8 text-gray-500">No posts yet. Be the first to post!</div>
         )}

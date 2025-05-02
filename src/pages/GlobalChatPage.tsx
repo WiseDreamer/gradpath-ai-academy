@@ -8,7 +8,7 @@ import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
 import OnlineSidebar from '@/components/chat/OnlineSidebar';
 import ChatDrawer from '@/components/chat/ChatDrawer';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from '@/components/Logo';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -16,17 +16,11 @@ const GlobalChatPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const location = useLocation();
 
   // Consistent icon size and stroke width
   const iconSize = 24;
   const iconStrokeWidth = 2;
-
-  // Handle home button click: navigate to dashboard only from global-chat page
-  const handleHomeClick = () => {
-    navigate("/dashboard");
-  };
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
@@ -73,14 +67,15 @@ const GlobalChatPage: React.FC = () => {
             {/* Right side - Menu and profile buttons aligned to the right edge */}
             {!isMobile && (
               <div className="flex items-center gap-4 pr-0">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20"
-                  onClick={handleHomeClick}
-                >
-                  <Home size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
+                <Link to="/dashboard" replace>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="rounded-full text-white hover:bg-white/20"
+                  >
+                    <Home size={iconSize} strokeWidth={iconStrokeWidth} />
+                  </Button>
+                </Link>
                 <Link to="/profile" replace>
                   <Button 
                     variant="ghost" 
@@ -129,14 +124,15 @@ const GlobalChatPage: React.FC = () => {
           {/* Mobile navigation buttons at bottom */}
           {isMobile && (
             <div className="h-14 flex items-center justify-between border-t border-white/20">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                className="rounded-full text-white hover:bg-white/20 ml-0"
-                onClick={handleHomeClick}
-              >
-                <Home size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
+              <Link to="/dashboard" replace>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="rounded-full text-white hover:bg-white/20 ml-0"
+                >
+                  <Home size={iconSize} strokeWidth={iconStrokeWidth} />
+                </Button>
+              </Link>
               <Link to="/messages" replace>
                 <Button
                   variant="ghost"
@@ -180,7 +176,7 @@ const GlobalChatPage: React.FC = () => {
       
       <div className="flex pt-0">
         <ChatSidebar />
-        <div className="flex-1 px-0 md:px-6">
+        <div className="flex-1 px-0">
           <ChatFeed />
         </div>
         <OnlineSidebar />
