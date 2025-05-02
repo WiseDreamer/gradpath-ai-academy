@@ -9,7 +9,7 @@ export default function ChatFeed() {
   const { toast } = useToast();
 
   return (
-    <main className="w-full flex flex-col space-y-2 py-4">
+    <main className="w-full flex flex-col space-y-2 pt-0 pb-4">
       <PostsSection />
     </main>
   );
