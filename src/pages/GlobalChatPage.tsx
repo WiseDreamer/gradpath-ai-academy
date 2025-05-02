@@ -42,7 +42,7 @@ const GlobalChatPage: React.FC = () => {
               <div className="flex-1 flex items-center justify-center gap-6 px-4"> {/* Reduced gap-8 to gap-6 */}
                 <Button
                   variant="ghost"
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20"
                   aria-label="Inbox"
                   onClick={handleInbox}
@@ -51,7 +51,7 @@ const GlobalChatPage: React.FC = () => {
                 </Button>
                 <Button 
                   variant="ghost" 
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20" 
                   aria-label="Notifications"
                 >
@@ -59,7 +59,7 @@ const GlobalChatPage: React.FC = () => {
                 </Button>
                 <Button 
                   variant="ghost" 
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20" 
                   aria-label="Help"
                 >
@@ -74,7 +74,7 @@ const GlobalChatPage: React.FC = () => {
                 <Link to="/dashboard">
                   <Button 
                     variant="ghost" 
-                    size="sm" {/* Changed from 'icon' to 'sm' */}
+                    size="sm" /* Changed from 'icon' to 'sm' */
                     className="rounded-full text-white hover:bg-white/20"
                   >
                     <Home size={iconSize} strokeWidth={iconStrokeWidth} />
@@ -83,7 +83,7 @@ const GlobalChatPage: React.FC = () => {
                 <Link to="/profile">
                   <Button 
                     variant="ghost" 
-                    size="sm" {/* Changed from 'icon' to 'sm' */}
+                    size="sm" /* Changed from 'icon' to 'sm' */
                     className="rounded-full text-white hover:bg-white/20"
                   >
                     <User size={iconSize} strokeWidth={iconStrokeWidth} />
@@ -91,7 +91,7 @@ const GlobalChatPage: React.FC = () => {
                 </Link>
                 <Button
                   variant="ghost"
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20 mr-0"
                   aria-label="Menu"
                   onClick={() => setIsDrawerOpen(true)}
@@ -106,7 +106,7 @@ const GlobalChatPage: React.FC = () => {
               <div className="flex items-center gap-3 pr-0">
                 <Button
                   variant="ghost"
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20"
                   aria-label="Search"
                 >
@@ -114,7 +114,7 @@ const GlobalChatPage: React.FC = () => {
                 </Button>
                 <Button
                   variant="ghost"
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20 mr-0"
                   onClick={() => setIsDrawerOpen(true)}
                   aria-label="Menu"
@@ -131,7 +131,7 @@ const GlobalChatPage: React.FC = () => {
               <Link to="/dashboard">
                 <Button 
                   variant="ghost" 
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20 ml-0"
                 >
                   <Home size={iconSize} strokeWidth={iconStrokeWidth} />
@@ -139,7 +139,7 @@ const GlobalChatPage: React.FC = () => {
               </Link>
               <Button
                 variant="ghost"
-                size="sm" {/* Changed from 'icon' to 'sm' */}
+                size="sm" /* Changed from 'icon' to 'sm' */
                 className="rounded-full text-white hover:bg-white/20"
                 onClick={handleInbox}
                 aria-label="Inbox"
@@ -149,7 +149,7 @@ const GlobalChatPage: React.FC = () => {
               <Link to="/friends">
                 <Button 
                   variant="ghost" 
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20" 
                   aria-label="Friends"
                 >
@@ -158,7 +158,7 @@ const GlobalChatPage: React.FC = () => {
               </Link>
               <Button 
                 variant="ghost" 
-                size="sm" {/* Changed from 'icon' to 'sm' */}
+                size="sm" /* Changed from 'icon' to 'sm' */
                 className="rounded-full text-white hover:bg-white/20"
               >
                 <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
@@ -166,7 +166,7 @@ const GlobalChatPage: React.FC = () => {
               <Link to="/profile">
                 <Button 
                   variant="ghost" 
-                  size="sm" {/* Changed from 'icon' to 'sm' */}
+                  size="sm" /* Changed from 'icon' to 'sm' */
                   className="rounded-full text-white hover:bg-white/20 mr-0"
                 >
                   <User size={iconSize} strokeWidth={iconStrokeWidth} />
