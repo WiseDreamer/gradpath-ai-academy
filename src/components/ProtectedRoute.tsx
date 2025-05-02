@@ -2,12 +2,13 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ProtectedRoute() {
   const { session, loading } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
+  const [redirected, setRedirected] = useState(false);
   
   useEffect(() => {
     console.log("ProtectedRoute state:", { hasSession: !!session, loading });
@@ -26,8 +27,11 @@ export default function ProtectedRoute() {
   }
   
   // Once loading is complete, if no session, redirect to login
-  if (!session) {
+  if (!session && !redirected) {
     console.log("No session found, redirecting to login");
+    // Set redirected flag to prevent toast from showing multiple times
+    setRedirected(true);
+    
     toast({
       title: "Authentication required",
       description: "Please log in to access this page",

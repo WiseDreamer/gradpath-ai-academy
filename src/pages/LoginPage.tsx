@@ -25,6 +25,7 @@ const LoginPage: React.FC = () => {
     email?: string;
     password?: string;
   }>({});
+  const [redirectAttempted, setRedirectAttempted] = useState(false);
 
   console.log("Login page rendering, session:", !!session, "loading:", loading);
 
@@ -37,7 +38,7 @@ const LoginPage: React.FC = () => {
     
     if (session) {
       console.log("Session found, redirecting to dashboard");
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     } else {
       console.log("No session found, staying on login page");
     }
@@ -46,6 +47,7 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrors({});
     
     // Validate inputs
     const newErrors: {
@@ -77,8 +79,7 @@ const LoginPage: React.FC = () => {
         description: "You have been successfully logged in.",
       });
       
-      // Successful login will be handled by the AuthProvider
-      // which will redirect to dashboard
+      // Auth state change will trigger redirection to dashboard
     } catch (error: any) {
       console.error('Login error:', error);
       toast({
@@ -110,6 +111,9 @@ const LoginPage: React.FC = () => {
       });
       
       if (error) throw error;
+      
+      // The OAuth flow will redirect the user, so we don't need to handle success here
+      setRedirectAttempted(true);
     } catch (error: any) {
       console.error(`${provider} login error:`, error);
       toast({

@@ -22,18 +22,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log("AuthProvider initializing...");
     
+    let mounted = true;
+    
     // Set up auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         console.log("Auth state change event:", event);
+        
+        if (!mounted) return;
         
         // Update session and user
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
         if (event === 'SIGNED_OUT') {
-          console.log("User signed out, navigating to login page");
-          navigate('/');
+          console.log("User signed out via auth state change, navigating to login page");
+          navigate('/', { replace: true });
         }
       }
     );
@@ -41,6 +45,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Then check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       console.log("Current session check:", currentSession ? "Found session" : "No session");
+      
+      if (!mounted) return;
+      
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       setLoading(false);
@@ -48,6 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       console.log("Cleaning up auth subscription");
+      mounted = false;
       subscription.unsubscribe();
     };
   }, [navigate]);
@@ -57,6 +65,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     
     try {
+      // First clear local state to ensure UI updates even if API call fails
+      setSession(null);
+      setUser(null);
+      
+      // Then attempt to sign out from Supabase
       const { error } = await supabase.auth.signOut();
       
       if (error) {
@@ -64,20 +77,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
       
-      // Manually clear session state even if there's an error from Supabase
-      setSession(null);
-      setUser(null);
-      
-      // Force navigation to login page
       console.log("Sign out successful, navigating to login page");
-      navigate('/');
+      navigate('/', { replace: true });
     } catch (error) {
       console.error("Failed to sign out:", error);
       
-      // Even if there's an error, clear the session locally and redirect
-      setSession(null);
-      setUser(null);
-      navigate('/');
+      // Force navigation to login page regardless of error
+      navigate('/', { replace: true });
     } finally {
       setLoading(false);
     }

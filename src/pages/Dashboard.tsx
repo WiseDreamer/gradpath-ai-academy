@@ -30,7 +30,12 @@ const Dashboard: React.FC = () => {
       
       await signOut();
       
-      // The AuthProvider will handle the navigation, no need to do it here
+      // The AuthProvider will handle navigation, but we'll show a toast anyway
+      // in case the user still sees this component
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
     } catch (error) {
       console.error("Dashboard: Error during sign out:", error);
       toast({
