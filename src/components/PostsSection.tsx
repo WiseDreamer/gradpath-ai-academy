@@ -20,7 +20,7 @@ export default function PostsSection() {
   
   return (
     <div className="space-y-2">
-      <Card className="bg-white/80 backdrop-blur-sm shadow-sm border w-full rounded-none md:rounded-md">
+      <Card className="bg-white/80 backdrop-blur-sm shadow-sm border w-full rounded-none md:rounded-md -mx-4 md:mx-0">
         <CardHeader>
           <CardTitle>Create a Post</CardTitle>
         </CardHeader>
