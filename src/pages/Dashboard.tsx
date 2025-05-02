@@ -15,19 +15,24 @@ import { useToast } from '@/hooks/use-toast';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 
 const Dashboard: React.FC = () => {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const { toast } = useToast();
   const iconSize = 36; 
   const iconStrokeWidth = 2;
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      console.log("Dashboard: Sign out button clicked");
       toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
+        title: "Signing out...",
+        description: "Please wait while we sign you out.",
       });
+      
+      await signOut();
+      
+      // The AuthProvider will handle the navigation, no need to do it here
     } catch (error) {
+      console.error("Dashboard: Error during sign out:", error);
       toast({
         title: "Error",
         description: "Failed to sign out. Please try again.",
@@ -35,6 +40,8 @@ const Dashboard: React.FC = () => {
       });
     }
   };
+
+  console.log("Dashboard rendering, user:", user?.email);
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -25,12 +26,20 @@ const LoginPage: React.FC = () => {
     password?: string;
   }>({});
 
+  console.log("Login page rendering, session:", !!session, "loading:", loading);
+
   // Redirect if already logged in, but only after auth loading is complete
   useEffect(() => {
-    if (loading) return; // Don't redirect while still loading auth state
+    if (loading) {
+      console.log("Auth state still loading, waiting...");
+      return;
+    }
     
     if (session) {
+      console.log("Session found, redirecting to dashboard");
       navigate('/dashboard');
+    } else {
+      console.log("No session found, staying on login page");
     }
   }, [session, navigate, loading]);
   
@@ -54,6 +63,7 @@ const LoginPage: React.FC = () => {
     }
 
     try {
+      console.log("Attempting to log in with email/password");
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -84,10 +94,18 @@ const LoginPage: React.FC = () => {
   const handleSocialLogin = async (provider: SupportedProvider) => {
     try {
       setIsLoading(true);
+      console.log(`Attempting to log in with ${provider}`);
+      
+      // For preview environments, we need to ensure the redirect URL is valid
+      const baseUrl = window.location.origin;
+      const redirectTo = `${baseUrl}/dashboard`;
+      
+      console.log("Using redirect URL:", redirectTo);
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: window.location.origin + '/dashboard'
+          redirectTo
         }
       });
       
@@ -108,9 +126,16 @@ const LoginPage: React.FC = () => {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
         <Logo color="purple" className="mb-4" />
-        <p>Loading...</p>
+        <div className="w-8 h-8 border-4 border-gradpath-purple border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-gray-600">Checking authentication...</p>
       </div>
     );
+  }
+
+  // If already authenticated, don't render the login form
+  if (session) {
+    console.log("Session found in login page render, should redirect soon");
+    return null;
   }
 
   return (
