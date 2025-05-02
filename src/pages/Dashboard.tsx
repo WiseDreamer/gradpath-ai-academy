@@ -85,9 +85,9 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-0">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-4 mt-1">
+          <div className="mt-0 mb-2">
             <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-800">Learning Resources</h2>
             </div>
@@ -103,7 +103,13 @@ const Dashboard: React.FC = () => {
             <DashboardCard title="Practice Questions" description="Test your knowledge with AI-generated practice questions" icon={FileText} to="/practice" color="bg-amber-500" />
           </div>
           
-          <div className="mb-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <DashboardCard title="Ask AI Tutor" description="Get instant help with your questions" icon={MessageCircle} to="#" color="bg-gradpath-purple" />
+            
+            <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart2} to="/performance" color="bg-green-500" />
+          </div>
+
+          <div className="mt-0 mb-2">
             <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-800">Recent Modules</h3>
             </div>
