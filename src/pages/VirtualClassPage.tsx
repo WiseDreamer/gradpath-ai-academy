@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import BackIcon from '@/components/BackIcon';
@@ -66,28 +67,30 @@ const VirtualClassPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
       {isMobile ? (
         <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-          <div className="flex items-center justify-between h-16 px-4">
+          <div className="flex items-center justify-between h-16 px-0">
             <div className="flex items-center gap-2">
-              <BackIcon />
+              <div className="ml-0 pl-0">
+                <BackIcon />
+              </div>
               <Logo clickable={false} />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mr-0 pr-0">
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
                 <Search {...iconProps} />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-0">
                 <Menu {...iconProps} />
               </Button>
             </div>
           </div>
-          <div className="h-14 flex items-center justify-between border-t border-white/20 px-4">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+          <div className="h-14 flex items-center justify-between border-t border-white/20 px-0">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 ml-0">
               <Home {...iconProps} />
             </Button>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
               <Bell {...iconProps} />
             </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-0">
               <User {...iconProps} />
             </Button>
           </div>

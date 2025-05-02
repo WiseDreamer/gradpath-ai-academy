@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
@@ -34,29 +35,29 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => navigate(-1)} 
-                className="hover:bg-white/20 ml-0 px-2"
+                className="hover:bg-white/20 ml-0 px-0"
               >
                 <ChevronLeft {...iconProps} />
               </Button>
               <Logo clickable={false} />
               <span className="text-lg font-medium ml-2">AI Tutor</span>
             </div>
-            <div className="flex items-center gap-2 mr-2">
+            <div className="flex items-center gap-2 mr-0">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                 <Search {...iconProps} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
                 <Menu {...iconProps} />
               </Button>
             </div>
           </div>
           {/* Bottom Section */}
-          <div className="h-16 flex items-center justify-between border-t border-white/20 px-4">
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+          <div className="h-16 flex items-center justify-between border-t border-white/20 px-0">
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 ml-0">
               <Bell {...iconProps} />
             </Button>
             <Link to="/profile">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0">
                 <User {...iconProps} />
               </Button>
             </Link>
@@ -68,7 +69,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-      <div className="w-full px-2">
+      <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-1">
             {showBack && (
@@ -103,7 +104,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                     <User {...iconProps} />
                   </Button>
                 </Link>
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
                   <Menu {...iconProps} />
                 </Button>
               </>
@@ -120,7 +121,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                     <User {...iconProps} />
                   </Button>
                 </Link>
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
                   <Menu {...iconProps} />
                 </Button>
               </>
@@ -129,7 +130,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
         </div>
         {/* Mobile nav */}
         <div className="md:hidden h-16 flex items-center justify-between border-t border-white/20">
-          <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+          <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 ml-0">
             <Bell {...iconProps} />
           </Button>
           {variant === 'social' ? (
@@ -149,7 +150,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
           ) : null}
           <Link to="/profile">
             <Button variant="ghost" size="icon" className={cn(
-              "rounded-full text-white hover:bg-white/20",
+              "rounded-full text-white hover:bg-white/20 mr-0",
               isActive('/profile') && "bg-white/20"
             )}>
               <User {...iconProps} />

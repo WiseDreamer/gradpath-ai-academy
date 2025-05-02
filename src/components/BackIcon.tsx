@@ -14,7 +14,7 @@ const BackIcon: React.FC<BackIconProps> = ({ className }) => {
       type="button"
       aria-label="Back"
       onClick={() => navigate(-1)}
-      className={`flex items-center justify-center bg-transparent border-none p-0 ${className || ""}`}
+      className={`flex items-center justify-center bg-transparent border-none p-0 ml-0 ${className || ""}`}
       style={{ height: 40, width: 40, minWidth: 40 }}
     >
       <ChevronLeft size={28} strokeWidth={2.5} className="text-current" />
