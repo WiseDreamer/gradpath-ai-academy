@@ -23,11 +23,6 @@ const GlobalChatPage: React.FC = () => {
   const iconSize = 24;
   const iconStrokeWidth = 2;
 
-  // Show inbox: navigate to /messages when clicked
-  const handleInbox = () => {
-    navigate("/messages");
-  };
-
   // Handle home button click: navigate to dashboard only from global-chat page
   const handleHomeClick = () => {
     navigate("/dashboard");
@@ -46,15 +41,16 @@ const GlobalChatPage: React.FC = () => {
             {/* Center section for desktop */}
             {!isMobile && (
               <div className="flex-1 flex items-center justify-center gap-6 px-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20"
-                  aria-label="Inbox"
-                  onClick={handleInbox}
-                >
-                  <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
+                <Link to="/messages" replace>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full text-white hover:bg-white/20"
+                    aria-label="Inbox"
+                  >
+                    <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+                  </Button>
+                </Link>
                 <Button 
                   variant="ghost" 
                   size="sm"
@@ -85,7 +81,7 @@ const GlobalChatPage: React.FC = () => {
                 >
                   <Home size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
-                <Link to="/profile">
+                <Link to="/profile" replace>
                   <Button 
                     variant="ghost" 
                     size="sm"
@@ -141,16 +137,17 @@ const GlobalChatPage: React.FC = () => {
               >
                 <Home size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-full text-white hover:bg-white/20"
-                onClick={handleInbox}
-                aria-label="Inbox"
-              >
-                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
-              <Link to="/friends">
+              <Link to="/messages" replace>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full text-white hover:bg-white/20"
+                  aria-label="Inbox"
+                >
+                  <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+                </Button>
+              </Link>
+              <Link to="/friends" replace>
                 <Button 
                   variant="ghost" 
                   size="sm"
@@ -167,7 +164,7 @@ const GlobalChatPage: React.FC = () => {
               >
                 <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Link to="/profile">
+              <Link to="/profile" replace>
                 <Button 
                   variant="ghost" 
                   size="sm"

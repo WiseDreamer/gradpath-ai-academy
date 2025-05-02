@@ -132,7 +132,7 @@ const MessagesPage: React.FC = () => {
 
   // Navigation handler for home button
   const handleHomeClick = () => {
-    navigate("/global-chat");
+    navigate("/global-chat", { replace: true });
   };
 
   return (
@@ -147,15 +147,16 @@ const MessagesPage: React.FC = () => {
             
             {/* Center section for desktop */}
             <div className="hidden md:flex flex-1 items-center justify-center gap-6 px-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-full text-white hover:bg-white/20"
-                aria-label="Inbox"
-                onClick={() => navigate("/messages")}
-              >
-                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
+              <Link to="/messages" replace>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full text-white hover:bg-white/20"
+                  aria-label="Inbox"
+                >
+                  <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+                </Button>
+              </Link>
               <Button 
                 variant="ghost" 
                 size="sm"
@@ -184,7 +185,7 @@ const MessagesPage: React.FC = () => {
               >
                 <Home size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Link to="/profile">
+              <Link to="/profile" replace>
                 <Button 
                   variant="ghost" 
                   size="sm"
@@ -236,16 +237,17 @@ const MessagesPage: React.FC = () => {
             >
               <Home size={iconSize} strokeWidth={iconStrokeWidth} />
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="rounded-full text-white hover:bg-white/20"
-              onClick={() => navigate("/messages")}
-              aria-label="Inbox"
-            >
-              <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
-            </Button>
-            <Link to="/friends">
+            <Link to="/messages" replace>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20"
+                aria-label="Inbox"
+              >
+                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
+            </Link>
+            <Link to="/friends" replace>
               <Button 
                 variant="ghost" 
                 size="sm"
@@ -262,7 +264,7 @@ const MessagesPage: React.FC = () => {
             >
               <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
             </Button>
-            <Link to="/profile">
+            <Link to="/profile" replace>
               <Button 
                 variant="ghost" 
                 size="sm"
@@ -275,8 +277,8 @@ const MessagesPage: React.FC = () => {
         </div>
       </div>
       
-      {/* Chat content section */}
-      <div className="mx-0 px-0 pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
+      {/* Chat content section - removed the pt-6 spacing to connect with header */}
+      <div className="mx-0 px-0 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
         <div className={`w-full md:w-80 px-0 ${selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full overflow-hidden rounded-none md:rounded-lg">
             <div className="p-4 border-b">
