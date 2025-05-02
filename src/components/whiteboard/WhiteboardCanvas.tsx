@@ -2,7 +2,6 @@
 import React from 'react';
 import { WhiteboardCanvasProps } from './types';
 import { useCanvasInitialization } from './hooks/useCanvasInitialization';
-import { useCanvasDrawing } from './hooks/useCanvasDrawing';
 import { TeachingDisplay } from './canvas/TeachingDisplay';
 import { CanvasElement } from './canvas/CanvasElement';
 
@@ -25,22 +24,8 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
   setIsHandRaised,
   setIsPlaying
 }) => {
+  // Initialize the canvas
   useCanvasInitialization({ canvasRef, contextRef });
-
-  const {
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd
-  } = useCanvasDrawing({
-    canvasRef, 
-    contextRef, 
-    isDrawing, 
-    activeTool,
-    penColor,
-    highlighterColor,
-    penSize,
-    themeMode
-  });
 
   return (
     <div className="whiteboard flex-1 relative overflow-hidden h-full">
@@ -50,9 +35,6 @@ const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
         startDrawing={startDrawing}
         draw={draw}
         finishDrawing={finishDrawing}
-        handleTouchStart={handleTouchStart}
-        handleTouchMove={handleTouchMove}
-        handleTouchEnd={handleTouchEnd}
       />
       
       <TeachingDisplay 

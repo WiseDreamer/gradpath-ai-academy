@@ -21,6 +21,7 @@ const WhiteboardArea: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const isDrawing = useRef(false);
+  const whiteboardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -36,24 +37,6 @@ const WhiteboardArea: React.FC = () => {
     contextRef.current = context;
   }, []);
   
-  useEffect(() => {
-    if (!contextRef.current) return;
-    
-    if (activeTool === 'pen') {
-      contextRef.current.strokeStyle = penColor;
-      contextRef.current.lineWidth = penSize;
-      contextRef.current.globalAlpha = 1;
-    } else if (activeTool === 'highlighter') {
-      contextRef.current.strokeStyle = highlighterColor;
-      contextRef.current.lineWidth = penSize * 3;
-      contextRef.current.globalAlpha = 0.5;
-    } else if (activeTool === 'eraser') {
-      contextRef.current.strokeStyle = themeMode === 'light' ? '#FFFFFF' : '#2d2d2d';
-      contextRef.current.lineWidth = penSize * 2;
-      contextRef.current.globalAlpha = 1;
-    }
-  }, [activeTool, penColor, highlighterColor, penSize, themeMode]);
-  
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
@@ -64,7 +47,9 @@ const WhiteboardArea: React.FC = () => {
   
   const raiseHand = () => {
     setIsHandRaised(!isHandRaised);
-    setIsPlaying(false);
+    if (!isHandRaised) {
+      setIsPlaying(false);
+    }
   };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -113,8 +98,7 @@ const WhiteboardArea: React.FC = () => {
   const handleThemeChange = (theme: ThemeMode) => {
     setThemeMode(theme);
     
-    if (!canvasRef.current || !contextRef.current) return;
-    
+    // Update pen color based on theme
     if (theme === 'dark') {
       setPenColor('#ffffff');
     } else {
@@ -127,7 +111,10 @@ const WhiteboardArea: React.FC = () => {
   };
 
   return (
-    <div className={`flex flex-col h-full ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''} relative`}>
+    <div 
+      ref={whiteboardRef}
+      className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900' : 'flex flex-col h-full relative'}`}
+    >
       <WhiteboardToolbar
         activeTool={activeTool}
         handleToolChange={handleToolChange}
@@ -158,14 +145,16 @@ const WhiteboardArea: React.FC = () => {
           setIsPlaying={setIsPlaying}
         />
         
-        <WhiteboardControlBar
-          isPlaying={isPlaying}
-          isHandRaised={isHandRaised}
-          isMicOn={isMicOn}
-          togglePlay={togglePlay}
-          raiseHand={raiseHand}
-          toggleMic={toggleMic}
-        />
+        {!isFullscreen && (
+          <WhiteboardControlBar
+            isPlaying={isPlaying}
+            isHandRaised={isHandRaised}
+            isMicOn={isMicOn}
+            togglePlay={togglePlay}
+            raiseHand={raiseHand}
+            toggleMic={toggleMic}
+          />
+        )}
       </div>
     </div>
   );

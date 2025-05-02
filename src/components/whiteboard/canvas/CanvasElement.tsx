@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Tool, ThemeMode, CanvasRefType } from '../types';
+import { ThemeMode, CanvasRefType } from '../types';
 
 interface CanvasElementProps {
   canvasRef: CanvasRefType;
@@ -8,9 +8,6 @@ interface CanvasElementProps {
   startDrawing: (e: React.MouseEvent<HTMLCanvasElement>) => void;
   draw: (e: React.MouseEvent<HTMLCanvasElement>) => void;
   finishDrawing: () => void;
-  handleTouchStart: (e: React.TouchEvent<HTMLCanvasElement>) => void;
-  handleTouchMove: (e: React.TouchEvent<HTMLCanvasElement>) => void;
-  handleTouchEnd: () => void;
 }
 
 export const CanvasElement: React.FC<CanvasElementProps> = ({
@@ -18,49 +15,53 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
   themeMode,
   startDrawing,
   draw,
-  finishDrawing,
-  handleTouchStart,
-  handleTouchMove,
-  handleTouchEnd
+  finishDrawing
 }) => {
-  // Add event listeners with passive: false to fix the preventDefault issue
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    const touchStartHandler = (e: TouchEvent) => {
+    const handleTouchStart = (e: TouchEvent) => {
       e.preventDefault();
-      if (handleTouchStart && e instanceof TouchEvent) {
-        const syntheticEvent = e as unknown as React.TouchEvent<HTMLCanvasElement>;
-        handleTouchStart(syntheticEvent);
+      if (e.touches && e.touches[0]) {
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousedown', {
+          clientX: touch.clientX,
+          clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
       }
     };
     
-    const touchMoveHandler = (e: TouchEvent) => {
+    const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault();
-      if (handleTouchMove && e instanceof TouchEvent) {
-        const syntheticEvent = e as unknown as React.TouchEvent<HTMLCanvasElement>;
-        handleTouchMove(syntheticEvent);
+      if (e.touches && e.touches[0]) {
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousemove', {
+          clientX: touch.clientX,
+          clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
       }
     };
     
-    const touchEndHandler = () => {
-      if (handleTouchEnd) {
-        handleTouchEnd();
-      }
+    const handleTouchEnd = (e: TouchEvent) => {
+      e.preventDefault();
+      const mouseEvent = new MouseEvent('mouseup', {});
+      canvas.dispatchEvent(mouseEvent);
     };
 
     // Add event listeners with {passive: false}
-    canvas.addEventListener('touchstart', touchStartHandler, { passive: false });
-    canvas.addEventListener('touchmove', touchMoveHandler, { passive: false });
-    canvas.addEventListener('touchend', touchEndHandler);
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
-      canvas.removeEventListener('touchstart', touchStartHandler);
-      canvas.removeEventListener('touchmove', touchMoveHandler);
-      canvas.removeEventListener('touchend', touchEndHandler);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
+  }, [canvasRef]);
 
   return (
     <canvas
