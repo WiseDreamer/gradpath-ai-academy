@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -19,30 +18,37 @@ const Dashboard: React.FC = () => {
   const { toast } = useToast();
   const iconSize = 36; 
   const iconStrokeWidth = 2;
+  const [isSigningOut, setIsSigningOut] = React.useState(false);
 
   const handleSignOut = async () => {
     try {
+      if (isSigningOut) {
+        console.log("Dashboard: Sign out already in progress");
+        return;
+      }
+      
+      setIsSigningOut(true);
       console.log("Dashboard: Sign out button clicked");
+      
       toast({
         title: "Signing out...",
         description: "Please wait while we sign you out.",
       });
       
       await signOut();
-      
-      // The AuthProvider will handle navigation, but we'll show a toast anyway
-      // in case the user still sees this component
-      toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
-      });
+      // The AuthProvider will handle navigation and toasts
     } catch (error) {
       console.error("Dashboard: Error during sign out:", error);
       toast({
         title: "Error",
-        description: "Failed to sign out. Please try again.",
+        description: "Failed to sign out. Please try again or refresh the page.",
         variant: "destructive",
       });
+    } finally {
+      // Reset state after a short delay
+      setTimeout(() => {
+        setIsSigningOut(false);
+      }, 1000);
     }
   };
 
@@ -58,7 +64,8 @@ const Dashboard: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 onClick={handleSignOut}
-                className="text-white hover:bg-white/20"
+                disabled={isSigningOut}
+                className="text-white hover:bg-white/20 disabled:opacity-50"
                 aria-label="Sign Out"
               >
                 <LogOut size={iconSize} strokeWidth={iconStrokeWidth} className="transform scale-x-[-1]" />

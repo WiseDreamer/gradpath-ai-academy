@@ -10,8 +10,27 @@ const LoginPage: React.FC = () => {
   const { session, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [authCheckComplete, setAuthCheckComplete] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   console.log("Login page rendering, session:", !!session, "loading:", loading);
+
+  // Handle URL error parameters (coming back from OAuth failures)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+    const errorDescription = params.get('error_description');
+    
+    if (error) {
+      console.log("Auth error from URL:", error, errorDescription);
+      setAuthError(errorDescription || `Authentication error: ${error}`);
+      
+      // Clear the error parameters from the URL to prevent showing the error again on refresh
+      if (window.history.replaceState) {
+        const newURL = window.location.pathname;
+        window.history.replaceState({}, document.title, newURL);
+      }
+    }
+  }, []);
 
   // Only redirect after auth loading is complete
   useEffect(() => {
@@ -53,7 +72,11 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
-      <LoginContainer isLoading={isLoading} setIsLoading={setIsLoading} />
+      <LoginContainer 
+        isLoading={isLoading} 
+        setIsLoading={setIsLoading} 
+        error={authError}
+      />
     </div>
   );
 };

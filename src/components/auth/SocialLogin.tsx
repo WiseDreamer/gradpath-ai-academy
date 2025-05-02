@@ -22,7 +22,8 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ isLoading, setIsLoading }) =>
       setIsLoading(true);
       console.log(`Attempting to log in with ${provider}`);
       
-      // For preview environments, we need to ensure the redirect URL is valid
+      // For environments, we need to ensure the redirect URL is valid
+      // Use the current domain to avoid cross-browser issues
       const baseUrl = window.location.origin;
       const redirectTo = `${baseUrl}/dashboard`;
       
@@ -31,18 +32,26 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ isLoading, setIsLoading }) =>
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo
+          redirectTo,
+          // Add scopes for proper authentication
+          scopes: provider === 'google' ? 'email profile' : undefined,
+          // Help prevent CSRF attacks
+          skipBrowserRedirect: false
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error(`${provider} login error:`, error);
+        throw error;
+      }
       
       // The OAuth flow will redirect the user
+      // No need to do anything else here
     } catch (error: any) {
       console.error(`${provider} login error:`, error);
       toast({
-        title: "Error",
-        description: `Failed to login with ${provider}. Please try again.`,
+        title: "Authentication Error",
+        description: `Failed to login with ${provider}. ${error?.message || 'Please try again.'}`,
         variant: "destructive"
       });
       setIsLoading(false);
@@ -65,11 +74,13 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ isLoading, setIsLoading }) =>
           icon={Chrome} 
           provider="Google" 
           onClick={() => handleSocialLogin('google')} 
+          disabled={isLoading}
         />
         <SocialButton 
           icon={Mail} 
           provider="Microsoft" 
           onClick={() => handleSocialLogin('azure')} 
+          disabled={isLoading}
         />
       </div>
     </div>

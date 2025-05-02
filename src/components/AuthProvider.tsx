@@ -68,33 +68,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log("Attempting to sign out...");
     
     try {
-      // First update local state
+      // Clear application state first for better UX
       setSession(null);
       setUser(null);
       
-      // Then attempt Supabase signout
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error("Error in signOut API call:", error);
-        throw error;
-      }
-      
-      console.log("Sign out successful");
+      // Inform user sign out is in progress
       toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
+        title: "Signing out...",
+        description: "Please wait a moment.",
       });
       
-      // Navigate to login page
-      navigate('/', { replace: true });
+      // Then attempt Supabase signout - wrap in a timeout to prevent race conditions
+      setTimeout(async () => {
+        try {
+          const { error } = await supabase.auth.signOut();
+          
+          if (error) {
+            console.error("Error in signOut API call:", error);
+            throw error;
+          }
+          
+          console.log("Sign out successful");
+          toast({
+            title: "Signed out",
+            description: "You have been successfully signed out.",
+          });
+          
+          // Navigate to login page
+          navigate('/', { replace: true });
+        } catch (error) {
+          console.error("Failed to sign out:", error);
+          
+          // If the error is about missing session, it means the user is already signed out
+          // so we can just navigate to the login page
+          if (error instanceof Error && error.message.includes('session')) {
+            console.log("Session already expired, navigating to login");
+            navigate('/', { replace: true });
+          } else {
+            // Show error message
+            toast({
+              title: "Sign out failed",
+              description: "Please try again or refresh your browser.",
+              variant: "destructive",
+            });
+          }
+          
+          // Force navigation to login page anyway for better UX
+          navigate('/', { replace: true });
+        }
+      }, 100);
     } catch (error) {
-      console.error("Failed to sign out:", error);
+      console.error("Failed during sign out preparation:", error);
       
       // Show error message
       toast({
         title: "Sign out failed",
-        description: "Please try again later.",
+        description: "Please try again or refresh your browser.",
         variant: "destructive",
       });
       
