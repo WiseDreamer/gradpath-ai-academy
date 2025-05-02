@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import ChatPost from './chat/ChatPost';
+import PostCard from './post/PostCard';
 
 interface Post {
   id: string;
@@ -154,7 +154,7 @@ export default function PostsSection() {
         ) : posts.length > 0 ? (
           <div className="space-y-4">
             {posts.map((post) => (
-              <ChatPost
+              <PostCard
                 key={post.id}
                 id={post.id}
                 author={post.profiles?.username ?? 'Anonymous'}
