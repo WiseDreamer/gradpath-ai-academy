@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
@@ -277,9 +276,9 @@ const MessagesPage: React.FC = () => {
         </div>
       </div>
       
-      {/* Chat content section - removed the pt-6 spacing to connect with header */}
-      <div className="mx-0 px-0 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
-        <div className={`w-full md:w-80 px-0 ${selectedContact ? 'hidden md:block' : ''}`}>
+      {/* Chat content section - updated layout */}
+      <div className="mx-0 px-0 pb-16 flex flex-col md:flex-row h-[calc(100vh-64px)]">
+        <div className={`w-full md:w-96 px-0 ${selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full overflow-hidden rounded-none md:rounded-lg">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">Messages</h2>
