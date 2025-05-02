@@ -1,14 +1,14 @@
+
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, Search, Home, Bell, Mail, User, Menu, HelpCircle, Users, ChevronLeft } from 'lucide-react';
+import { Send, Search, Menu, Mail, Bell, HelpCircle, Home, User, Users } from 'lucide-react';
 import ChatDrawer from '@/components/chat/ChatDrawer';
-import { useNavigate } from 'react-router-dom';
 
 // Mock contacts data
 const contacts = [
@@ -93,12 +93,9 @@ const MessagesPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const iconSize = 28;
-  const iconStrokeWidth = 2.5;
-
-  const openMobileMenu = () => {
-    setIsDrawerOpen(true);
-  };
+  // Consistent icon size and stroke width to match GlobalChatPage
+  const iconSize = 24;
+  const iconStrokeWidth = 2;
 
   const handleContactSelect = (contactId: string) => {
     setSelectedContact(contactId);
@@ -133,89 +130,152 @@ const MessagesPage: React.FC = () => {
 
   const selectedContactData = contacts.find(c => c.id === selectedContact);
 
+  // Navigation handler for home button
+  const handleHomeClick = () => {
+    navigate("/global-chat");
+  };
+
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-        <div className="w-full px-4">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
+        <div className="w-full mx-0">
+          <div className="flex items-center justify-between h-14">
+            {/* Left side - Logo with no padding */}
+            <div className="flex items-center pl-0">
               <Logo clickable={false} className="ml-0 pl-0" />
             </div>
-
-            <div className="hidden md:flex items-center gap-2">
-              <Link to="/messages">
-                <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
-                  location.pathname === '/messages' ? 'bg-white/20' : ''
-                }`}>
-                  <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
-              </Link>
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+            
+            {/* Center section for desktop */}
+            <div className="hidden md:flex flex-1 items-center justify-center gap-6 px-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20"
+                aria-label="Inbox"
+                onClick={() => navigate("/messages")}
+              >
+                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20" 
+                aria-label="Notifications"
+              >
                 <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20" 
+                aria-label="Help"
+              >
                 <HelpCircle size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Link to="/dashboard">
-                <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
-                  location.pathname === '/dashboard' ? 'bg-white/20' : ''
-                }`}>
-                  <Home size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
-              </Link>
+            </div>
+            
+            {/* Right side - Menu and profile buttons aligned to the right edge */}
+            <div className="hidden md:flex items-center gap-4 pr-0">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20"
+                onClick={handleHomeClick}
+              >
+                <Home size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
               <Link to="/profile">
-                <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
-                  location.pathname === '/profile' ? 'bg-white/20' : ''
-                }`}>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="rounded-full text-white hover:bg-white/20"
+                >
                   <User size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20 mr-0"
+                aria-label="Menu"
+                onClick={() => setIsDrawerOpen(true)}
+              >
+                <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
+              </Button>
             </div>
             
-            <div className="md:hidden flex items-center gap-2">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+            {/* Mobile-specific right side */}
+            <div className="md:hidden flex items-center gap-3 pr-0">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20"
+                aria-label="Search"
+              >
                 <Search size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20 mr-0"
+                onClick={() => setIsDrawerOpen(true)}
+                aria-label="Menu"
+              >
                 <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </div>
           </div>
-
-          <div className="md:hidden h-14 flex items-center justify-between border-t border-white/20 px-4">
-            <Link to="/dashboard">
-              <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
-                location.pathname === '/dashboard' ? 'bg-white/20' : ''
-              }`}>
-                <Home size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
-            </Link>
-            <Link to="/messages">
-              <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
-                location.pathname === '/messages' ? 'bg-white/20' : ''
-              }`}>
-                <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
-            </Link>
+          
+          {/* Mobile navigation buttons at bottom */}
+          <div className="md:hidden h-14 flex items-center justify-between border-t border-white/20">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="rounded-full text-white hover:bg-white/20 ml-0"
+              onClick={handleHomeClick}
+            >
+              <Home size={iconSize} strokeWidth={iconStrokeWidth} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full text-white hover:bg-white/20"
+              onClick={() => navigate("/messages")}
+              aria-label="Inbox"
+            >
+              <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+            </Button>
             <Link to="/friends">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20" 
+                aria-label="Friends"
+              >
                 <Users size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </Link>
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="rounded-full text-white hover:bg-white/20"
+            >
               <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
             </Button>
             <Link to="/profile">
-              <Button variant="ghost" size="icon" className={`rounded-full text-white hover:bg-white/20 ${
-                location.pathname === '/profile' ? 'bg-white/20' : ''
-              }`}>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="rounded-full text-white hover:bg-white/20 mr-0"
+              >
                 <User size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
             </Link>
           </div>
         </div>
       </div>
-
+      
+      {/* Chat content section */}
       <div className="mx-0 px-0 pt-6 pb-16 flex flex-col md:flex-row gap-6 h-[calc(100vh-64px)]">
         <div className={`w-full md:w-80 px-0 ${selectedContact ? 'hidden md:block' : ''}`}>
           <Card className="h-full overflow-hidden rounded-none md:rounded-lg">
