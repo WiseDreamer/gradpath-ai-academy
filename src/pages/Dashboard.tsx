@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -12,6 +13,7 @@ import Logo from '@/components/Logo';
 import { useAuth } from '@/components/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
@@ -19,6 +21,7 @@ const Dashboard: React.FC = () => {
   const iconSize = 36; 
   const iconStrokeWidth = 2;
   const [isSigningOut, setIsSigningOut] = React.useState(false);
+  const isMobile = useIsMobile();
 
   const handleSignOut = async () => {
     try {
@@ -99,10 +102,10 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-3">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Learning Resources</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">Learning Resources</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <DashboardCard
               title="Join Virtual Class"
               description="Jump into an interactive AI-powered virtual classroom"
@@ -136,9 +139,18 @@ const Dashboard: React.FC = () => {
             />
           </div>
           
-          <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center mt-4">Recent Modules</h2>
+          <div className="mt-2">
             <AiTutorTab />
           </div>
+
+          {isMobile && (
+            <div className="flex justify-center mt-4 mb-6">
+              <Button className="w-full max-w-xs bg-gradpath-purple hover:bg-gradpath-dark-purple">
+                View All Modules
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
