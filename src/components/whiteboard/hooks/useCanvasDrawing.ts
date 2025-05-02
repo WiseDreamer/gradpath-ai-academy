@@ -1,5 +1,5 @@
 
-import { RefObject, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { CanvasRefType, ContextRefType, DrawingStateRefType, Tool, ThemeMode } from '../types';
 
 interface UseCanvasDrawingProps {
@@ -24,26 +24,43 @@ export const useCanvasDrawing = ({
   themeMode,
 }: UseCanvasDrawingProps) => {
   
-  // Update drawing configuration when tool changes
+  // Update drawing configuration when tool or colors change
   useEffect(() => {
     if (!contextRef.current) return;
     
-    if (activeTool === 'pen') {
-      contextRef.current.strokeStyle = penColor;
-      contextRef.current.lineWidth = penSize;
-      contextRef.current.globalAlpha = 1;
-    } else if (activeTool === 'highlighter') {
-      contextRef.current.strokeStyle = highlighterColor;
-      contextRef.current.lineWidth = penSize * 3;
-      contextRef.current.globalAlpha = 0.5;
-    } else if (activeTool === 'eraser') {
-      contextRef.current.strokeStyle = themeMode === 'light' ? '#FFFFFF' : '#2d2d2d';
-      contextRef.current.lineWidth = penSize * 2;
-      contextRef.current.globalAlpha = 1;
-    }
-  }, [activeTool, penColor, highlighterColor, penSize, themeMode]);
+    // Configure context based on active tool
+    configureContext(contextRef.current, activeTool, penColor, highlighterColor, penSize, themeMode);
+    
+  }, [activeTool, penColor, highlighterColor, penSize, themeMode, contextRef]);
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  // Helper function to configure context based on the selected tool
+  const configureContext = (
+    context: CanvasRenderingContext2D, 
+    tool: Tool, 
+    pen: string, 
+    highlighter: string, 
+    size: number, 
+    theme: ThemeMode
+  ) => {
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    
+    if (tool === 'pen') {
+      context.strokeStyle = pen;
+      context.lineWidth = size;
+      context.globalAlpha = 1;
+    } else if (tool === 'highlighter') {
+      context.strokeStyle = highlighter;
+      context.lineWidth = size * 3;
+      context.globalAlpha = 0.5;
+    } else if (tool === 'eraser') {
+      context.strokeStyle = theme === 'light' ? '#FFFFFF' : '#2d2d2d';
+      context.lineWidth = size * 2;
+      context.globalAlpha = 1;
+    }
+  };
+
+  const startDrawing = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !contextRef.current || activeTool === 'none') return;
     
     const canvas = canvasRef.current;
@@ -51,27 +68,18 @@ export const useCanvasDrawing = ({
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
+    // Make sure to configure context right before drawing
+    configureContext(contextRef.current, activeTool, penColor, highlighterColor, penSize, themeMode);
+    
     contextRef.current.beginPath();
     contextRef.current.moveTo(x, y);
     isDrawing.current = true;
     
-    // Re-apply styles when starting to draw
-    if (activeTool === 'pen') {
-      contextRef.current.strokeStyle = penColor;
-      contextRef.current.lineWidth = penSize;
-      contextRef.current.globalAlpha = 1;
-    } else if (activeTool === 'highlighter') {
-      contextRef.current.strokeStyle = highlighterColor;
-      contextRef.current.lineWidth = penSize * 3;
-      contextRef.current.globalAlpha = 0.5;
-    } else if (activeTool === 'eraser') {
-      contextRef.current.strokeStyle = themeMode === 'light' ? '#FFFFFF' : '#2d2d2d';
-      contextRef.current.lineWidth = penSize * 2;
-      contextRef.current.globalAlpha = 1;
-    }
-  };
+    // Prevent default behavior to avoid text selection while drawing
+    e.preventDefault();
+  }, [canvasRef, contextRef, isDrawing, activeTool, penColor, highlighterColor, penSize, themeMode]);
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing.current || !canvasRef.current || !contextRef.current || activeTool === 'none') return;
     
     const canvas = canvasRef.current;
@@ -81,14 +89,15 @@ export const useCanvasDrawing = ({
     
     contextRef.current.lineTo(x, y);
     contextRef.current.stroke();
-  };
+    e.preventDefault();
+  }, [canvasRef, contextRef, isDrawing, activeTool]);
 
-  const finishDrawing = () => {
-    if (contextRef.current) {
-      contextRef.current.closePath();
-    }
+  const finishDrawing = useCallback(() => {
+    if (!contextRef.current) return;
+    
+    contextRef.current.closePath();
     isDrawing.current = false;
-  };
+  }, [contextRef, isDrawing]);
 
   return {
     startDrawing,

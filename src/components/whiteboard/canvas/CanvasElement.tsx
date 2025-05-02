@@ -17,6 +17,9 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
   draw,
   finishDrawing
 }) => {
+  // Set background color based on theme
+  const backgroundColor = themeMode === 'light' ? '#ffffff' : '#2d2d2d';
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -25,9 +28,11 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
       e.preventDefault();
       if (e.touches && e.touches[0]) {
         const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
         const mouseEvent = new MouseEvent('mousedown', {
           clientX: touch.clientX,
-          clientY: touch.clientY
+          clientY: touch.clientY,
+          bubbles: true
         });
         canvas.dispatchEvent(mouseEvent);
       }
@@ -37,9 +42,11 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
       e.preventDefault();
       if (e.touches && e.touches[0]) {
         const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
         const mouseEvent = new MouseEvent('mousemove', {
           clientX: touch.clientX,
-          clientY: touch.clientY
+          clientY: touch.clientY,
+          bubbles: true
         });
         canvas.dispatchEvent(mouseEvent);
       }
@@ -47,7 +54,9 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
     
     const handleTouchEnd = (e: TouchEvent) => {
       e.preventDefault();
-      const mouseEvent = new MouseEvent('mouseup', {});
+      const mouseEvent = new MouseEvent('mouseup', {
+        bubbles: true
+      });
       canvas.dispatchEvent(mouseEvent);
     };
 
@@ -71,7 +80,7 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
       onMouseUp={finishDrawing}
       onMouseLeave={finishDrawing}
       className="w-full h-full absolute top-0 left-0 cursor-crosshair z-0"
-      style={{ backgroundColor: themeMode === 'light' ? '#ffffff' : '#2d2d2d' }}
+      style={{ backgroundColor }}
     />
   );
 };

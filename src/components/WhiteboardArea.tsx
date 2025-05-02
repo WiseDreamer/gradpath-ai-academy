@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { WhiteboardToolbar, WhiteboardCanvas, WhiteboardControlBar } from '@/components/whiteboard';
 
@@ -31,11 +30,47 @@ const WhiteboardArea: React.FC = () => {
     
     if (!context) return;
     
+    // Set up the drawing context
     context.lineCap = 'round';
-    context.strokeStyle = penColor;
-    context.lineWidth = penSize;
+    context.lineJoin = 'round';
+    
+    if (activeTool === 'pen') {
+      context.strokeStyle = penColor;
+      context.lineWidth = penSize;
+      context.globalAlpha = 1;
+    } else if (activeTool === 'highlighter') {
+      context.strokeStyle = highlighterColor;
+      context.lineWidth = penSize * 3;
+      context.globalAlpha = 0.5;
+    } else if (activeTool === 'eraser') {
+      context.strokeStyle = themeMode === 'light' ? '#ffffff' : '#2d2d2d';
+      context.lineWidth = penSize * 2;
+      context.globalAlpha = 1;
+    }
+    
     contextRef.current = context;
-  }, []);
+  }, [activeTool, penColor, highlighterColor, penSize, themeMode]);
+  
+  // Theme change effect
+  useEffect(() => {
+    if (themeMode === 'dark') {
+      setPenColor('#ffffff');
+    } else {
+      setPenColor('#000000');
+    }
+    
+    // Redraw with new color when theme changes
+    if (canvasRef.current && contextRef.current) {
+      const canvas = canvasRef.current;
+      const existingImageData = contextRef.current.getImageData(0, 0, canvas.width, canvas.height);
+      
+      setTimeout(() => {
+        if (canvasRef.current && contextRef.current) {
+          contextRef.current.putImageData(existingImageData, 0, 0);
+        }
+      }, 0);
+    }
+  }, [themeMode]);
   
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -97,13 +132,6 @@ const WhiteboardArea: React.FC = () => {
   
   const handleThemeChange = (theme: ThemeMode) => {
     setThemeMode(theme);
-    
-    // Update pen color based on theme
-    if (theme === 'dark') {
-      setPenColor('#ffffff');
-    } else {
-      setPenColor('#000000');
-    }
   };
 
   const toggleFullscreen = () => {
