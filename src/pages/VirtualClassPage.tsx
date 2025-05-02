@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import BackIcon from '@/components/BackIcon';
@@ -105,30 +104,30 @@ const VirtualClassPage: React.FC = () => {
         <NavBar variant="learning" />
       )}
 
-      <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-4 p-4">
+      <div className="flex flex-col w-full">
+        <div className="flex flex-col md:flex-row w-full">
           {isMobile && (
-            <div className="w-full bg-white rounded-t-xl shadow-sm border border-gray-100 p-4">
+            <div className="w-full bg-white rounded-t-xl shadow-sm border border-gray-100 p-4 mx-0">
               <h1 className="text-2xl font-bold text-center">Linear Algebra - Virtual Class</h1>
               <p className="text-gray-600 text-center">University of Oxford, Mathematics</p>
             </div>
           )}
           
-          <div className="flex-1">
+          <div className="w-full">
             <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-[500px] md:min-h-[600px]">
               <WhiteboardArea />
             </div>
           </div>
 
-          <div className="w-full md:w-96 flex flex-col">
+          <div className="w-full md:w-96">
             {!isMobile && (
-              <div className="order-first md:order-none bg-white rounded-t-xl shadow-sm border border-gray-100 p-4">
+              <div className="w-full bg-white rounded-t-xl shadow-sm border border-gray-100 p-4">
                 <h1 className="text-2xl font-bold text-center">Linear Algebra - Virtual Class</h1>
                 <p className="text-gray-600 text-center">University of Oxford, Mathematics</p>
               </div>
             )}
             
-            <div className="bg-white rounded-b-xl shadow-sm border border-t-0 border-gray-100 overflow-hidden flex flex-col">
+            <div className="w-full bg-white rounded-b-xl shadow-sm border border-t-0 border-gray-100 overflow-hidden flex flex-col">
               <Tabs defaultValue="questions" className="w-full h-full flex flex-col">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="questions" onClick={() => setActiveTab('questions')}>
