@@ -97,6 +97,46 @@ const WhiteboardArea: React.FC = () => {
     setIsFullscreen(!isFullscreen);
   };
 
+  // Define the drawing functions needed by WhiteboardCanvas
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!canvasRef.current || !contextRef.current || activeTool === 'none') return;
+    
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Configure context based on active tool
+    if (contextRef.current) {
+      contextRef.current.beginPath();
+      contextRef.current.moveTo(x, y);
+      isDrawing.current = true;
+    }
+    
+    // Prevent default behavior to avoid text selection while drawing
+    e.preventDefault();
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing.current || !canvasRef.current || !contextRef.current || activeTool === 'none') return;
+    
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    contextRef.current.lineTo(x, y);
+    contextRef.current.stroke();
+    e.preventDefault();
+  };
+
+  const finishDrawing = () => {
+    if (!contextRef.current) return;
+    
+    contextRef.current.closePath();
+    isDrawing.current = false;
+  };
+
   return (
     <div 
       ref={whiteboardRef}
@@ -127,6 +167,9 @@ const WhiteboardArea: React.FC = () => {
           isMicOn={isMicOn}
           setIsHandRaised={setIsHandRaised}
           setIsPlaying={setIsPlaying}
+          startDrawing={startDrawing}
+          draw={draw}
+          finishDrawing={finishDrawing}
         />
         
         {!isFullscreen && (
