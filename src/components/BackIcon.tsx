@@ -5,10 +5,14 @@ import { ChevronLeft } from "lucide-react";
 
 interface BackIconProps {
   className?: string;
+  visible?: boolean;
 }
 
-const BackIcon: React.FC<BackIconProps> = ({ className }) => {
+const BackIcon: React.FC<BackIconProps> = ({ className, visible = true }) => {
   const navigate = useNavigate();
+  
+  if (!visible) return null;
+  
   return (
     <button
       type="button"
