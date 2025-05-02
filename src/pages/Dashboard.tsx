@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -10,12 +11,30 @@ import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
 import { useAuth } from '@/components/AuthProvider';
+import { useToast } from '@/hooks/use-toast';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 
 const Dashboard: React.FC = () => {
   const { signOut } = useAuth();
-  const iconSize = 36; // Increased from 32
-  const iconStrokeWidth = 2; // Slightly reduced to keep icons clear at larger size
+  const { toast } = useToast();
+  const iconSize = 36; 
+  const iconStrokeWidth = 2;
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
@@ -26,7 +45,7 @@ const Dashboard: React.FC = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={signOut}
+                onClick={handleSignOut}
                 className="text-white hover:bg-white/20"
                 aria-label="Sign Out"
               >

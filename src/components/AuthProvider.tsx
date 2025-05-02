@@ -8,6 +8,7 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   signOut: () => Promise<void>;
+  loading: boolean; // Added loading state to prevent premature redirects
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
+      setLoading(false); // Set loading to false once we know the session state
     });
 
     return () => {
@@ -42,11 +45,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [navigate]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+        throw error;
+      }
+      // We'll let the onAuthStateChange listener handle the navigation
+    } catch (error) {
+      console.error('Failed to sign out:', error);
+      // Force navigation even if sign-out fails
+      navigate('/');
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, signOut }}>
+    <AuthContext.Provider value={{ session, user, signOut, loading }}>
       {children}
     </AuthContext.Provider>
   );

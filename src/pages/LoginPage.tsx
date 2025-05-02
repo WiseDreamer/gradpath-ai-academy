@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,7 @@ type SupportedProvider = 'google' | 'azure';
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { session } = useAuth();
+  const { session, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,12 +25,14 @@ const LoginPage: React.FC = () => {
     password?: string;
   }>({});
 
-  // Redirect if already logged in
+  // Redirect if already logged in, but only after auth loading is complete
   useEffect(() => {
+    if (loading) return; // Don't redirect while still loading auth state
+    
     if (session) {
       navigate('/dashboard');
     }
-  }, [session, navigate]);
+  }, [session, navigate, loading]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,6 +60,12 @@ const LoginPage: React.FC = () => {
       });
       
       if (error) throw error;
+      
+      // Show success message
+      toast({
+        title: "Success",
+        description: "You have been successfully logged in.",
+      });
       
       // Successful login will be handled by the AuthProvider
       // which will redirect to dashboard
@@ -95,6 +102,16 @@ const LoginPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  // Display loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
+        <Logo color="purple" className="mb-4" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
