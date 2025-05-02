@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,36 +6,28 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send, MessageSquare, BarChart2, BookOpen } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import DashboardCard from '@/components/DashboardCard';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-const recentModules = [
-  { name: 'Calculus I', progress: 65, lastAccessed: '2 days ago' },
-  { name: 'Linear Algebra', progress: 45, lastAccessed: '1 week ago' },
-  { name: 'Statistics', progress: 30, lastAccessed: '3 days ago' },
-];
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+const recentModules = [{
+  name: 'Calculus I',
+  progress: 65,
+  lastAccessed: '2 days ago'
+}, {
+  name: 'Linear Algebra',
+  progress: 45,
+  lastAccessed: '1 week ago'
+}, {
+  name: 'Statistics',
+  progress: 30,
+  lastAccessed: '3 days ago'
+}];
 const AiTutorTab = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  return (
-    <div className="space-y-8">
+  return <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <div className="contents">
-              <DashboardCard
-                title="Ask AI Tutor"
-                description="Get instant help with your questions"
-                icon={MessageSquare}
-                to="#"
-                color="bg-gradpath-purple"
-              />
+              <DashboardCard title="Ask AI Tutor" description="Get instant help with your questions" icon={MessageSquare} to="#" color="bg-gradpath-purple" />
             </div>
           </DialogTrigger>
 
@@ -56,10 +47,7 @@ const AiTutorTab = () => {
             
             <div className="pt-4 mt-4 border-t">
               <div className="flex gap-3">
-                <Textarea 
-                  placeholder="Type your question here..."
-                  className="min-h-[80px]"
-                />
+                <Textarea placeholder="Type your question here..." className="min-h-[80px]" />
                 <Button className="self-end">
                   <Send className="h-4 w-4" />
                 </Button>
@@ -68,24 +56,17 @@ const AiTutorTab = () => {
           </DialogContent>
         </Dialog>
 
-        <DashboardCard
-          title="Track My Performance"
-          description="View your learning progress and analytics"
-          icon={BarChart2}
-          to="/performance"
-          color="bg-green-500"
-        />
+        <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart2} to="/performance" color="bg-green-500" />
       </div>
 
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-gradpath-purple" />
-          <h3 className="text-lg font-semibold">Recent Modules</h3>
+          <h3 className="text-lg font-semibold">              Recent Modules</h3>
         </div>
         
         <div className="grid grid-cols-1 gap-4">
-          {recentModules.map((module) => (
-            <Card key={module.name} className="hover:shadow-md transition-shadow duration-200">
+          {recentModules.map(module => <Card key={module.name} className="hover:shadow-md transition-shadow duration-200">
               <CardContent className="p-4">
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="font-medium">{module.name}</h4>
@@ -99,12 +80,9 @@ const AiTutorTab = () => {
                   <Progress value={module.progress} className="h-2" />
                 </div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default AiTutorTab;
