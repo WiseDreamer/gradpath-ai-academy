@@ -14,6 +14,19 @@ export default function ProtectedRoute() {
     console.log("ProtectedRoute state:", { hasSession: !!session, loading });
   }, [session, loading]);
   
+  // When auth loading is finished, check if user is authenticated
+  useEffect(() => {
+    if (!loading && !session && !redirected) {
+      console.log("No session found in protected route, will redirect");
+      setRedirected(true);
+      toast({
+        title: "Authentication required",
+        description: "Please log in to access this page",
+        variant: "destructive",
+      });
+    }
+  }, [loading, session, redirected, toast]);
+  
   // If still loading auth state, show loading indicator
   if (loading) {
     return (
@@ -27,16 +40,8 @@ export default function ProtectedRoute() {
   }
   
   // Once loading is complete, if no session, redirect to login
-  if (!session && !redirected) {
-    console.log("No session found, redirecting to login");
-    // Set redirected flag to prevent toast from showing multiple times
-    setRedirected(true);
-    
-    toast({
-      title: "Authentication required",
-      description: "Please log in to access this page",
-      variant: "destructive",
-    });
+  if (!session) {
+    console.log("No auth session, redirecting to login page");
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

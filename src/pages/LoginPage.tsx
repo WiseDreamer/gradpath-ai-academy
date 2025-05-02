@@ -25,22 +25,22 @@ const LoginPage: React.FC = () => {
     email?: string;
     password?: string;
   }>({});
-  const [redirectAttempted, setRedirectAttempted] = useState(false);
+  const [authCheckComplete, setAuthCheckComplete] = useState(false);
 
   console.log("Login page rendering, session:", !!session, "loading:", loading);
 
-  // Redirect if already logged in, but only after auth loading is complete
+  // Only redirect after auth loading is complete
   useEffect(() => {
-    if (loading) {
-      console.log("Auth state still loading, waiting...");
-      return;
-    }
-    
-    if (session) {
-      console.log("Session found, redirecting to dashboard");
-      navigate('/dashboard', { replace: true });
-    } else {
-      console.log("No session found, staying on login page");
+    if (!loading) {
+      console.log("Auth loading complete on login page");
+      setAuthCheckComplete(true);
+      
+      if (session) {
+        console.log("Session found, redirecting to dashboard");
+        navigate('/dashboard', { replace: true });
+      } else {
+        console.log("No session found, staying on login page");
+      }
     }
   }, [session, navigate, loading]);
   
@@ -112,8 +112,7 @@ const LoginPage: React.FC = () => {
       
       if (error) throw error;
       
-      // The OAuth flow will redirect the user, so we don't need to handle success here
-      setRedirectAttempted(true);
+      // The OAuth flow will redirect the user
     } catch (error: any) {
       console.error(`${provider} login error:`, error);
       toast({
@@ -136,10 +135,16 @@ const LoginPage: React.FC = () => {
     );
   }
 
-  // If already authenticated, don't render the login form
-  if (session) {
+  // If already authenticated and auth check is complete, don't render the login form
+  if (session && authCheckComplete) {
     console.log("Session found in login page render, should redirect soon");
-    return null;
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center p-4">
+        <Logo color="purple" className="mb-4" />
+        <div className="w-8 h-8 border-4 border-gradpath-purple border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
+      </div>
+    );
   }
 
   return (
