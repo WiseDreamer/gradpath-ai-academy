@@ -33,6 +33,8 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentSubmit }) =>
       </Avatar>
       <div className="flex-1 flex">
         <Input 
+          id="comment-input"
+          name="comment"
           placeholder="Write a comment..." 
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
