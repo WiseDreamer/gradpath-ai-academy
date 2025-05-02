@@ -132,7 +132,6 @@ const MessagesPage: React.FC = () => {
   };
 
   const selectedContactData = contacts.find(c => c.id === selectedContact);
-  const showBack = location.pathname !== "/dashboard";
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
@@ -140,12 +139,7 @@ const MessagesPage: React.FC = () => {
         <div className="w-full px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              {showBack && (
-                <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-1 hover:bg-white/20">
-                  <ChevronLeft size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
-              )}
-              <Logo clickable={false} />
+              <Logo clickable={false} className="ml-0 pl-0" />
             </div>
 
             <div className="hidden md:flex items-center gap-2">
