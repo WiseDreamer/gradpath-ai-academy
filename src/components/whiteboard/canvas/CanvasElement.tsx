@@ -20,6 +20,37 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
   // Set background color based on theme
   const backgroundColor = themeMode === 'light' ? '#ffffff' : '#2d2d2d';
   
+  // Apply background color when theme changes
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext('2d');
+    
+    if (canvas && context) {
+      // Store current drawing if canvas has valid dimensions
+      let imageData = null;
+      try {
+        if (canvas.width > 0 && canvas.height > 0) {
+          imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        }
+      } catch (e) {
+        console.error("Failed to get image data: ", e);
+      }
+      
+      // Change background by drawing a rectangle
+      context.fillStyle = backgroundColor;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Restore drawing if we had valid image data
+      if (imageData) {
+        try {
+          context.putImageData(imageData, 0, 0);
+        } catch (e) {
+          console.error("Failed to restore image data: ", e);
+        }
+      }
+    }
+  }, [themeMode, backgroundColor, canvasRef]);
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -42,7 +73,6 @@ export const CanvasElement: React.FC<CanvasElementProps> = ({
       e.preventDefault();
       if (e.touches && e.touches[0]) {
         const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
         const mouseEvent = new MouseEvent('mousemove', {
           clientX: touch.clientX,
           clientY: touch.clientY,

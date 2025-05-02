@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { WhiteboardToolbar, WhiteboardCanvas, WhiteboardControlBar } from '@/components/whiteboard';
 
@@ -23,12 +24,9 @@ const WhiteboardArea: React.FC = () => {
   const whiteboardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !contextRef.current) return;
     
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    
-    if (!context) return;
+    const context = contextRef.current;
     
     // Set up the drawing context
     context.lineCap = 'round';
@@ -47,8 +45,6 @@ const WhiteboardArea: React.FC = () => {
       context.lineWidth = penSize * 2;
       context.globalAlpha = 1;
     }
-    
-    contextRef.current = context;
   }, [activeTool, penColor, highlighterColor, penSize, themeMode]);
   
   // Theme change effect
@@ -59,17 +55,8 @@ const WhiteboardArea: React.FC = () => {
       setPenColor('#000000');
     }
     
-    // Redraw with new color when theme changes
-    if (canvasRef.current && contextRef.current) {
-      const canvas = canvasRef.current;
-      const existingImageData = contextRef.current.getImageData(0, 0, canvas.width, canvas.height);
-      
-      setTimeout(() => {
-        if (canvasRef.current && contextRef.current) {
-          contextRef.current.putImageData(existingImageData, 0, 0);
-        }
-      }, 0);
-    }
+    // Don't try to access image data here as the canvas might not be ready
+    // Canvas bg color is handled in CanvasElement
   }, [themeMode]);
   
   const togglePlay = () => {
@@ -87,43 +74,15 @@ const WhiteboardArea: React.FC = () => {
     }
   };
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (activeTool === 'none' || !contextRef.current || !canvasRef.current) return;
-    
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(x, y);
-    isDrawing.current = true;
-  };
-
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing.current || activeTool === 'none' || !contextRef.current || !canvasRef.current) return;
-    
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    contextRef.current.lineTo(x, y);
-    contextRef.current.stroke();
-  };
-
-  const finishDrawing = () => {
-    if (contextRef.current) {
-      contextRef.current.closePath();
-    }
-    isDrawing.current = false;
-  };
-
   const clearCanvas = () => {
     if (!canvasRef.current || !contextRef.current) return;
     
     const canvas = canvasRef.current;
-    contextRef.current.clearRect(0, 0, canvas.width, canvas.height);
+    const context = contextRef.current;
+    
+    // Clear with the appropriate background color
+    context.fillStyle = themeMode === 'light' ? '#ffffff' : '#2d2d2d';
+    context.fillRect(0, 0, canvas.width, canvas.height);
   };
 
   const handleToolChange = (tool: Tool) => {
@@ -162,9 +121,6 @@ const WhiteboardArea: React.FC = () => {
           canvasRef={canvasRef}
           contextRef={contextRef}
           isDrawing={isDrawing}
-          startDrawing={startDrawing}
-          draw={draw}
-          finishDrawing={finishDrawing}
           isPlaying={isPlaying}
           isHandRaised={isHandRaised}
           toggleMic={toggleMic}
