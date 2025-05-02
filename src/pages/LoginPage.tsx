@@ -11,6 +11,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/AuthProvider';
 
+// Updated type definition to match Supabase's supported providers
+type SupportedProvider = 'google' | 'azure';
+
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -71,7 +74,7 @@ const LoginPage: React.FC = () => {
     }
   };
   
-  const handleSocialLogin = async (provider: 'google' | 'microsoft') => {
+  const handleSocialLogin = async (provider: SupportedProvider) => {
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
@@ -156,7 +159,7 @@ const LoginPage: React.FC = () => {
               <SocialButton 
                 icon={Mail} 
                 provider="Microsoft" 
-                onClick={() => handleSocialLogin('microsoft')} 
+                onClick={() => handleSocialLogin('azure')} 
               />
             </div>
           </div>
