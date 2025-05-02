@@ -9,7 +9,7 @@ interface LogoProps {
   clickable?: boolean;
 }
 
-const Logo: React.FC<LogoProps> = ({ className, color = 'white' }) => {
+const Logo: React.FC<LogoProps> = ({ className, color = 'white', clickable = true }) => {
   const textColor = color === 'purple' ? 'text-gradpath-purple' : 'text-white';
   const iconColor = color === 'purple' ? 'text-gradpath-purple' : 'text-white';
   
