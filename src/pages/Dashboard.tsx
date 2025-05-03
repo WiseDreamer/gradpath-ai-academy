@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
+import { MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DashboardCard from '@/components/DashboardCard';
 import Logo from '@/components/Logo';
@@ -9,20 +10,18 @@ import { useToast } from '@/hooks/use-toast';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useNotifications } from '@/hooks/useNotifications';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import NavBar from '@/components/NavBar';
 
 const Dashboard: React.FC = () => {
-  const {
-    signOut,
-    user
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
-  const iconSize = 36;
-  const iconStrokeWidth = 2;
-  const [isSigningOut, setIsSigningOut] = React.useState(false);
+  const { signOut, user } = useAuth();
+  const { toast } = useToast();
   const isMobile = useIsMobile();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const { notifications, unreadCount } = useNotifications();
+  const { userProfile } = useUserProfile();
 
   // Add loading effect to simulate content load and prevent flash
   useEffect(() => {
@@ -84,37 +83,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
-      <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-        <div className="w-full px-0 mx-0">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center">
-              <Button variant="ghost" size="icon" onClick={handleSignOut} disabled={isSigningOut} className="text-white hover:bg-white/20 disabled:opacity-50" aria-label="Sign Out">
-                <LogOut size={iconSize} strokeWidth={iconStrokeWidth} className="transform scale-x-[-1]" />
-              </Button>
-              <Logo clickable={false} />
-            </div>
-            <div className="flex items-center gap-2">
-              <Link to="/global-chat">
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Global Chat">
-                  <MessageCircle size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
-              </Link>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Notifications">
-                <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
-              <Link to="/profile">
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="User Profile">
-                  <User size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
-              </Link>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="Menu">
-                <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <NavBar />
+      
       <div className="container mx-auto px-4 py-0">
         <div className="max-w-7xl mx-auto">
           {/* Learning Resources Section */}

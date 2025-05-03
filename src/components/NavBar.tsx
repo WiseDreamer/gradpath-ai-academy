@@ -1,10 +1,16 @@
 
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Bell, User, Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
+import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
+import { useNotifications } from '@/hooks/useNotifications';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useIsMobile } from '@/hooks/use-mobile';
+import DesktopNotifications from './notifications/DesktopNotifications';
+import MobileNotifications from './notifications/MobileNotifications';
+import ProfileMenu from './profile/ProfileMenu';
 
 interface NavBarProps {
   openMobileMenu?: () => void;
@@ -15,12 +21,25 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 'learning' }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const showBack = location.pathname !== "/dashboard";
+
+  const { 
+    notifications, 
+    unreadCount, 
+    loading: loadingNotifications, 
+    markAsRead 
+  } = useNotifications();
+  
+  const { 
+    userProfile, 
+    loading: loadingProfile 
+  } = useUserProfile();
 
   const isActive = (path: string) => location.pathname === path || currentPage === path;
 
   const iconProps = { 
-    size: 36,  // Increased icon size
+    size: 36,
     strokeWidth: 2.5
   };
 
@@ -53,14 +72,22 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
           </div>
           {/* Bottom Section */}
           <div className="h-16 flex items-center justify-between border-t border-white/20 px-0">
-            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 ml-0">
-              <Bell {...iconProps} />
-            </Button>
-            <Link to="/profile">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0">
-                <User {...iconProps} />
-              </Button>
-            </Link>
+            {isMobile ? (
+              <MobileNotifications
+                notifications={notifications}
+                unreadCount={unreadCount}
+                onMarkAsRead={markAsRead}
+                loadingNotifications={loadingNotifications}
+              />
+            ) : (
+              <DesktopNotifications
+                notifications={notifications}
+                unreadCount={unreadCount}
+                onMarkAsRead={markAsRead}
+                loadingNotifications={loadingNotifications}
+              />
+            )}
+            <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
           </div>
         </div>
       </div>
@@ -90,37 +117,47 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
                     <Mail {...iconProps} />
                   </Button>
                 </Link>
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <Bell {...iconProps} />
-                </Button>
+                {isMobile ? (
+                  <MobileNotifications
+                    notifications={notifications}
+                    unreadCount={unreadCount}
+                    onMarkAsRead={markAsRead}
+                    loadingNotifications={loadingNotifications}
+                  />
+                ) : (
+                  <DesktopNotifications
+                    notifications={notifications}
+                    unreadCount={unreadCount}
+                    onMarkAsRead={markAsRead}
+                    loadingNotifications={loadingNotifications}
+                  />
+                )}
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                   <HelpCircle {...iconProps} />
                 </Button>
-                <Link to="/profile">
-                  <Button variant="ghost" size="icon" className={cn(
-                    "rounded-full text-white hover:bg-white/20",
-                    isActive('/profile') && "bg-white/20"
-                  )}>
-                    <User {...iconProps} />
-                  </Button>
-                </Link>
+                <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
                   <Menu {...iconProps} />
                 </Button>
               </>
             ) : (
               <>
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <Bell {...iconProps} />
-                </Button>
-                <Link to="/profile">
-                  <Button variant="ghost" size="icon" className={cn(
-                    "rounded-full text-white hover:bg-white/20",
-                    isActive('/profile') && "bg-white/20"
-                  )}>
-                    <User {...iconProps} />
-                  </Button>
-                </Link>
+                {isMobile ? (
+                  <MobileNotifications
+                    notifications={notifications}
+                    unreadCount={unreadCount}
+                    onMarkAsRead={markAsRead}
+                    loadingNotifications={loadingNotifications}
+                  />
+                ) : (
+                  <DesktopNotifications
+                    notifications={notifications}
+                    unreadCount={unreadCount}
+                    onMarkAsRead={markAsRead}
+                    loadingNotifications={loadingNotifications}
+                  />
+                )}
+                <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
                   <Menu {...iconProps} />
                 </Button>
@@ -130,9 +167,21 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
         </div>
         {/* Mobile nav */}
         <div className="md:hidden h-16 flex items-center justify-between border-t border-white/20">
-          <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 ml-0">
-            <Bell {...iconProps} />
-          </Button>
+          {isMobile ? (
+            <MobileNotifications
+              notifications={notifications}
+              unreadCount={unreadCount}
+              onMarkAsRead={markAsRead}
+              loadingNotifications={loadingNotifications}
+            />
+          ) : (
+            <DesktopNotifications
+              notifications={notifications}
+              unreadCount={unreadCount}
+              onMarkAsRead={markAsRead}
+              loadingNotifications={loadingNotifications}
+            />
+          )}
           {variant === 'social' ? (
             <>
               <Link to="/messages">
@@ -148,14 +197,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobileMenu, currentPage, variant = 
               </Button>
             </>
           ) : null}
-          <Link to="/profile">
-            <Button variant="ghost" size="icon" className={cn(
-              "rounded-full text-white hover:bg-white/20 mr-0",
-              isActive('/profile') && "bg-white/20"
-            )}>
-              <User {...iconProps} />
-            </Button>
-          </Link>
+          <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
         </div>
       </div>
     </div>
