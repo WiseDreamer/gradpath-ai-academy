@@ -30,7 +30,7 @@ const DesktopNotifications: React.FC<DesktopNotificationsProps> = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/20">
-          <Bell size={36} strokeWidth={2} />
+          <Bell className="w-8 h-8" strokeWidth={2} />
           <NotificationBadge count={unreadCount} />
         </Button>
       </PopoverTrigger>

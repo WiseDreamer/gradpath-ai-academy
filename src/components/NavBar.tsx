@@ -10,11 +10,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import DesktopNotifications from './notifications/DesktopNotifications';
 import MobileNotifications from './notifications/MobileNotifications';
 import ProfileMenu from './profile/ProfileMenu';
+
 interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
   variant?: 'learning' | 'social' | 'ai-tutor';
 }
+
 const NavBar: React.FC<NavBarProps> = ({
   openMobileMenu,
   currentPage,
@@ -39,6 +41,7 @@ const NavBar: React.FC<NavBarProps> = ({
     size: 36,
     strokeWidth: 2.5
   };
+
   if (variant === 'ai-tutor') {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -53,10 +56,10 @@ const NavBar: React.FC<NavBarProps> = ({
             </div>
             <div className="flex items-center gap-2 mr-0">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Search {...iconProps} />
+                <Search className="w-8 h-8" />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
-                <Menu {...iconProps} />
+                <Menu className="w-8 h-8" />
               </Button>
             </div>
           </div>
@@ -68,6 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({
         </div>
       </div>;
   }
+  
   return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
@@ -81,29 +85,28 @@ const NavBar: React.FC<NavBarProps> = ({
             {variant === 'social' ? <>
                 <Link to="/messages">
                   <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
-                    <Mail {...iconProps} />
+                    <Mail className="w-8 h-8" />
                   </Button>
                 </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                  <HelpCircle {...iconProps} />
+                  <HelpCircle className="w-8 h-8" />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
-                  <Menu {...iconProps} />
+                  <Menu className="w-8 h-8" />
                 </Button>
               </> : <>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
-                  <Menu {...iconProps} />
+                  <Menu className="w-8 h-8" />
                 </Button>
               </>}
           </div>
         </div>
-        {/* Mobile nav */}
-        
       </div>
     </div>;
 };
+
 export default NavBar;
