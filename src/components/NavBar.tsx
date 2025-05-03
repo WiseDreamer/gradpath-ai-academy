@@ -46,14 +46,14 @@ const NavBar: React.FC<NavBarProps> = ({
           <div className="flex items-center justify-between h-20 px-0">
             <div className="flex items-center gap-1">
               <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="hover:bg-white/20 ml-0 px-0">
-                <ChevronLeft className="w-12 h-12" strokeWidth={1.5} />
+                <ChevronLeft size={36} strokeWidth={1.5} />
               </Button>
               <Logo clickable={false} />
               <span className="text-lg font-medium ml-2">AI Tutor</span>
             </div>
             <div className="flex items-center gap-2 mr-0">
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                <Search className="w-12 h-12" strokeWidth={1.5} />
+                <Search size={36} strokeWidth={1.5} />
               </Button>
               <Button 
                 variant="ghost" 
@@ -61,7 +61,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 className="rounded-full text-white hover:bg-white/20 mr-0" 
                 onClick={openMobileMenu}
               >
-                <Menu className="w-12 h-12" strokeWidth={1.5} />
+                <Menu size={36} strokeWidth={1.5} />
               </Button>
             </div>
           </div>
@@ -79,7 +79,7 @@ const NavBar: React.FC<NavBarProps> = ({
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-1">
             {showBack && <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="hover:bg-white/20 ml-0">
-                <ChevronLeft className="w-12 h-12" strokeWidth={1.5} />
+                <ChevronLeft size={36} strokeWidth={1.5} />
               </Button>}
             <Logo clickable={false} />
           </div>
@@ -92,7 +92,7 @@ const NavBar: React.FC<NavBarProps> = ({
                     className={cn("rounded-full text-white hover:bg-white/20", 
                     isActive('/messages') && "bg-white/20")}
                   >
-                    <Mail className="w-12 h-12" strokeWidth={1.5} />
+                    <Mail size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
@@ -101,7 +101,7 @@ const NavBar: React.FC<NavBarProps> = ({
                   size="icon" 
                   className="rounded-full text-white hover:bg-white/20"
                 >
-                  <HelpCircle className="w-12 h-12" strokeWidth={1.5} />
+                  <HelpCircle size={36} strokeWidth={1.5} />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 <Button 
@@ -110,7 +110,7 @@ const NavBar: React.FC<NavBarProps> = ({
                   className="rounded-full text-white hover:bg-white/20 mr-0" 
                   onClick={openMobileMenu}
                 >
-                  <Menu className="w-12 h-12" strokeWidth={1.5} />
+                  <Menu size={36} strokeWidth={1.5} />
                 </Button>
               </> : <>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
@@ -121,7 +121,7 @@ const NavBar: React.FC<NavBarProps> = ({
                   className="rounded-full text-white hover:bg-white/20 mr-0" 
                   onClick={openMobileMenu}
                 >
-                  <Menu className="w-12 h-12" strokeWidth={1.5} />
+                  <Menu size={36} strokeWidth={1.5} />
                 </Button>
               </>}
           </div>

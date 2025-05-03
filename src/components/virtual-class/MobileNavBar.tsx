@@ -11,8 +11,7 @@ interface MobileNavBarProps {
 
 const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
   const navigate = useNavigate();
-  const iconProps = { size: 48, strokeWidth: 1.5 };
-
+  
   const handleHomeClick = () => {
     navigate('/dashboard');
   };
@@ -25,7 +24,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
         </div>
         <div className="flex items-center gap-2 mr-0 pr-0">
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-            <Search className="h-12 w-12" strokeWidth={1.5} />
+            <Search size={36} strokeWidth={1.5} />
           </Button>
           <Button 
             variant="ghost" 
@@ -33,7 +32,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
             className="text-white hover:bg-white/20 mr-0"
             onClick={onMenuClick}
           >
-            <Menu className="h-12 w-12" strokeWidth={1.5} />
+            <Menu size={36} strokeWidth={1.5} />
           </Button>
         </div>
       </div>
@@ -44,13 +43,13 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
           className="text-white hover:bg-white/20 ml-0"
           onClick={handleHomeClick}
         >
-          <Home className="h-12 w-12" strokeWidth={1.5} />
+          <Home size={36} strokeWidth={1.5} />
         </Button>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-          <Bell className="h-12 w-12" strokeWidth={1.5} />
+          <Bell size={36} strokeWidth={1.5} />
         </Button>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 mr-0">
-          <User className="h-12 w-12" strokeWidth={1.5} />
+          <User size={36} strokeWidth={1.5} />
         </Button>
       </div>
     </div>

@@ -36,7 +36,7 @@ const MobileNotifications: React.FC<MobileNotificationsProps> = ({
           size="icon" 
           className="relative text-white hover:bg-white/20"
         >
-          <Bell className="h-12 w-12" strokeWidth={1.5} />
+          <Bell size={36} strokeWidth={1.5} />
           <NotificationBadge count={unreadCount} />
         </Button>
       </DrawerTrigger>
