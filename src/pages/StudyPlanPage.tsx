@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, CalendarCell } from '@/components/ui/calendar';
+import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
