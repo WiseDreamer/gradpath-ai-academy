@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StudyPlanPage from "./pages/StudyPlanPage";
 import PracticePage from "./pages/PracticePage";
+import AiTutorPage from "./pages/AiTutorPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/study-plan" element={<StudyPlanPage />} />
               <Route path="/practice" element={<PracticePage />} />
+              <Route path="/ai-tutor" element={<AiTutorPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

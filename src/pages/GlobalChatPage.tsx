@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { 
-  Search, Menu, Mail, Bell, HelpCircle, Home, User, Users,
+  Search, Menu, Mail, Bell, HelpCircle, Home, User, Users, MessageSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
@@ -141,6 +141,16 @@ const GlobalChatPage: React.FC = () => {
                   aria-label="Inbox"
                 >
                   <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
+                </Button>
+              </Link>
+              <Link to="/global-chat" replace>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full text-white hover:bg-white/20"
+                  aria-label="Chat"
+                >
+                  <MessageSquare size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Link to="/friends" replace>

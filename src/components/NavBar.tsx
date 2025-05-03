@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft } from 'lucide-react';
+import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -95,6 +95,16 @@ const NavBar: React.FC<NavBarProps> = ({
                     <Mail size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
+                <Link to="/global-chat">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className={cn("rounded-full text-white hover:bg-white/20", 
+                    isActive('/global-chat') && "bg-white/20")}
+                  >
+                    <MessageSquare size={36} strokeWidth={1.5} />
+                  </Button>
+                </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <Button 
                   variant="ghost" 
@@ -113,6 +123,16 @@ const NavBar: React.FC<NavBarProps> = ({
                   <Menu size={36} strokeWidth={1.5} />
                 </Button>
               </> : <>
+                <Link to="/global-chat">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className={cn("rounded-full text-white hover:bg-white/20", 
+                    isActive('/global-chat') && "bg-white/20")}
+                  >
+                    <MessageSquare size={36} strokeWidth={1.5} />
+                  </Button>
+                </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 <Button 

@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, Home, Bell, User } from 'lucide-react';
+import { Search, Menu, Home, Bell, User, MessageSquare } from 'lucide-react';
 import Logo from '@/components/Logo';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface MobileNavBarProps {
   onMenuClick?: () => void;
@@ -45,6 +45,11 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
         >
           <Home size={36} strokeWidth={1.5} />
         </Button>
+        <Link to="/global-chat">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+            <MessageSquare size={36} strokeWidth={1.5} />
+          </Button>
+        </Link>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
           <Bell size={36} strokeWidth={1.5} />
         </Button>
