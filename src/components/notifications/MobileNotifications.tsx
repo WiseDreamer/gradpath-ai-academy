@@ -31,7 +31,11 @@ const MobileNotifications: React.FC<MobileNotificationsProps> = ({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/20">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="relative text-white hover:bg-white/20 h-12 w-12"
+        >
           <Bell className="w-8 h-8" strokeWidth={2} />
           <NotificationBadge count={unreadCount} />
         </Button>

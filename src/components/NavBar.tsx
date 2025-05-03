@@ -55,10 +55,15 @@ const NavBar: React.FC<NavBarProps> = ({
               <span className="text-lg font-medium ml-2">AI Tutor</span>
             </div>
             <div className="flex items-center gap-2 mr-0">
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 h-12 w-12">
                 <Search className="w-8 h-8" />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="rounded-full text-white hover:bg-white/20 mr-0 h-12 w-12" 
+                onClick={openMobileMenu}
+              >
                 <Menu className="w-8 h-8" />
               </Button>
             </div>
@@ -84,22 +89,41 @@ const NavBar: React.FC<NavBarProps> = ({
           <div className="flex items-center gap-2">
             {variant === 'social' ? <>
                 <Link to="/messages">
-                  <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className={cn("rounded-full text-white hover:bg-white/20 h-12 w-12", 
+                    isActive('/messages') && "bg-white/20")}
+                  >
                     <Mail className="w-8 h-8" />
                   </Button>
                 </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full text-white hover:bg-white/20 h-12 w-12"
+                >
                   <HelpCircle className="w-8 h-8" />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full text-white hover:bg-white/20 mr-0 h-12 w-12" 
+                  onClick={openMobileMenu}
+                >
                   <Menu className="w-8 h-8" />
                 </Button>
               </> : <>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full text-white hover:bg-white/20 mr-0 h-12 w-12" 
+                  onClick={openMobileMenu}
+                >
                   <Menu className="w-8 h-8" />
                 </Button>
               </>}
