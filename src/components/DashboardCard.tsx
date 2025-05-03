@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { UploadResourceModal } from '@/components/ModuleResources/UploadResourceModal';
 
 interface DashboardCardProps {
   title: string;
@@ -24,6 +25,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isUploadModalOpen, setIsUploadModalOpen] = React.useState(false);
   
   const handleCardClick = () => {
     if (onClick) {
@@ -38,18 +40,12 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
         navigate('/ai-tutor');
         return;
       } else if (title === "Upload Module Resources") {
-        // Open upload functionality
-        toast({
-          title: "Coming soon",
-          description: "The upload module functionality will be implemented soon."
-        });
+        // Open upload modal instead of showing a toast
+        setIsUploadModalOpen(true);
         return;
       } else if (title === "Track My Performance") {
-        // Navigate to performance page or show toast
-        toast({
-          title: "Coming soon",
-          description: "The performance tracking dashboard will be implemented soon."
-        });
+        // Navigate to performance page
+        navigate('/performance');
         return;
       }
       
@@ -78,12 +74,21 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   const cardClassName = "group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col items-center border border-gray-100 dark:border-gray-700 hover:scale-[1.02]";
 
   return (
-    <button
-      onClick={handleCardClick}
-      className={cardClassName}
-    >
-      {content}
-    </button>
+    <>
+      <button
+        onClick={handleCardClick}
+        className={cardClassName}
+      >
+        {content}
+      </button>
+      
+      {title === "Upload Module Resources" && (
+        <UploadResourceModal 
+          open={isUploadModalOpen} 
+          onClose={() => setIsUploadModalOpen(false)} 
+        />
+      )}
+    </>
   );
 };
 
