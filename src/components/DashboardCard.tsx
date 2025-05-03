@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface DashboardCardProps {
   title: string;
@@ -21,6 +22,49 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   color = 'bg-gradpath-purple',
   onClick,
 }) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+      return;
+    }
+    
+    // Handle special cases
+    if (to === '#' || !to) {
+      // For cards without implemented routes
+      if (title === "Ask AI Tutor") {
+        navigate('/ai-tutor');
+        return;
+      } else if (title === "Upload Module Resources") {
+        // Open upload functionality
+        toast({
+          title: "Coming soon",
+          description: "The upload module functionality will be implemented soon."
+        });
+        return;
+      } else if (title === "Track My Performance") {
+        // Navigate to performance page or show toast
+        toast({
+          title: "Coming soon",
+          description: "The performance tracking dashboard will be implemented soon."
+        });
+        return;
+      }
+      
+      // Default toast for not yet implemented features
+      toast({
+        title: "Coming soon",
+        description: `The ${title} functionality will be implemented soon.`
+      });
+      return;
+    }
+    
+    // For cards with valid routes
+    navigate(to);
+  };
+
   const content = (
     <>
       <div className={cn("p-3 rounded-full transition-transform group-hover:scale-110", color)}>
@@ -33,21 +77,13 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 
   const cardClassName = "group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col items-center border border-gray-100 dark:border-gray-700 hover:scale-[1.02]";
 
-  if (onClick) {
-    return (
-      <button
-        onClick={onClick}
-        className={cardClassName}
-      >
-        {content}
-      </button>
-    );
-  }
-
   return (
-    <Link to={to} className={cardClassName}>
+    <button
+      onClick={handleCardClick}
+      className={cardClassName}
+    >
       {content}
-    </Link>
+    </button>
   );
 };
 

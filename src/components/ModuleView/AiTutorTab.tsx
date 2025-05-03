@@ -7,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send, MessageSquare, BarChart2, ChevronRight } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Link, useNavigate } from 'react-router-dom';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const recentModules = [{
   name: 'Calculus I',
@@ -24,7 +23,6 @@ const recentModules = [{
 }];
 
 const AiTutorTab = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   
@@ -41,64 +39,6 @@ const AiTutorTab = () => {
   };
   
   return <div className="space-y-4">
-      <Card className="mb-6">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg flex items-center">
-              <MessageSquare className="mr-2 h-5 w-5" /> 
-              AI Tutor
-            </h3>
-            <Button onClick={handleOpenFullTutor}>Open Full Tutor</Button>
-          </div>
-          
-          <p className="text-gray-600 mb-4">
-            Ask a question about this module or get personalized help with concepts you're struggling with.
-          </p>
-          
-          <div className="flex gap-3 mb-6">
-            <Textarea 
-              placeholder="What would you like to learn about today?"
-              className="min-h-[80px] resize-none"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-            />
-            <Button className="self-end" onClick={handleSendMessage}>
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Suggested questions:</h4>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "What are derivatives?",
-                "Explain integration",
-                "Help with vectors",
-                "Mean vs median"
-              ].map((question, idx) => (
-                <Button 
-                  key={idx} 
-                  variant="outline" 
-                  size="sm"
-                  className="text-sm"
-                  onClick={() => {
-                    setMessage(question);
-                  }}
-                >
-                  {question}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       <h3 className="font-semibold text-lg flex items-center mt-6">
         <BarChart2 className="mr-2 h-5 w-5" /> 
         Recent Modules

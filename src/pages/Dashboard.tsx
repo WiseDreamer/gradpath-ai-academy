@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
@@ -63,7 +62,7 @@ const Dashboard: React.FC = () => {
 
   console.log("Dashboard rendering, user:", user?.email);
   
-  // Loading skeleton component for cards
+  // Loading skeleton components
   const CardSkeleton = () => (
     <div className="bg-white/80 rounded-xl p-6 shadow-lg border border-gray-100">
       <div className="flex flex-col items-center space-y-4">
@@ -74,7 +73,6 @@ const Dashboard: React.FC = () => {
     </div>
   );
 
-  // Loading skeleton for section headers
   const HeaderSkeleton = () => (
     <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <Skeleton className="h-6 w-40 mx-auto" />
@@ -104,7 +102,7 @@ const Dashboard: React.FC = () => {
             ) : (
               <>
                 <DashboardCard title="Join Virtual Class" description="Jump into an interactive AI-powered virtual classroom" icon={Video} to="/virtual-class" color="bg-gradpath-purple" />
-                <DashboardCard title="Upload Module Resources" description="Upload lecture slides, notes, and study material" icon={Upload} to="/upload" color="bg-gradpath-bright-blue" />
+                <DashboardCard title="Upload Module Resources" description="Upload lecture slides, notes, and study material" icon={Upload} to="#" color="bg-gradpath-bright-blue" />
               </>
             )}
           </div>
@@ -134,7 +132,7 @@ const Dashboard: React.FC = () => {
             ) : (
               <>
                 <DashboardCard title="Ask AI Tutor" description="Get instant help with your questions" icon={MessageCircle} to="#" color="bg-gradpath-purple" />
-                <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart} to="/performance" color="bg-green-500" />
+                <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart} to="#" color="bg-green-500" />
               </>
             )}
           </div>
