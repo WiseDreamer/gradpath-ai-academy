@@ -15,6 +15,8 @@ import GlobalChatPage from "./pages/GlobalChatPage";
 import MessagesPage from "./pages/MessagesPage";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StudyPlanPage from "./pages/StudyPlanPage";
+import PracticePage from "./pages/PracticePage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/global-chat" element={<GlobalChatPage />} />
               <Route path="/messages" element={<MessagesPage />} />
+              <Route path="/study-plan" element={<StudyPlanPage />} />
+              <Route path="/practice" element={<PracticePage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

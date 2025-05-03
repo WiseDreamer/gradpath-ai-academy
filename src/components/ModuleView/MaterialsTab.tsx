@@ -1,16 +1,19 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Upload, FileText } from 'lucide-react';
+import { UploadResourceModal } from '@/components/ModuleResources/UploadResourceModal';
 
 const MaterialsTab = () => {
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
   return (
     <Card>
       <CardContent className="pt-6">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-semibold">Module Materials</h3>
-          <Button>
+          <Button onClick={() => setIsUploadModalOpen(true)}>
             <Upload className="mr-2 h-4 w-4" />
             Upload New Material
           </Button>
@@ -46,6 +49,11 @@ const MaterialsTab = () => {
             </div>
           ))}
         </div>
+
+        <UploadResourceModal 
+          open={isUploadModalOpen} 
+          onClose={() => setIsUploadModalOpen(false)} 
+        />
       </CardContent>
     </Card>
   );
