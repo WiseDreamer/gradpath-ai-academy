@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import NavBar from '@/components/NavBar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -122,11 +121,12 @@ const VirtualClassPage: React.FC = () => {
           <VirtualClassHeader 
             title={currentModule}
             institution={institution}
+            onChangeModule={handleChangeModule}
           />
         )}
         
         {/* Main Content Area */}
-        <div className={`w-full md:flex-1 flex flex-col overflow-hidden ${isMobile ? 'h-full' : ''}`}>
+        <div className={`w-full md:flex-1 flex flex-col overflow-hidden ${isMobile ? 'h-[calc(100%-80px)]' : ''}`}>
           {/* Control Bar for Desktop with Module Dropdown */}
           {!isMobile && (
             <div className="bg-white border-b border-gray-200 py-2 px-4 flex justify-between items-center">
@@ -168,7 +168,7 @@ const VirtualClassPage: React.FC = () => {
           )}
 
           {/* Virtual Board Area */}
-          <div className={`flex-1 overflow-hidden ${isMobile ? 'h-[calc(100vh-160px)]' : ''}`}>
+          <div className="flex-1 overflow-hidden">
             <VirtualBoard 
               isPaused={isPaused}
               currentPage={currentPage}

@@ -259,23 +259,98 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
     contextRef.current.closePath();
     setIsDrawing(false);
   };
+  
+  // Touch event handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault(); // This is crucial to prevent the error
+    
+    if (!canvasRef.current || !contextRef.current || activeTool === 'none' || isPaused) return;
+    
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    
+    contextRef.current.beginPath();
+    contextRef.current.moveTo(x, y);
+    
+    // Set drawing style based on active tool
+    if (activeTool === 'pen') {
+      contextRef.current.strokeStyle = toolColor;
+      contextRef.current.lineWidth = toolSize;
+      contextRef.current.globalAlpha = 1;
+    } else if (activeTool === 'highlighter') {
+      contextRef.current.strokeStyle = toolColor;
+      contextRef.current.lineWidth = toolSize * 3;
+      contextRef.current.globalAlpha = 0.3;
+    } else if (activeTool === 'eraser') {
+      contextRef.current.strokeStyle = '#FFFFFF';
+      contextRef.current.lineWidth = toolSize * 2;
+      contextRef.current.globalAlpha = 1;
+    }
+    
+    contextRef.current.lineCap = 'round';
+    contextRef.current.lineJoin = 'round';
+    
+    setIsDrawing(true);
+    
+    // Store the starting point for the annotation
+    const newAnnotation = {
+      tool: activeTool,
+      color: toolColor,
+      size: toolSize,
+      page: currentPage,
+      points: [{x, y}]
+    };
+    
+    // Add to annotations
+    setAnnotations([...annotations, newAnnotation]);
+  };
+  
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault(); // This is crucial to prevent the error
+    
+    if (!isDrawing || !contextRef.current || !canvasRef.current || isPaused) return;
+    
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    
+    contextRef.current.lineTo(x, y);
+    contextRef.current.stroke();
+    
+    // Update the current annotation with the new point
+    const updatedAnnotations = [...annotations];
+    const currentAnnotation = updatedAnnotations[updatedAnnotations.length - 1];
+    currentAnnotation.points.push({x, y});
+    setAnnotations(updatedAnnotations);
+  };
+  
+  const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault(); // This is crucial to prevent the error
+    stopDrawing();
+  };
 
   return (
-    <div className="flex-1 relative overflow-hidden">
+    <div className="flex-1 relative overflow-hidden touch-none">
       <canvas
         ref={canvasRef}
         className={cn(
-          "absolute inset-0 cursor-crosshair",
+          "absolute inset-0",
+          activeTool !== 'none' ? "cursor-crosshair" : "cursor-default",
           isPaused && "opacity-50"
         )}
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
-        onTouchStart={(e) => {
-          // Implement touch events for mobile
-          e.preventDefault();
-        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
       />
       
       {/* Pause overlay */}
