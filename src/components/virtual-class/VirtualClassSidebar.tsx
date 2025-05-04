@@ -80,7 +80,8 @@ export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({
   };
   
   const handleRaiseHand = () => {
-    setIsHandRaised(prev => !prev);
+    // Fix: Changed from arrow function to direct boolean value
+    setIsHandRaised(!isHandRaised);
     
     if (!isHandRaised) {
       // If raising hand, add AI acknowledgment message after a delay
@@ -104,7 +105,8 @@ export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({
   };
   
   const handlePauseResume = () => {
-    setIsPaused(prev => !prev);
+    // Fix: Changed from arrow function to direct boolean value
+    setIsPaused(!isPaused);
     
     if (isPaused) {
       toast({
