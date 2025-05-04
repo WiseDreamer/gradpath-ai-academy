@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import NavBar from '@/components/NavBar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileNavBar from '@/components/virtual-class/MobileNavBar';
@@ -7,9 +7,15 @@ import VirtualClassHeader from '@/components/virtual-class/VirtualClassHeader';
 import { VirtualClassSidebar } from '@/components/virtual-class/VirtualClassSidebar';
 import { VirtualBoard } from '@/components/virtual-class/VirtualBoard';
 import { TutorMessageType } from '@/types/virtualClass';
+import { useToast } from '@/hooks/use-toast';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { ChevronUp, Maximize, Minimize } from 'lucide-react';
+import LessonScopeModal, { LessonScopeSettings } from '@/components/virtual-class/LessonScopeModal';
 
 const VirtualClassPage: React.FC = () => {
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
   // Initial messages for the chat
   const initialMessages: TutorMessageType[] = [
@@ -34,28 +40,58 @@ const VirtualClassPage: React.FC = () => {
   ];
 
   // State for the virtual class settings
+  const [currentModule, setCurrentModule] = useState("Linear Algebra - Virtual Class");
+  const [institution, setInstitution] = useState("University of Oxford, Mathematics");
   const [isSpeakerOn, setIsSpeakerOn] = useState(true);
   const [isHandRaised, setIsHandRaised] = useState(false);
   const [isMicOn, setIsMicOn] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [annotations, setAnnotations] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isLessonScopeOpen, setIsLessonScopeOpen] = useState(false);
 
-  const handleRaiseHand = () => {
-    setIsHandRaised(prev => !prev);
+  const handleChangeModule = (moduleName: string) => {
+    setCurrentModule(moduleName);
+    toast({
+      title: "Module Changed",
+      description: `Now attending: ${moduleName}`,
+    });
   };
 
-  const handlePauseClass = () => {
-    setIsPaused(prev => !prev);
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen()
+        .then(() => setIsFullscreen(true))
+        .catch(err => {
+          toast({
+            title: "Fullscreen Error",
+            description: `Error attempting to enable fullscreen: ${err.message}`,
+            variant: "destructive"
+          });
+        });
+    } else {
+      document.exitFullscreen()
+        .then(() => setIsFullscreen(false))
+        .catch(err => {
+          toast({
+            title: "Fullscreen Error",
+            description: `Error attempting to exit fullscreen: ${err.message}`,
+            variant: "destructive"
+          });
+        });
+    }
   };
 
-  const handleToggleMic = () => {
-    setIsMicOn(prev => !prev);
-  };
-
-  const handleToggleSpeaker = () => {
-    setIsSpeakerOn(prev => !prev);
-  };
+  const handleSaveLessonScope = useCallback((settings: LessonScopeSettings) => {
+    // Here you would handle the lesson scope settings
+    console.log('Saving lesson scope settings:', settings);
+    
+    toast({
+      title: "Lesson Scope Updated",
+      description: `Focusing on ${settings.selectedTopics.length} topics with ${settings.depth} depth.`,
+    });
+  }, [toast]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
@@ -65,12 +101,12 @@ const VirtualClassPage: React.FC = () => {
         <NavBar variant="learning" />
       )}
 
-      <div className="flex flex-col md:flex-row w-full h-[calc(100vh-64px)] overflow-hidden">
+      <div className={`flex flex-col md:flex-row w-full ${isMobile ? 'h-[calc(100vh-64px)]' : 'h-[calc(100vh-64px)]'} overflow-hidden`}>
         {/* Mobile Header */}
         {isMobile && (
           <VirtualClassHeader 
-            title="Linear Algebra - Virtual Class"
-            institution="University of Oxford, Mathematics"
+            title={currentModule}
+            institution={institution}
           />
         )}
         
@@ -80,18 +116,18 @@ const VirtualClassPage: React.FC = () => {
           {!isMobile && (
             <div className="bg-white border-b border-gray-200 py-2 px-4 flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="font-medium">Linear Algebra - Virtual Class</span>
-                <span className="text-xs text-gray-500">University of Oxford</span>
+                <span className="font-medium">{currentModule}</span>
+                <span className="text-xs text-gray-500">{institution}</span>
               </div>
               <div className="flex items-center gap-2">
                 <button 
-                  onClick={handlePauseClass}
+                  onClick={() => setIsPaused(!isPaused)}
                   className={`px-3 py-1 rounded-md text-sm ${isPaused ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}
                 >
                   {isPaused ? 'Resume Class' : 'Pause Class'}
                 </button>
                 <button 
-                  onClick={handleRaiseHand}
+                  onClick={() => setIsHandRaised(!isHandRaised)}
                   className={`px-3 py-1 rounded-md text-sm ${isHandRaised ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-700'}`}
                 >
                   {isHandRaised ? 'Hand Raised' : 'Raise Hand'}
@@ -112,55 +148,77 @@ const VirtualClassPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Sidebar for chat, notes, etc */}
-        <VirtualClassSidebar
-          title="Linear Algebra - Virtual Class"
-          institution="University of Oxford, Mathematics"
-          initialMessages={initialMessages}
-          isHandRaised={isHandRaised}
-          setIsHandRaised={setIsHandRaised}
-          isMicOn={isMicOn}
-          setIsMicOn={setIsMicOn}
-          isSpeakerOn={isSpeakerOn}
-          setIsSpeakerOn={setIsSpeakerOn}
-          isPaused={isPaused}
-          setIsPaused={setIsPaused}
-        />
-      </div>
+        {/* For desktop: Sidebar for chat, notes, etc */}
+        {!isMobile && (
+          <VirtualClassSidebar
+            title={currentModule}
+            institution={institution}
+            initialMessages={initialMessages}
+            isHandRaised={isHandRaised}
+            setIsHandRaised={setIsHandRaised}
+            isMicOn={isMicOn}
+            setIsMicOn={setIsMicOn}
+            isSpeakerOn={isSpeakerOn}
+            setIsSpeakerOn={setIsSpeakerOn}
+            isPaused={isPaused}
+            setIsPaused={setIsPaused}
+            onChangeModule={handleChangeModule}
+            onFullscreen={toggleFullscreen}
+            onSetLessonScope={() => setIsLessonScopeOpen(true)}
+          />
+        )}
+        
+        {/* For mobile: Bottom sheet for the sidebar */}
+        {isMobile && (
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button 
+                className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-10 rounded-full shadow-lg px-4 py-2 bg-primary text-white"
+                size="sm"
+              >
+                <ChevronUp className="h-4 w-4 mr-2" />
+                <span>Tools & Chat</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-[80vh]">
+              <VirtualClassSidebar
+                title={currentModule}
+                institution={institution}
+                initialMessages={initialMessages}
+                isHandRaised={isHandRaised}
+                setIsHandRaised={setIsHandRaised}
+                isMicOn={isMicOn}
+                setIsMicOn={setIsMicOn}
+                isSpeakerOn={isSpeakerOn}
+                setIsSpeakerOn={setIsSpeakerOn}
+                isPaused={isPaused}
+                setIsPaused={setIsPaused}
+                onChangeModule={handleChangeModule}
+                onFullscreen={toggleFullscreen}
+                onSetLessonScope={() => setIsLessonScopeOpen(true)}
+              />
+            </SheetContent>
+          </Sheet>
+        )}
 
-      {/* Mobile Bottom Navigation */}
+      {/* Fullscreen button for mobile */}
       {isMobile && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2">
-          <button 
-            onClick={handlePauseClass}
-            className="p-2 flex flex-col items-center text-xs"
-          >
-            <span className="material-icons-outlined">{isPaused ? 'play_arrow' : 'pause'}</span>
-            <span>{isPaused ? 'Resume' : 'Pause'}</span>
-          </button>
-          <button 
-            onClick={handleRaiseHand}
-            className="p-2 flex flex-col items-center text-xs"
-          >
-            <span className="material-icons-outlined">pan_tool</span>
-            <span>Hand</span>
-          </button>
-          <button 
-            onClick={handleToggleMic}
-            className="p-2 flex flex-col items-center text-xs"
-          >
-            <span className="material-icons-outlined">{isMicOn ? 'mic' : 'mic_off'}</span>
-            <span>Mic</span>
-          </button>
-          <button 
-            onClick={handleToggleSpeaker}
-            className="p-2 flex flex-col items-center text-xs"
-          >
-            <span className="material-icons-outlined">{isSpeakerOn ? 'volume_up' : 'volume_off'}</span>
-            <span>Audio</span>
-          </button>
-        </div>
+        <Button 
+          variant="outline" 
+          size="icon"
+          onClick={toggleFullscreen}
+          className="fixed top-20 right-4 rounded-full bg-white shadow-md z-10"
+        >
+          {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+        </Button>
       )}
+
+      {/* Lesson Scope Modal */}
+      <LessonScopeModal 
+        isOpen={isLessonScopeOpen} 
+        onClose={() => setIsLessonScopeOpen(false)}
+        onSave={handleSaveLessonScope}
+      />
     </div>
   );
 };
