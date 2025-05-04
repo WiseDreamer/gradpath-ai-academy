@@ -201,24 +201,25 @@ const VirtualClassPage: React.FC = () => {
           </Sheet>
         )}
 
-      {/* Fullscreen button for mobile */}
-      {isMobile && (
-        <Button 
-          variant="outline" 
-          size="icon"
-          onClick={toggleFullscreen}
-          className="fixed top-20 right-4 rounded-full bg-white shadow-md z-10"
-        >
-          {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
-        </Button>
-      )}
+        {/* Fullscreen button for mobile */}
+        {isMobile && (
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={toggleFullscreen}
+            className="fixed top-20 right-4 rounded-full bg-white shadow-md z-10"
+          >
+            {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+          </Button>
+        )}
 
-      {/* Lesson Scope Modal */}
-      <LessonScopeModal 
-        isOpen={isLessonScopeOpen} 
-        onClose={() => setIsLessonScopeOpen(false)}
-        onSave={handleSaveLessonScope}
-      />
+        {/* Lesson Scope Modal */}
+        <LessonScopeModal 
+          isOpen={isLessonScopeOpen} 
+          onClose={() => setIsLessonScopeOpen(false)}
+          onSave={handleSaveLessonScope}
+        />
+      </div>
     </div>
   );
 };
