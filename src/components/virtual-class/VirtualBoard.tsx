@@ -1,6 +1,5 @@
-
 import React, { useRef, useState, useEffect } from 'react';
-import { Eraser, Pen, Highlighter, Undo, Redo, ChevronLeft, ChevronRight, Settings, Download } from 'lucide-react';
+import { Eraser, Pen, Highlighter, Undo, Redo, ChevronLeft, ChevronRight, Settings, Download, Maximize, Minimize } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   Tooltip, 
@@ -28,11 +27,13 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const boardContainerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [activeTool, setActiveTool] = useState<'pen' | 'highlighter' | 'eraser' | 'text' | 'none'>('none');
   const [toolColor, setToolColor] = useState('#000000');
   const [toolSize, setToolSize] = useState(2);
   const [totalPages, setTotalPages] = useState(5); // Mock total pages
+  const [isBoardFullscreen, setIsBoardFullscreen] = useState(false);
   const isMobile = useIsMobile();
   const { toast } = useToast();
   
@@ -291,8 +292,21 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
     });
   };
 
+  // Toggle board fullscreen 
+  const toggleBoardFullscreen = () => {
+    if (boardContainerRef.current) {
+      setIsBoardFullscreen(!isBoardFullscreen);
+    }
+  };
+
   return (
-    <div className="relative flex flex-col h-full w-full bg-gray-50">
+    <div 
+      ref={boardContainerRef} 
+      className={cn(
+        "relative flex flex-col w-full bg-gray-50",
+        isBoardFullscreen ? "fixed inset-0 z-50" : "h-full"
+      )}
+    >
       {/* Toolbar */}
       <div className="bg-white border-b border-gray-200 p-2 flex justify-between items-center">
         <div className="flex items-center space-x-1">
@@ -374,6 +388,20 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
         </div>
         
         <div className="flex items-center space-x-2">
+          {/* Board Fullscreen Button */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={toggleBoardFullscreen}
+              >
+                {isBoardFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{isBoardFullscreen ? "Exit Fullscreen" : "Fullscreen"}</TooltipContent>
+          </Tooltip>
+
           {!isMobile && (
             <>
               <Button 
@@ -451,6 +479,19 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
           <ChevronRight className="h-4 w-4 ml-2" />
         </Button>
       </div>
+
+      {/* Fullscreen exit button when in fullscreen mode */}
+      {isBoardFullscreen && (
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={toggleBoardFullscreen}
+          className="absolute top-4 right-4 bg-white shadow-md z-10"
+        >
+          <Minimize className="h-4 w-4 mr-2" />
+          Exit Fullscreen
+        </Button>
+      )}
     </div>
   );
 };

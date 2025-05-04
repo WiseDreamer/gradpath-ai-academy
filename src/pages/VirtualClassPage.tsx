@@ -111,7 +111,7 @@ const VirtualClassPage: React.FC = () => {
         )}
         
         {/* Main Content Area */}
-        <div className="w-full md:flex-1 flex flex-col overflow-hidden">
+        <div className={`w-full md:flex-1 flex flex-col overflow-hidden ${isMobile ? 'h-full' : ''}`}>
           {/* Control Bar for Desktop */}
           {!isMobile && (
             <div className="bg-white border-b border-gray-200 py-2 px-4 flex justify-between items-center">
@@ -137,7 +137,7 @@ const VirtualClassPage: React.FC = () => {
           )}
 
           {/* Virtual Board Area */}
-          <div className="flex-1 overflow-hidden">
+          <div className={`flex-1 overflow-hidden ${isMobile ? 'h-[calc(100vh-160px)]' : ''}`}>
             <VirtualBoard 
               isPaused={isPaused}
               currentPage={currentPage}
