@@ -10,8 +10,23 @@ import { TutorMessageType } from '@/types/virtualClass';
 import { useToast } from '@/hooks/use-toast';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ChevronUp, Maximize, Minimize } from 'lucide-react';
+import { ChevronDown, ChevronUp, Maximize, Minimize } from 'lucide-react';
 import LessonScopeModal, { LessonScopeSettings } from '@/components/virtual-class/LessonScopeModal';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+
+// Available modules list
+const availableModules = [
+  "Linear Algebra - Virtual Class",
+  "Calculus II",
+  "Introduction to Statistics",
+  "Discrete Mathematics",
+  "Number Theory"
+];
 
 const VirtualClassPage: React.FC = () => {
   const isMobile = useIsMobile();
@@ -112,11 +127,27 @@ const VirtualClassPage: React.FC = () => {
         
         {/* Main Content Area */}
         <div className={`w-full md:flex-1 flex flex-col overflow-hidden ${isMobile ? 'h-full' : ''}`}>
-          {/* Control Bar for Desktop */}
+          {/* Control Bar for Desktop with Module Dropdown */}
           {!isMobile && (
             <div className="bg-white border-b border-gray-200 py-2 px-4 flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="font-medium">{currentModule}</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex items-center gap-1 font-medium hover:bg-gray-100 rounded-md px-2 py-1 transition-colors">
+                    {currentModule}
+                    <ChevronDown className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-64">
+                    {availableModules.map((module) => (
+                      <DropdownMenuItem 
+                        key={module}
+                        onClick={() => handleChangeModule(module)}
+                        className={`${currentModule === module ? 'bg-gray-100 font-medium' : ''}`}
+                      >
+                        {module}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <span className="text-xs text-gray-500">{institution}</span>
               </div>
               <div className="flex items-center gap-2">
