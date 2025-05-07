@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare } from 'lucide-react';
+import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -75,6 +75,76 @@ const NavBar: React.FC<NavBarProps> = ({
       </div>;
   }
   
+  if (variant === 'social' && isMobile) {
+    return (
+      <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+        <div className="w-full">
+          {/* Top Section with Logo and Icons */}
+          <div className="flex items-center justify-between h-16 px-4">
+            <div className="flex items-center">
+              <Logo clickable={false} />
+            </div>
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 p-1">
+                <Search size={24} strokeWidth={1.5} />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-white hover:bg-white/20 p-1" 
+                onClick={openMobileMenu}
+              >
+                <Menu size={24} strokeWidth={1.5} />
+              </Button>
+            </div>
+          </div>
+          
+          {/* Bottom Navigation Icons */}
+          <div className="h-14 flex items-center justify-around border-t border-white/20 px-2">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/dashboard')}
+              className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", 
+                isActive('/dashboard') && "bg-white/20")}
+            >
+              <Home size={24} strokeWidth={1.5} />
+            </Button>
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/messages')}
+              className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", 
+                isActive('/messages') && "bg-white/20")}
+            >
+              <Mail size={24} strokeWidth={1.5} />
+            </Button>
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/global-chat')}
+              className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", 
+                isActive('/global-chat') && "bg-white/20")}
+            >
+              <MessageSquare size={24} strokeWidth={1.5} />
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => {}}
+              className="flex flex-col items-center justify-center text-white hover:bg-white/20"
+            >
+              <Bell size={24} strokeWidth={1.5} />
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => {}}
+              className="flex flex-col items-center justify-center text-white hover:bg-white/20"
+            >
+              <User size={24} strokeWidth={1.5} />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
