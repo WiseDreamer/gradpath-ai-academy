@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
@@ -137,38 +138,9 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Recent Modules Header */}
-          <div className="mt-0 mb-2">
-            {isLoading ? (
-              <HeaderSkeleton />
-            ) : (
-              <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-800">Recent Modules</h3>
-              </div>
-            )}
-          </div>
+          {/* Recent Modules section has been removed */}
           
-          {/* Recent Modules Content */}
-          <div className="mt-2">
-            {isLoading ? (
-              <div className="space-y-4">
-                <Skeleton className="h-24 w-full rounded-lg" />
-                <Skeleton className="h-24 w-full rounded-lg" />
-                <Skeleton className="h-24 w-full rounded-lg" />
-              </div>
-            ) : (
-              <AiTutorTab />
-            )}
-          </div>
-
-          {/* Mobile View All Button */}
-          {isMobile && !isLoading && (
-            <div className="flex justify-center mt-4 mb-6">
-              <Button className="w-full max-w-xs bg-gradpath-purple hover:bg-gradpath-dark-purple">
-                View All Modules
-              </Button>
-            </div>
-          )}
+          {/* Mobile View All Button - also removed since it was related to the Recent Modules section */}
         </div>
       </div>
     </div>
