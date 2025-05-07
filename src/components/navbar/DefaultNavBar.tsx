@@ -35,6 +35,7 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
   const isMobile = useIsMobile();
   
   const isActive = (path: string) => location.pathname === path || currentPage === path;
+  const isDashboardPage = location.pathname === '/dashboard';
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
@@ -75,6 +76,14 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
               </>
             ) : (
               <>
+                {/* Display chat icon only on dashboard page and only for desktop */}
+                {isDashboardPage && !isMobile && (
+                  <Link to="/global-chat">
+                    <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                      <MessageSquare size={24} strokeWidth={1.5} />
+                    </Button>
+                  </Link>
+                )}
                 {isMobile ? (
                   <MobileNotifications 
                     notifications={notifications} 
