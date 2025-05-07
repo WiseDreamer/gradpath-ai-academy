@@ -17,14 +17,12 @@ const GlobalChatPage: React.FC = () => {
           <ChatFeed />
         </div>
       ) : (
-        <div className="container mx-auto max-w-7xl p-0">
-          <div className="flex">
-            <ChatSidebar />
-            <div className="flex-grow px-4 py-4">
-              <ChatFeed />
-            </div>
-            <OnlineSidebar />
+        <div className="flex w-full">
+          <ChatSidebar />
+          <div className="flex-grow px-4 py-4">
+            <ChatFeed />
           </div>
+          <OnlineSidebar />
         </div>
       )}
     </div>
