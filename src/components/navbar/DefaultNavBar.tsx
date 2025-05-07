@@ -76,14 +76,6 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
               </>
             ) : (
               <>
-                {/* Display chat icon only on dashboard page and only for desktop */}
-                {isDashboardPage && !isMobile && (
-                  <Link to="/global-chat">
-                    <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                      <MessageSquare size={24} strokeWidth={1.5} />
-                    </Button>
-                  </Link>
-                )}
                 {isMobile ? (
                   <MobileNotifications 
                     notifications={notifications} 
@@ -92,12 +84,22 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                     loadingNotifications={loadingNotifications} 
                   />
                 ) : (
-                  <DesktopNotifications 
-                    notifications={notifications} 
-                    unreadCount={unreadCount} 
-                    onMarkAsRead={markAsRead} 
-                    loadingNotifications={loadingNotifications} 
-                  />
+                  <>
+                    <DesktopNotifications 
+                      notifications={notifications} 
+                      unreadCount={unreadCount} 
+                      onMarkAsRead={markAsRead} 
+                      loadingNotifications={loadingNotifications} 
+                    />
+                    {/* Display chat icon only on dashboard page and only for desktop */}
+                    {isDashboardPage && !isMobile && (
+                      <Link to="/global-chat">
+                        <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                          <MessageSquare size={24} strokeWidth={1.5} />
+                        </Button>
+                      </Link>
+                    )}
+                  </>
                 )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
               </>
