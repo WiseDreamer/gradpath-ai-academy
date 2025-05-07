@@ -38,15 +38,11 @@ const AiTutorTab = () => {
     }
   };
   
-  return <div className="space-y-4">
-      <h3 className="font-semibold text-lg flex items-center mt-6">
-        <BarChart2 className="mr-2 h-5 w-5" /> 
-        Recent Modules
-      </h3>
-      <div className="grid grid-cols-1 gap-4">
+  return <div className="space-y-4 w-full">
+      <div className="grid grid-cols-1 gap-4 w-full">
         {recentModules.map(module => (
-          <Link to={`/module/${module.name.toLowerCase().replace(/\s+/g, '-')}`} key={module.name}>
-            <Card className="hover:shadow-md transition-shadow duration-200">
+          <Link to={`/module/${module.name.toLowerCase().replace(/\s+/g, '-')}`} key={module.name} className="w-full">
+            <Card className="hover:shadow-md transition-shadow duration-200 w-full">
               <CardContent className="p-4">
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="font-medium">{module.name}</h4>

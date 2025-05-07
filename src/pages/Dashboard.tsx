@@ -84,17 +84,19 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-[#F5F5F7]">
       <NavBar />
       
-      <div className="container mx-auto px-4 py-0">
-        <div className="max-w-7xl mx-auto">
+      {/* Remove px-4 from container to allow full width on all screens */}
+      <div className="container mx-auto py-0 w-full max-w-none">
+        {/* Remove max-width constraint to allow content to expand fully */}
+        <div className="w-full">
           {/* Learning Resources Section */}
-          <div className="mt-0 mb-2">
-            <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700">
+          <div className="mt-0 mb-2 w-full">
+            <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700 w-full">
               <h2 className="text-xl font-semibold text-gray-800">Learning Resources</h2>
             </div>
           </div>
           
           {/* Resource Cards - First Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -109,7 +111,7 @@ const Dashboard: React.FC = () => {
           </div>
           
           {/* Resource Cards - Second Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -124,7 +126,7 @@ const Dashboard: React.FC = () => {
           </div>
           
           {/* AI Tutor and Performance Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -139,9 +141,9 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Recent Modules Content (without the header) */}
-          <div className="mt-2">
+          <div className="mt-2 w-full">
             {isLoading ? (
-              <div className="space-y-4">
+              <div className="space-y-4 w-full">
                 <Skeleton className="h-24 w-full rounded-lg" />
                 <Skeleton className="h-24 w-full rounded-lg" />
                 <Skeleton className="h-24 w-full rounded-lg" />
@@ -153,7 +155,7 @@ const Dashboard: React.FC = () => {
 
           {/* Mobile View All Button */}
           {isMobile && !isLoading && (
-            <div className="flex justify-center mt-4 mb-6">
+            <div className="flex justify-center mt-4 mb-6 w-full">
               <Button className="w-full max-w-xs bg-gradpath-purple hover:bg-gradpath-dark-purple">
                 View All Modules
               </Button>
