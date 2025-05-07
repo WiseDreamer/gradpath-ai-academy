@@ -5,6 +5,7 @@ import ChatFeed from '@/components/chat/ChatFeed';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import OnlineSidebar from '@/components/chat/OnlineSidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import PostsSection from '@/components/PostsSection';
 
 const GlobalChatPage: React.FC = () => {
   const isMobile = useIsMobile();
@@ -14,13 +15,13 @@ const GlobalChatPage: React.FC = () => {
       <NavBar variant="social" currentPage="/global-chat" />
       {isMobile ? (
         <div className="w-full">
-          <ChatFeed />
+          <PostsSection />
         </div>
       ) : (
         <div className="flex w-full">
           <ChatSidebar />
-          <div className="flex-grow px-4 py-4">
-            <ChatFeed />
+          <div className="flex-grow">
+            <PostsSection />
           </div>
           <OnlineSidebar />
         </div>

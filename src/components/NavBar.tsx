@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare, Bell, User, Users } from 'lucide-react';
+import { Menu, Home, Mail, Search, HelpCircle, MessageSquare, Bell, User, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -25,7 +26,6 @@ const NavBar: React.FC<NavBarProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const showBack = location.pathname !== "/dashboard";
   const {
     notifications,
     unreadCount,
@@ -39,6 +39,14 @@ const NavBar: React.FC<NavBarProps> = ({
 
   const isActive = (path: string) => location.pathname === path || currentPage === path;
 
+  const handleHomeClick = () => {
+    if (location.pathname === '/global-chat') {
+      navigate('/dashboard');
+    } else {
+      navigate('/global-chat');
+    }
+  };
+
   if (variant === 'ai-tutor') {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -46,7 +54,7 @@ const NavBar: React.FC<NavBarProps> = ({
           <div className="flex items-center justify-between h-20 px-0">
             <div className="flex items-center gap-1">
               <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="hover:bg-white/20 ml-0 px-0">
-                <ChevronLeft size={36} strokeWidth={1.5} />
+                <Home size={36} strokeWidth={1.5} />
               </Button>
               <Logo clickable={false} />
               <span className="text-lg font-medium ml-2">AI Tutor</span>
@@ -88,7 +96,7 @@ const NavBar: React.FC<NavBarProps> = ({
           
           {/* Bottom Navigation Icons */}
           <div className="h-14 flex items-center justify-between border-t border-white/20 px-6">
-            <Button variant="ghost" onClick={() => navigate('/dashboard')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/dashboard') && "bg-white/20")}>
+            <Button variant="ghost" onClick={handleHomeClick} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/dashboard') && "bg-white/20")}>
               <Home size={24} strokeWidth={1.5} />
             </Button>
             
@@ -115,9 +123,9 @@ const NavBar: React.FC<NavBarProps> = ({
       <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-1">
-            {showBack && <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="hover:bg-white/20 ml-0">
-                <ChevronLeft size={36} strokeWidth={1.5} />
-              </Button>}
+            <Button variant="ghost" size="icon" onClick={handleHomeClick} className="hover:bg-white/20 ml-0">
+              <Home size={36} strokeWidth={1.5} />
+            </Button>
             <Logo clickable={false} />
           </div>
           <div className="flex items-center gap-2">

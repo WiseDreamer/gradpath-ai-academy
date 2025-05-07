@@ -22,7 +22,7 @@ export default function PostsSection() {
   
   return (
     <div className="space-y-2">
-      <Card className={`bg-white shadow-sm border w-full ${isMobile ? 'rounded-none' : 'rounded-md'}`}>
+      <Card className={`bg-white shadow-sm border w-full mt-0 ${isMobile ? 'rounded-none' : 'rounded-none rounded-b-md'}`}>
         <CardHeader className="pb-2">
           <CardTitle>Create a Post</CardTitle>
         </CardHeader>
