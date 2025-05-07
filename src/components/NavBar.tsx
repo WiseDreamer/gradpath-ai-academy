@@ -1,6 +1,17 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Home, Mail, Search, HelpCircle, MessageSquare, Bell, User, Users } from 'lucide-react';
+import { 
+  Menu, 
+  Home, 
+  Mail, 
+  Search, 
+  HelpCircle, 
+  MessageSquare, 
+  Bell, 
+  User, 
+  Users,
+  Grid
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -10,11 +21,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import DesktopNotifications from './notifications/DesktopNotifications';
 import MobileNotifications from './notifications/MobileNotifications';
 import ProfileMenu from './profile/ProfileMenu';
+
 interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
   variant?: 'learning' | 'social' | 'ai-tutor';
 }
+
 const NavBar: React.FC<NavBarProps> = ({
   openMobileMenu,
   currentPage,
@@ -33,7 +46,9 @@ const NavBar: React.FC<NavBarProps> = ({
     userProfile,
     loading: loadingProfile
   } = useUserProfile();
+
   const isActive = (path: string) => location.pathname === path || currentPage === path;
+  
   const handleHomeClick = () => {
     if (location.pathname === '/global-chat') {
       navigate('/dashboard');
@@ -41,6 +56,7 @@ const NavBar: React.FC<NavBarProps> = ({
       navigate('/global-chat');
     }
   };
+
   if (variant === 'ai-tutor') {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -70,6 +86,7 @@ const NavBar: React.FC<NavBarProps> = ({
         </div>
       </div>;
   }
+
   if (variant === 'social' && isMobile) {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -113,15 +130,69 @@ const NavBar: React.FC<NavBarProps> = ({
         </div>
       </div>;
   }
-  return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+
+  // Desktop layout for global-chat page
+  if (variant === 'social' && !isMobile && location.pathname === '/global-chat') {
+    return (
+      <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+        <div className="w-full px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Left - Logo */}
+            <div className="flex items-center">
+              <Logo clickable={false} />
+            </div>
+            
+            {/* Center - Main navigation */}
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="icon" onClick={handleHomeClick} className={cn("rounded-full text-white hover:bg-white/20", isActive('/dashboard') && "bg-white/20")}>
+                <Home size={24} strokeWidth={1.5} />
+              </Button>
+              
+              <Link to="/messages">
+                <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
+                  <Mail size={24} strokeWidth={1.5} />
+                </Button>
+              </Link>
+              
+              <Link to="/friends">
+                <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/friends') && "bg-white/20")}>
+                  <Users size={24} strokeWidth={1.5} />
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Right - User actions */}
+            <div className="flex items-center gap-2">
+              <DesktopNotifications 
+                notifications={notifications} 
+                unreadCount={unreadCount} 
+                onMarkAsRead={markAsRead} 
+                loadingNotifications={loadingNotifications} 
+              />
+              
+              <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
+              
+              <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
+                <Grid size={24} strokeWidth={1.5} />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default layout for other pages
+  return (
+    <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-1">
-            
             <Logo clickable={false} />
           </div>
           <div className="flex items-center gap-2">
-            {variant === 'social' ? <>
+            {variant === 'social' ? (
+              <>
                 <Link to="/messages">
                   <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
                     <Mail size={36} strokeWidth={1.5} />
@@ -132,19 +203,48 @@ const NavBar: React.FC<NavBarProps> = ({
                     <MessageSquare size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
-                {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
-                
+                {isMobile ? (
+                  <MobileNotifications 
+                    notifications={notifications} 
+                    unreadCount={unreadCount} 
+                    onMarkAsRead={markAsRead} 
+                    loadingNotifications={loadingNotifications} 
+                  />
+                ) : (
+                  <DesktopNotifications 
+                    notifications={notifications} 
+                    unreadCount={unreadCount} 
+                    onMarkAsRead={markAsRead} 
+                    loadingNotifications={loadingNotifications} 
+                  />
+                )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-              </> : <>
-                <Link to="/global-chat">
-                  
-                </Link>
-                {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
+              </>
+            ) : (
+              <>
+                {isMobile ? (
+                  <MobileNotifications 
+                    notifications={notifications} 
+                    unreadCount={unreadCount} 
+                    onMarkAsRead={markAsRead} 
+                    loadingNotifications={loadingNotifications} 
+                  />
+                ) : (
+                  <DesktopNotifications 
+                    notifications={notifications} 
+                    unreadCount={unreadCount} 
+                    onMarkAsRead={markAsRead} 
+                    loadingNotifications={loadingNotifications} 
+                  />
+                )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-              </>}
+              </>
+            )}
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default NavBar;
