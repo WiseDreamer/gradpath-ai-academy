@@ -10,13 +10,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import DesktopNotifications from './notifications/DesktopNotifications';
 import MobileNotifications from './notifications/MobileNotifications';
 import ProfileMenu from './profile/ProfileMenu';
-
 interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
   variant?: 'learning' | 'social' | 'ai-tutor';
 }
-
 const NavBar: React.FC<NavBarProps> = ({
   openMobileMenu,
   currentPage,
@@ -37,7 +35,6 @@ const NavBar: React.FC<NavBarProps> = ({
     loading: loadingProfile
   } = useUserProfile();
   const isActive = (path: string) => location.pathname === path || currentPage === path;
-
   if (variant === 'ai-tutor') {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -54,16 +51,9 @@ const NavBar: React.FC<NavBarProps> = ({
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                 <Search size={36} strokeWidth={1.5} />
               </Button>
-              {!isMobile && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="rounded-full text-white hover:bg-white/20 mr-0" 
-                  onClick={openMobileMenu}
-                >
+              {!isMobile && <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={openMobileMenu}>
                   <Menu size={36} strokeWidth={1.5} />
-                </Button>
-              )}
+                </Button>}
             </div>
           </div>
           {/* Bottom Section */}
@@ -74,10 +64,8 @@ const NavBar: React.FC<NavBarProps> = ({
         </div>
       </div>;
   }
-  
   if (variant === 'social' && isMobile) {
-    return (
-      <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+    return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
           {/* Top Section with Logo and Icons */}
           <div className="flex items-center justify-between h-16 px-4">
@@ -88,12 +76,7 @@ const NavBar: React.FC<NavBarProps> = ({
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 p-1">
                 <Search size={24} strokeWidth={1.5} />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-white hover:bg-white/20 p-1" 
-                onClick={openMobileMenu}
-              >
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 p-1" onClick={openMobileMenu}>
                 <Menu size={24} strokeWidth={1.5} />
               </Button>
             </div>
@@ -101,50 +84,23 @@ const NavBar: React.FC<NavBarProps> = ({
           
           {/* Bottom Navigation Icons */}
           <div className="h-14 flex items-center justify-around border-t border-white/20 px-2">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/dashboard')}
-              className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", 
-                isActive('/dashboard') && "bg-white/20")}
-            >
+            <Button variant="ghost" onClick={() => navigate('/dashboard')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/dashboard') && "bg-white/20")}>
               <Home size={24} strokeWidth={1.5} />
             </Button>
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/messages')}
-              className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", 
-                isActive('/messages') && "bg-white/20")}
-            >
+            <Button variant="ghost" onClick={() => navigate('/messages')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
               <Mail size={24} strokeWidth={1.5} />
             </Button>
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/global-chat')}
-              className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", 
-                isActive('/global-chat') && "bg-white/20")}
-            >
-              <MessageSquare size={24} strokeWidth={1.5} />
-            </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => {}}
-              className="flex flex-col items-center justify-center text-white hover:bg-white/20"
-            >
+            
+            <Button variant="ghost" onClick={() => {}} className="flex flex-col items-center justify-center text-white hover:bg-white/20">
               <Bell size={24} strokeWidth={1.5} />
             </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => {}}
-              className="flex flex-col items-center justify-center text-white hover:bg-white/20"
-            >
+            <Button variant="ghost" onClick={() => {}} className="flex flex-col items-center justify-center text-white hover:bg-white/20">
               <User size={24} strokeWidth={1.5} />
             </Button>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
       <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
@@ -157,21 +113,12 @@ const NavBar: React.FC<NavBarProps> = ({
           <div className="flex items-center gap-2">
             {variant === 'social' ? <>
                 <Link to="/messages">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className={cn("rounded-full text-white hover:bg-white/20", 
-                    isActive('/messages') && "bg-white/20")}
-                  >
+                  <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
                     <Mail size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="rounded-full text-white hover:bg-white/20"
-                >
+                <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                   <HelpCircle size={36} strokeWidth={1.5} />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
@@ -184,5 +131,4 @@ const NavBar: React.FC<NavBarProps> = ({
       </div>
     </div>;
 };
-
 export default NavBar;
