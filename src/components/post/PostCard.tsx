@@ -6,6 +6,7 @@ import PostActions from './PostActions';
 import PostReactions from './PostReactions';
 import PostCommentSection from './PostCommentSection';
 import { usePostActions } from '@/hooks/usePostActions';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ChatPostProps {
   id: string;
@@ -21,6 +22,7 @@ const PostCard: React.FC<ChatPostProps> = ({
   timestamp,
 }) => {
   const [showComments, setShowComments] = useState(false);
+  const isMobile = useIsMobile();
   const { 
     isHidden,
     commentCount, 
@@ -35,7 +37,7 @@ const PostCard: React.FC<ChatPostProps> = ({
   }
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm shadow-sm border w-full rounded-none md:rounded-md">
+    <Card className={`bg-white/80 backdrop-blur-sm shadow-sm border w-full ${isMobile ? 'rounded-none' : 'rounded-md'}`}>
       <CardHeader className="flex flex-row items-center justify-between pb-3">
         <PostAuthor author={author} timestamp={timestamp} />
         <PostActions handleHidePost={handleHidePost} />

@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import PostCard from './post/PostCard';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function PostsSection() {
+  const isMobile = useIsMobile();
   const {
     posts,
     isLoading
@@ -20,7 +22,7 @@ export default function PostsSection() {
   
   return (
     <div className="space-y-2">
-      <Card className="bg-white shadow-sm border w-full rounded-md">
+      <Card className={`bg-white shadow-sm border w-full ${isMobile ? 'rounded-none' : 'rounded-md'}`}>
         <CardHeader className="pb-2">
           <CardTitle>Create a Post</CardTitle>
         </CardHeader>
