@@ -20,14 +20,14 @@ export default function PostsSection() {
   
   return (
     <div className="space-y-2">
-      <Card className="bg-white/80 backdrop-blur-sm shadow-sm border w-full rounded-none md:rounded-md mt-0">
-        <CardHeader>
+      <Card className="bg-white shadow-sm border w-full rounded-md">
+        <CardHeader className="pb-2">
           <CardTitle>Create a Post</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <Textarea placeholder="What's on your mind?" className="min-h-24" value={newPostContent} onChange={e => setNewPostContent(e.target.value)} disabled={isSubmitting} />
-            <Button className="w-full" onClick={handleCreatePost} disabled={!newPostContent.trim() || isSubmitting}>
+            <Textarea placeholder="What's on your mind?" className="min-h-24 resize-none" value={newPostContent} onChange={e => setNewPostContent(e.target.value)} disabled={isSubmitting} />
+            <Button className="w-full bg-gradpath-purple hover:bg-gradpath-dark-purple" onClick={handleCreatePost} disabled={!newPostContent.trim() || isSubmitting}>
               {isSubmitting ? 'Posting...' : 'Post'}
             </Button>
           </div>
