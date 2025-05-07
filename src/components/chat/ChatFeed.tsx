@@ -2,7 +2,7 @@
 import React from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
-import PostsSection from '../PostsSection';
+import PostsSection from '@/components/PostsSection';
 
 export default function ChatFeed() {
   const { user } = useAuth();
