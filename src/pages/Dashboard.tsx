@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
@@ -84,9 +83,8 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-[#F5F5F7]">
       <NavBar />
       
-      {/* Remove px-4 from container to allow full width on all screens */}
-      <div className="container mx-auto py-0 w-full max-w-none">
-        {/* Remove max-width constraint to allow content to expand fully */}
+      {/* Removed all horizontal padding and margins to allow full-width */}
+      <div className="container mx-0 px-0 py-0 w-full max-w-none">
         <div className="w-full">
           {/* Learning Resources Section */}
           <div className="mt-0 mb-2 w-full">
@@ -95,8 +93,8 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           
-          {/* Resource Cards - First Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full">
+          {/* Resource Cards - First Row - with full width */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full px-0 mx-0">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -110,8 +108,8 @@ const Dashboard: React.FC = () => {
             )}
           </div>
           
-          {/* Resource Cards - Second Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full">
+          {/* Resource Cards - Second Row - with full width */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full px-0 mx-0">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -125,8 +123,8 @@ const Dashboard: React.FC = () => {
             )}
           </div>
           
-          {/* AI Tutor and Performance Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full">
+          {/* AI Tutor and Performance Cards - with full width */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full px-0 mx-0">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -140,8 +138,8 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Recent Modules Content (without the header) */}
-          <div className="mt-2 w-full">
+          {/* Recent Modules Content - with full width */}
+          <div className="mt-2 w-full px-0 mx-0">
             {isLoading ? (
               <div className="space-y-4 w-full">
                 <Skeleton className="h-24 w-full rounded-lg" />
@@ -153,10 +151,10 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile View All Button */}
+          {/* Mobile View All Button - with full width */}
           {isMobile && !isLoading && (
             <div className="flex justify-center mt-4 mb-6 w-full">
-              <Button className="w-full max-w-xs bg-gradpath-purple hover:bg-gradpath-dark-purple">
+              <Button className="w-full max-w-none bg-gradpath-purple hover:bg-gradpath-dark-purple">
                 View All Modules
               </Button>
             </div>

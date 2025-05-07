@@ -70,6 +70,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
     </>
   );
 
+  // Update cardClassName to stretch fully across the screen with no horizontal margins or padding
   const cardClassName = "w-full group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col items-center border border-gray-100 dark:border-gray-700 hover:scale-[1.02]";
 
   return (
@@ -77,6 +78,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
       <button
         onClick={handleCardClick}
         className={cardClassName}
+        style={{ width: '100%', maxWidth: '100%' }}
       >
         {content}
       </button>
