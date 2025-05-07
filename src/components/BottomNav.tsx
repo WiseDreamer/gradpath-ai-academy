@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Book, Search, Award, Ambulance, MessageSquare } from 'lucide-react';
+import { Book, Search, Award, Ambulance } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const BottomNav: React.FC = () => {
@@ -15,7 +15,7 @@ const BottomNav: React.FC = () => {
       route: '/dashboard'
     },
     {
-      icon: MessageSquare,
+      icon: () => <span className="text-xl">💬</span>,
       label: 'Global Chat',
       route: '/global-chat'
     },
