@@ -10,11 +10,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import DesktopNotifications from './notifications/DesktopNotifications';
 import MobileNotifications from './notifications/MobileNotifications';
 import ProfileMenu from './profile/ProfileMenu';
+
 interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
   variant?: 'learning' | 'social' | 'ai-tutor';
 }
+
 const NavBar: React.FC<NavBarProps> = ({
   openMobileMenu,
   currentPage,
@@ -34,7 +36,9 @@ const NavBar: React.FC<NavBarProps> = ({
     userProfile,
     loading: loadingProfile
   } = useUserProfile();
+
   const isActive = (path: string) => location.pathname === path || currentPage === path;
+
   if (variant === 'ai-tutor') {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -117,12 +121,22 @@ const NavBar: React.FC<NavBarProps> = ({
                     <Mail size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
+                <Link to="/global-chat">
+                  <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/global-chat') && "bg-white/20")}>
+                    <MessageSquare size={36} strokeWidth={1.5} />
+                  </Button>
+                </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                   <HelpCircle size={36} strokeWidth={1.5} />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
               </> : <>
+                <Link to="/global-chat">
+                  <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/global-chat') && "bg-white/20")}>
+                    <MessageSquare size={36} strokeWidth={1.5} />
+                  </Button>
+                </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
               </>}
@@ -131,4 +145,5 @@ const NavBar: React.FC<NavBarProps> = ({
       </div>
     </div>;
 };
+
 export default NavBar;
