@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
@@ -12,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import NavBar from '@/components/NavBar';
+import BottomNav from '@/components/BottomNav';
 
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
@@ -84,7 +86,7 @@ const Dashboard: React.FC = () => {
       <NavBar />
       
       {/* Removed all horizontal padding and margins to allow full-width */}
-      <div className="container mx-0 px-0 py-0 w-full max-w-none">
+      <div className="container mx-0 px-0 py-0 w-full max-w-none pb-16">
         <div className="w-full">
           {/* Learning Resources Section */}
           <div className="mt-0 mb-2 w-full">
@@ -151,16 +153,12 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile View All Button - with full width */}
-          {isMobile && !isLoading && (
-            <div className="flex justify-center mt-4 mb-6 w-full">
-              <Button className="w-full max-w-none bg-gradpath-purple hover:bg-gradpath-dark-purple">
-                View All Modules
-              </Button>
-            </div>
-          )}
+          {/* Removed the "View All Modules" button */}
         </div>
       </div>
+
+      {/* Add the bottom navigation for mobile */}
+      {isMobile && <BottomNav />}
     </div>
   );
 };

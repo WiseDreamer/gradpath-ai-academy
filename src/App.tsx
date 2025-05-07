@@ -19,6 +19,9 @@ import StudyPlanPage from "./pages/StudyPlanPage";
 import PracticePage from "./pages/PracticePage";
 import AiTutorPage from "./pages/AiTutorPage";
 import PerformancePage from "./pages/PerformancePage";
+import SearchPage from "./pages/SearchPage";
+import AchievementsPage from "./pages/AchievementsPage"; 
+import HelpRequestPage from "./pages/HelpRequestPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -44,6 +47,9 @@ const App = () => (
               <Route path="/practice" element={<PracticePage />} />
               <Route path="/ai-tutor" element={<AiTutorPage />} />
               <Route path="/performance" element={<PerformancePage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
+              <Route path="/help-request" element={<HelpRequestPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

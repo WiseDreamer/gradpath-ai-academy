@@ -55,14 +55,16 @@ const NavBar: React.FC<NavBarProps> = ({
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
                 <Search size={36} strokeWidth={1.5} />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="rounded-full text-white hover:bg-white/20 mr-0" 
-                onClick={openMobileMenu}
-              >
-                <Menu size={36} strokeWidth={1.5} />
-              </Button>
+              {!isMobile && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full text-white hover:bg-white/20 mr-0" 
+                  onClick={openMobileMenu}
+                >
+                  <Menu size={36} strokeWidth={1.5} />
+                </Button>
+              )}
             </div>
           </div>
           {/* Bottom Section */}
@@ -95,16 +97,19 @@ const NavBar: React.FC<NavBarProps> = ({
                     <Mail size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
-                <Link to="/global-chat">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className={cn("rounded-full text-white hover:bg-white/20", 
-                    isActive('/global-chat') && "bg-white/20")}
-                  >
-                    <MessageSquare size={36} strokeWidth={1.5} />
-                  </Button>
-                </Link>
+                {/* Removed global chat button for mobile */}
+                {!isMobile && (
+                  <Link to="/global-chat">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className={cn("rounded-full text-white hover:bg-white/20", 
+                      isActive('/global-chat') && "bg-white/20")}
+                    >
+                      <MessageSquare size={36} strokeWidth={1.5} />
+                    </Button>
+                  </Link>
+                )}
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <Button 
                   variant="ghost" 
@@ -114,35 +119,44 @@ const NavBar: React.FC<NavBarProps> = ({
                   <HelpCircle size={36} strokeWidth={1.5} />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="rounded-full text-white hover:bg-white/20 mr-0" 
-                  onClick={openMobileMenu}
-                >
-                  <Menu size={36} strokeWidth={1.5} />
-                </Button>
-              </> : <>
-                <Link to="/global-chat">
+                {/* Removed menu button for mobile */}
+                {!isMobile && (
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className={cn("rounded-full text-white hover:bg-white/20", 
-                    isActive('/global-chat') && "bg-white/20")}
+                    className="rounded-full text-white hover:bg-white/20 mr-0" 
+                    onClick={openMobileMenu}
                   >
-                    <MessageSquare size={36} strokeWidth={1.5} />
+                    <Menu size={36} strokeWidth={1.5} />
                   </Button>
-                </Link>
+                )}
+              </> : <>
+                {/* Removed global chat button for mobile */}
+                {!isMobile && (
+                  <Link to="/global-chat">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className={cn("rounded-full text-white hover:bg-white/20", 
+                      isActive('/global-chat') && "bg-white/20")}
+                    >
+                      <MessageSquare size={36} strokeWidth={1.5} />
+                    </Button>
+                  </Link>
+                )}
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="rounded-full text-white hover:bg-white/20 mr-0" 
-                  onClick={openMobileMenu}
-                >
-                  <Menu size={36} strokeWidth={1.5} />
-                </Button>
+                {/* Removed menu button for mobile */}
+                {!isMobile && (
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="rounded-full text-white hover:bg-white/20 mr-0" 
+                    onClick={openMobileMenu}
+                  >
+                    <Menu size={36} strokeWidth={1.5} />
+                  </Button>
+                )}
               </>}
           </div>
         </div>
