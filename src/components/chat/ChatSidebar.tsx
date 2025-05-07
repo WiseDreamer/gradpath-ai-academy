@@ -25,10 +25,10 @@ const ChatSidebar: React.FC = () => {
   const tags = ['Math', 'AI', 'Physics', 'Chemistry', 'Programming'];
 
   return (
-    <aside className="hidden md:block w-64 overflow-y-auto">
+    <aside className="hidden md:block w-64 overflow-y-auto px-0">
       <div className="space-y-4">
         {/* Profile and Menu */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border p-4 rounded-none">
           <nav className="space-y-2">
             <Link to="/profile" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
               <Avatar className="h-10 w-10">
@@ -72,7 +72,7 @@ const ChatSidebar: React.FC = () => {
         </div>
 
         {/* Shortcuts */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border p-4 rounded-none">
           <h3 className="px-3 text-sm font-semibold text-gray-500 mb-2">Your Shortcuts</h3>
           <div className="space-y-1">
             {shortcuts.map((shortcut) => (
@@ -87,7 +87,7 @@ const ChatSidebar: React.FC = () => {
         </div>
 
         {/* Topics */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border p-4 rounded-none">
           <h3 className="px-3 text-sm font-semibold text-gray-500 mb-2">Topics</h3>
           <div className="space-y-1">
             {tags.map((tag) => (
