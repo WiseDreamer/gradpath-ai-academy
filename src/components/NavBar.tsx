@@ -139,9 +139,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
               </> : <>
                 <Link to="/global-chat">
-                  <Button variant="ghost" size="icon" className={cn("rounded-full text-white hover:bg-white/20", isActive('/global-chat') && "bg-white/20")}>
-                    <MessageSquare size={36} strokeWidth={1.5} />
-                  </Button>
+                  
                 </Link>
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
