@@ -1,8 +1,5 @@
-
 import React, { useState } from 'react';
-import { 
-  Search, Menu, Mail, Bell, HelpCircle, Home, User, Users, MessageSquare
-} from 'lucide-react';
+import { Search, Menu, Mail, Bell, HelpCircle, Home, User, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import ChatFeed from '@/components/chat/ChatFeed';
@@ -11,19 +8,15 @@ import ChatDrawer from '@/components/chat/ChatDrawer';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '@/components/Logo';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const GlobalChatPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const isMobile = useIsMobile();
   const location = useLocation();
 
   // Consistent icon size and stroke width
   const iconSize = 24;
   const iconStrokeWidth = 2;
-
-  return (
-    <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
+  return <div className="min-h-screen bg-[#F5F5F7] overflow-x-hidden">
       <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full mx-0">
           <div className="flex items-center justify-between h-14">
@@ -33,154 +26,77 @@ const GlobalChatPage: React.FC = () => {
             </div>
             
             {/* Center section for desktop */}
-            {!isMobile && (
-              <div className="flex-1 flex items-center justify-center gap-6 px-4">
+            {!isMobile && <div className="flex-1 flex items-center justify-center gap-6 px-4">
                 <Link to="/messages" replace>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="rounded-full text-white hover:bg-white/20"
-                    aria-label="Inbox"
-                  >
+                  <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20" aria-label="Inbox">
                     <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
                   </Button>
                 </Link>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20" 
-                  aria-label="Notifications"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20" aria-label="Notifications">
                   <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20" 
-                  aria-label="Help"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20" aria-label="Help">
                   <HelpCircle size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
-              </div>
-            )}
+              </div>}
             
             {/* Right side - Menu and profile buttons aligned to the right edge */}
-            {!isMobile && (
-              <div className="flex items-center gap-4 pr-0">
+            {!isMobile && <div className="flex items-center gap-4 pr-0">
                 <Link to="/dashboard" replace>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="rounded-full text-white hover:bg-white/20"
-                  >
+                  <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20">
                     <Home size={iconSize} strokeWidth={iconStrokeWidth} />
                   </Button>
                 </Link>
                 <Link to="/profile" replace>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="rounded-full text-white hover:bg-white/20"
-                  >
+                  <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20">
                     <User size={iconSize} strokeWidth={iconStrokeWidth} />
                   </Button>
                 </Link>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20 mr-0"
-                  aria-label="Menu"
-                  onClick={() => setIsDrawerOpen(true)}
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20 mr-0" aria-label="Menu" onClick={() => setIsDrawerOpen(true)}>
                   <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
-              </div>
-            )}
+              </div>}
             
             {/* Mobile-specific right side */}
-            {isMobile && (
-              <div className="flex items-center gap-3 pr-0">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20"
-                  aria-label="Search"
-                >
+            {isMobile && <div className="flex items-center gap-3 pr-0">
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20" aria-label="Search">
                   <Search size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20 mr-0"
-                  onClick={() => setIsDrawerOpen(true)}
-                  aria-label="Menu"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20 mr-0" onClick={() => setIsDrawerOpen(true)} aria-label="Menu">
                   <Menu size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
-              </div>
-            )}
+              </div>}
           </div>
           
           {/* Mobile navigation buttons at bottom */}
-          {isMobile && (
-            <div className="h-14 flex items-center justify-between border-t border-white/20">
+          {isMobile && <div className="h-14 flex items-center justify-between border-t border-white/20">
               <Link to="/dashboard" replace>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20 ml-0"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20 ml-0">
                   <Home size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Link to="/messages" replace>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20"
-                  aria-label="Inbox"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20" aria-label="Inbox">
                   <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
               <Link to="/global-chat" replace>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20"
-                  aria-label="Chat"
-                >
-                  <MessageSquare size={iconSize} strokeWidth={iconStrokeWidth} />
-                </Button>
+                
               </Link>
               <Link to="/friends" replace>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20" 
-                  aria-label="Friends"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20" aria-label="Friends">
                   <Users size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                className="rounded-full text-white hover:bg-white/20"
-              >
+              <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20">
                 <Bell size={iconSize} strokeWidth={iconStrokeWidth} />
               </Button>
               <Link to="/profile" replace>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="rounded-full text-white hover:bg-white/20 mr-0"
-                >
+                <Button variant="ghost" size="sm" className="rounded-full text-white hover:bg-white/20 mr-0">
                   <User size={iconSize} strokeWidth={iconStrokeWidth} />
                 </Button>
               </Link>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
       
@@ -192,8 +108,6 @@ const GlobalChatPage: React.FC = () => {
         <OnlineSidebar />
       </div>
       <ChatDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
-    </div>
-  );
+    </div>;
 };
-
 export default GlobalChatPage;
