@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Home, Mail, Search, HelpCircle, MessageSquare, Bell, User, Users } from 'lucide-react';
@@ -11,13 +10,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import DesktopNotifications from './notifications/DesktopNotifications';
 import MobileNotifications from './notifications/MobileNotifications';
 import ProfileMenu from './profile/ProfileMenu';
-
 interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
   variant?: 'learning' | 'social' | 'ai-tutor';
 }
-
 const NavBar: React.FC<NavBarProps> = ({
   openMobileMenu,
   currentPage,
@@ -36,9 +33,7 @@ const NavBar: React.FC<NavBarProps> = ({
     userProfile,
     loading: loadingProfile
   } = useUserProfile();
-
   const isActive = (path: string) => location.pathname === path || currentPage === path;
-
   const handleHomeClick = () => {
     if (location.pathname === '/global-chat') {
       navigate('/dashboard');
@@ -46,7 +41,6 @@ const NavBar: React.FC<NavBarProps> = ({
       navigate('/global-chat');
     }
   };
-
   if (variant === 'ai-tutor') {
     return <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
         <div className="w-full">
@@ -123,9 +117,7 @@ const NavBar: React.FC<NavBarProps> = ({
       <div className="w-full px-0">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" onClick={handleHomeClick} className="hover:bg-white/20 ml-0">
-              <Home size={36} strokeWidth={1.5} />
-            </Button>
+            
             <Logo clickable={false} />
           </div>
           <div className="flex items-center gap-2">
@@ -159,5 +151,4 @@ const NavBar: React.FC<NavBarProps> = ({
       </div>
     </div>;
 };
-
 export default NavBar;
