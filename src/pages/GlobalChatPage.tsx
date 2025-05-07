@@ -1,6 +1,6 @@
 
 import React from 'react';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar';
 import ChatFeed from '@/components/chat/ChatFeed';
 import ChatSidebar from '@/components/chat/ChatSidebar';
 import OnlineSidebar from '@/components/chat/OnlineSidebar';
