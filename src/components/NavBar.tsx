@@ -10,7 +10,7 @@ import {
   Bell, 
   User, 
   Users,
-  Grid
+  Grid3x3
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -173,7 +173,7 @@ const NavBar: React.FC<NavBarProps> = ({
               <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
               
               <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
-                <Grid size={24} strokeWidth={1.5} />
+                <Grid3x3 size={24} strokeWidth={1.5} />
               </Button>
             </div>
           </div>
