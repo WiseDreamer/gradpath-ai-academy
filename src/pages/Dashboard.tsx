@@ -138,9 +138,27 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Recent Modules section has been removed */}
-          
-          {/* Mobile View All Button - also removed since it was related to the Recent Modules section */}
+          {/* Recent Modules Content (without the header) */}
+          <div className="mt-2">
+            {isLoading ? (
+              <div className="space-y-4">
+                <Skeleton className="h-24 w-full rounded-lg" />
+                <Skeleton className="h-24 w-full rounded-lg" />
+                <Skeleton className="h-24 w-full rounded-lg" />
+              </div>
+            ) : (
+              <AiTutorTab />
+            )}
+          </div>
+
+          {/* Mobile View All Button */}
+          {isMobile && !isLoading && (
+            <div className="flex justify-center mt-4 mb-6">
+              <Button className="w-full max-w-xs bg-gradpath-purple hover:bg-gradpath-dark-purple">
+                View All Modules
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
