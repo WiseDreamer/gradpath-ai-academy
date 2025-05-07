@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare, Bell, User } from 'lucide-react';
+import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare, Bell, User, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -87,18 +87,24 @@ const NavBar: React.FC<NavBarProps> = ({
           </div>
           
           {/* Bottom Navigation Icons */}
-          <div className="h-14 flex items-center justify-around border-t border-white/20 px-2">
+          <div className="h-14 flex items-center justify-between border-t border-white/20 px-6">
             <Button variant="ghost" onClick={() => navigate('/dashboard')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/dashboard') && "bg-white/20")}>
               <Home size={24} strokeWidth={1.5} />
             </Button>
+            
+            <Button variant="ghost" onClick={() => navigate('/friends')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/friends') && "bg-white/20")}>
+              <Users size={24} strokeWidth={1.5} />
+            </Button>
+            
             <Button variant="ghost" onClick={() => navigate('/messages')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/messages') && "bg-white/20")}>
               <Mail size={24} strokeWidth={1.5} />
             </Button>
             
-            <Button variant="ghost" onClick={() => {}} className="flex flex-col items-center justify-center text-white hover:bg-white/20">
+            <Button variant="ghost" onClick={() => navigate('/notifications')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/notifications') && "bg-white/20")}>
               <Bell size={24} strokeWidth={1.5} />
             </Button>
-            <Button variant="ghost" onClick={() => {}} className="flex flex-col items-center justify-center text-white hover:bg-white/20">
+            
+            <Button variant="ghost" onClick={() => navigate('/profile')} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/profile') && "bg-white/20")}>
               <User size={24} strokeWidth={1.5} />
             </Button>
           </div>
