@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Book, MessageSquare, Search, Award, Ambulance } from 'lucide-react';
+import { Book, Search, Award, Ambulance, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const BottomNav: React.FC = () => {

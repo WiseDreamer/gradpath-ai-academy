@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Home, Mail, Search, HelpCircle, ChevronLeft, MessageSquare } from 'lucide-react';
@@ -97,19 +96,6 @@ const NavBar: React.FC<NavBarProps> = ({
                     <Mail size={36} strokeWidth={1.5} />
                   </Button>
                 </Link>
-                {/* Removed global chat button for mobile */}
-                {!isMobile && (
-                  <Link to="/global-chat">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className={cn("rounded-full text-white hover:bg-white/20", 
-                      isActive('/global-chat') && "bg-white/20")}
-                    >
-                      <MessageSquare size={36} strokeWidth={1.5} />
-                    </Button>
-                  </Link>
-                )}
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <Button 
                   variant="ghost" 
@@ -119,44 +105,9 @@ const NavBar: React.FC<NavBarProps> = ({
                   <HelpCircle size={36} strokeWidth={1.5} />
                 </Button>
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-                {/* Removed menu button for mobile */}
-                {!isMobile && (
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="rounded-full text-white hover:bg-white/20 mr-0" 
-                    onClick={openMobileMenu}
-                  >
-                    <Menu size={36} strokeWidth={1.5} />
-                  </Button>
-                )}
               </> : <>
-                {/* Removed global chat button for mobile */}
-                {!isMobile && (
-                  <Link to="/global-chat">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className={cn("rounded-full text-white hover:bg-white/20", 
-                      isActive('/global-chat') && "bg-white/20")}
-                    >
-                      <MessageSquare size={36} strokeWidth={1.5} />
-                    </Button>
-                  </Link>
-                )}
                 {isMobile ? <MobileNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} /> : <DesktopNotifications notifications={notifications} unreadCount={unreadCount} onMarkAsRead={markAsRead} loadingNotifications={loadingNotifications} />}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
-                {/* Removed menu button for mobile */}
-                {!isMobile && (
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="rounded-full text-white hover:bg-white/20 mr-0" 
-                    onClick={openMobileMenu}
-                  >
-                    <Menu size={36} strokeWidth={1.5} />
-                  </Button>
-                )}
               </>}
           </div>
         </div>
