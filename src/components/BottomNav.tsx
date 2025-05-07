@@ -16,7 +16,7 @@ const BottomNav: React.FC = () => {
     },
     {
       icon: MessageSquare,
-      label: 'Community Chat',
+      label: 'Global Chat',
       route: '/global-chat'
     },
     {
