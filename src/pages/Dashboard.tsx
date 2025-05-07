@@ -86,7 +86,11 @@ const Dashboard: React.FC = () => {
       <div className="container mx-auto px-4 py-0">
         <div className="max-w-7xl mx-auto">
           {/* Learning Resources Section */}
-          {/* The specified div has been deleted from here */}
+          <div className="mt-0 mb-2">
+            <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700">
+              <h2 className="text-xl font-semibold text-gray-800">Learning Resources</h2>
+            </div>
+          </div>
           
           {/* Resource Cards - First Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
