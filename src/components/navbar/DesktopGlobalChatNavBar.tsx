@@ -80,7 +80,7 @@ const DesktopGlobalChatNavBar: React.FC<DesktopGlobalChatNavBarProps> = ({
             <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
             
             <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20" onClick={openMobileMenu}>
-              <Grid3x3 size={24} strokeWidth={1.5} />
+              <Grid3x3 size={24} strokeWidth={1.5} className="opacity-70" />
             </Button>
           </div>
         </div>
