@@ -22,6 +22,7 @@ import PerformancePage from "./pages/PerformancePage";
 import SearchPage from "./pages/SearchPage";
 import AchievementsPage from "./pages/AchievementsPage"; 
 import HelpRequestPage from "./pages/HelpRequestPage";
+import LibraryPage from "./pages/LibraryPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/search" element={<SearchPage />} />
               <Route path="/achievements" element={<AchievementsPage />} />
               <Route path="/help-request" element={<HelpRequestPage />} />
+              <Route path="/library" element={<LibraryPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

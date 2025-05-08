@@ -11,7 +11,7 @@ const BottomNav: React.FC = () => {
   const navItems = [{
     icon: Book,
     label: 'Library',
-    route: '/dashboard'
+    route: '/library'
   }, {
     icon: () => <span className="text-xl">💬</span>,
     label: 'Global Chat',
