@@ -39,7 +39,7 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
 
   return (
     <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
-      <div className="w-full px-0">
+      <div className="w-full px-4">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-1">
             <Logo clickable={false} />
@@ -75,7 +75,7 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 {!isMobile && (
                   <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                    <Grid3X3 size={24} strokeWidth={1.5} />
+                    <Grid3X3 size={36} strokeWidth={1.5} />
                   </Button>
                 )}
               </>
@@ -108,7 +108,7 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 {!isMobile && (
                   <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                    <Grid3X3 size={24} strokeWidth={1.5} />
+                    <Grid3X3 size={36} strokeWidth={1.5} />
                   </Button>
                 )}
               </>
