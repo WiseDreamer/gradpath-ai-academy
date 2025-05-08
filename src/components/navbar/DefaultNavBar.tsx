@@ -44,7 +44,7 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
           <div className="flex items-center gap-1">
             <Logo clickable={false} />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             {variant === 'social' ? (
               <>
                 <Link to="/messages">
@@ -74,8 +74,12 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                 )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 {!isMobile && (
-                  <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                    <Grid3X3 size={36} strokeWidth={1.5} />
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="rounded-full text-white hover:bg-white/20 ml-2 p-2"
+                  >
+                    <Grid3X3 size={36} strokeWidth={1.5} className="text-white" />
                   </Button>
                 )}
               </>
@@ -107,8 +111,12 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                 )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
                 {!isMobile && (
-                  <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
-                    <Grid3X3 size={36} strokeWidth={1.5} />
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="rounded-full text-white hover:bg-white/20 ml-2 p-2 flex items-center justify-center"
+                  >
+                    <Grid3X3 size={36} strokeWidth={1.5} className="text-white" />
                   </Button>
                 )}
               </>
