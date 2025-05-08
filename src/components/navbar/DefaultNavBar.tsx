@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, MessageSquare } from 'lucide-react';
+import { Mail, MessageSquare, Grid3X3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from '../Logo';
@@ -73,6 +73,11 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                   />
                 )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
+                {!isMobile && (
+                  <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                    <Grid3X3 size={24} strokeWidth={1.5} />
+                  </Button>
+                )}
               </>
             ) : (
               <>
@@ -85,13 +90,6 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                   />
                 ) : (
                   <>
-                    <DesktopNotifications 
-                      notifications={notifications} 
-                      unreadCount={unreadCount} 
-                      onMarkAsRead={markAsRead} 
-                      loadingNotifications={loadingNotifications} 
-                    />
-                    {/* Display chat icon only on dashboard page and only for desktop */}
                     {isDashboardPage && !isMobile && (
                       <Link to="/global-chat">
                         <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
@@ -99,9 +97,20 @@ const DefaultNavBar: React.FC<DefaultNavBarProps> = ({
                         </Button>
                       </Link>
                     )}
+                    <DesktopNotifications 
+                      notifications={notifications} 
+                      unreadCount={unreadCount} 
+                      onMarkAsRead={markAsRead} 
+                      loadingNotifications={loadingNotifications} 
+                    />
                   </>
                 )}
                 <ProfileMenu userProfile={userProfile} loading={loadingProfile} />
+                {!isMobile && (
+                  <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
+                    <Grid3X3 size={24} strokeWidth={1.5} />
+                  </Button>
+                )}
               </>
             )}
           </div>
