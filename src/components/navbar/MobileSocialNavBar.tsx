@@ -40,15 +40,15 @@ const MobileSocialNavBar: React.FC<MobileSocialNavBarProps> = ({
       <div className="w-full">
         {/* Top Section with Logo and Icons */}
         <div className="flex items-center justify-between h-16 px-4">
-          <div className="flex items-center">
-            <Logo clickable={false} />
-          </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 p-1">
-              <Search size={24} strokeWidth={1.5} />
-            </Button>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 p-1" onClick={openMobileMenu}>
               <Menu size={24} strokeWidth={1.5} />
+            </Button>
+            <Logo clickable={false} />
+          </div>
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 p-1">
+              <Search size={24} strokeWidth={1.5} />
             </Button>
           </div>
         </div>
