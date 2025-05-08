@@ -13,12 +13,14 @@ interface NavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
   variant?: 'learning' | 'social' | 'ai-tutor';
+  useMessagesStyle?: boolean;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
   openMobileMenu,
   currentPage,
-  variant = 'learning'
+  variant = 'learning',
+  useMessagesStyle = false
 }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -48,7 +50,7 @@ const NavBar: React.FC<NavBarProps> = ({
     );
   }
 
-  // Mobile Social variant
+  // Mobile Social variant - Now uses MessagesStyle if prop is set
   if (variant === 'social' && isMobile) {
     return (
       <MobileSocialNavBar
@@ -58,6 +60,7 @@ const NavBar: React.FC<NavBarProps> = ({
         unreadCount={unreadCount}
         markAsRead={markAsRead}
         loadingNotifications={loadingNotifications}
+        useMessagesStyle={useMessagesStyle}
       />
     );
   }

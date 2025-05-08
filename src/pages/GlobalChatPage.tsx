@@ -12,7 +12,7 @@ const GlobalChatPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
-      <NavBar variant="social" currentPage="/global-chat" />
+      <NavBar variant="social" currentPage="/global-chat" useMessagesStyle={isMobile} />
       {isMobile ? (
         <div className="w-full">
           <PostsSection />
