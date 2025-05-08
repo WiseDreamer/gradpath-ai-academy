@@ -5,7 +5,6 @@ import { Home, Users, Mail, Bell, User, Menu, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from '../Logo';
-import MobileNotifications from '../notifications/MobileNotifications';
 
 interface MobileSocialNavBarProps {
   openMobileMenu?: () => void;
@@ -55,7 +54,7 @@ const MobileSocialNavBar: React.FC<MobileSocialNavBarProps> = ({
         
         {/* Bottom Navigation Icons */}
         <div className="h-14 flex items-center justify-between border-t border-white/20 px-6">
-          <Button variant="ghost" onClick={handleHomeClick} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20", isActive('/dashboard') && "bg-white/20")}>
+          <Button variant="ghost" onClick={handleHomeClick} className={cn("flex flex-col items-center justify-center text-white hover:bg-white/20 pl-0 ml-0", isActive('/dashboard') && "bg-white/20")}>
             <Home size={24} strokeWidth={1.5} />
           </Button>
           
