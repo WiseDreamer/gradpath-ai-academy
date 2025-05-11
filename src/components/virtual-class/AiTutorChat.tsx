@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -136,15 +135,15 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
         // Skip null or undefined parts
         if (part === null || part === undefined) continue;
         
-        // Fixed: Add explicit null check before accessing properties
         // Extract text from streaming response with proper type checking
-        const textPart = part !== null && typeof part === 'object' && 'text' in part 
+        // Fixed: Add additional null checking with optional chaining to safely access properties
+        const textPart = part && typeof part === 'object' && 'text' in part 
           ? part.text 
           : '';
         
-        // Fixed: Add another explicit null check
         // Make sure textPart is converted to string
-        const text = textPart !== null && typeof textPart === 'string' ? textPart : '';
+        // Fixed: Use optional chaining and nullish coalescing for safe property access
+        const text = typeof textPart === 'string' ? textPart : '';
         
         fullResponse += text;
         
@@ -291,4 +290,3 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
     </div>
   );
 };
-
