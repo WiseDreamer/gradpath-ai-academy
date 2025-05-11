@@ -7,7 +7,8 @@ import { Stroke, StrokePoint } from '@/types/whiteboard';
 import { generateUserId, serializeWhiteboardState } from '@/utils/whiteboard-utils';
 import { WhiteboardStorageService } from '@/services/whiteboard-storage';
 
-export { Stroke, StrokePoint } from '@/types/whiteboard';
+// Use explicit "export type" for re-exporting types
+export type { Stroke, StrokePoint } from '@/types/whiteboard';
 
 export const usePuterWhiteboard = (initialPage = 1) => {
   const { puter, isLoaded, isDbAvailable } = usePuter();
@@ -201,3 +202,4 @@ export const usePuterWhiteboard = (initialPage = 1) => {
     userId: userId.current
   };
 };
+
