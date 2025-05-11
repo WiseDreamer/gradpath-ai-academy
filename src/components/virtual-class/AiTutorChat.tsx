@@ -35,9 +35,11 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   
   useEffect(() => {
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognitionInstance = new SpeechRecognition();
+    // Fixed: Properly check and access the SpeechRecognition API
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (SpeechRecognitionAPI) {
+      const recognitionInstance = new SpeechRecognitionAPI();
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
@@ -128,10 +130,12 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
         }
       ]);
       
-      // Process streaming response
+      // Process streaming response - Fixed: Handle the streaming part response correctly
       for await (const part of response) {
         // Extract text from streaming response
-        const text = part?.text || '';
+        // Fixed: Handle potential undefined or non-object part by checking if part and part.text exist
+        const textPart = part && typeof part === 'object' && 'text' in part ? part.text : '';
+        const text = typeof textPart === 'string' ? textPart : '';
         fullResponse += text;
         
         // Update AI message with new content
