@@ -39,7 +39,8 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
     addPoint,
     endStroke,
     clearBoard,
-    isLoaded
+    isLoaded,
+    isDbAvailable
   } = usePuterWhiteboard(currentPage);
 
   // Initialize canvas
@@ -341,8 +342,15 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
         <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p className="text-gray-700">Connecting to collaboration server...</p>
+            <p className="text-gray-700">Initializing whiteboard...</p>
           </div>
+        </div>
+      )}
+      
+      {/* Local storage mode indicator */}
+      {isLoaded && !isDbAvailable && (
+        <div className="absolute bottom-0 left-0 right-0 bg-amber-50 text-amber-800 text-xs px-2 py-1 text-center">
+          Using local storage mode - drawings are not synchronized
         </div>
       )}
     </div>

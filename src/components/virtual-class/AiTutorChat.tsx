@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Volume, VolumeX } from 'lucide-react';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 import { usePuter } from '@/contexts/PuterContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface AiTutorChatProps {
   getWhiteboardState: () => string;
@@ -29,9 +30,10 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
   
   // Get Puter.js context for AI capabilities
-  const { puter, isLoaded } = usePuter();
+  const { puter, isLoaded, isDbAvailable } = usePuter();
   
   // Speech recognition setup with proper property destructuring
   const { 
@@ -43,6 +45,19 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
       setInputValue(transcript);
     }
   });
+  
+  // Add welcome message on first load
+  useEffect(() => {
+    if (messages.length === 0) {
+      const welcomeMessage: Message = {
+        id: `ai-${Date.now()}`,
+        sender: 'ai',
+        content: 'Welcome to your AI tutor! I can help explain concepts and answer your questions. What would you like to learn today?',
+        timestamp: new Date(),
+      };
+      setMessages([welcomeMessage]);
+    }
+  }, [messages.length]);
   
   // Suggested questions based on current context
   const suggestedQuestions = [
@@ -111,8 +126,8 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
       
       let fullResponse = '';
       
+      // Check if Puter AI is available
       if (puter?.ai && isLoaded) {
-        // Use Puter.js AI for real responses
         try {
           const prompt = `You are a helpful AI tutor explaining concepts. 
           The student has drawn this on the whiteboard: ${whiteboardState}
@@ -143,7 +158,7 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
           console.error('Puter AI error:', error);
           
           // Fallback to mock response if Puter AI fails
-          const mockResponse = "I'm sorry, I couldn't process that request. Please try again.";
+          const mockResponse = "I'm sorry, I couldn't process that request with Puter AI. I'll respond with a simulated answer instead.";
           fullResponse = mockResponse;
           
           setMessages(prev =>
@@ -151,29 +166,48 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
               msg.id === aiMessageId ? { ...msg, content: mockResponse } : msg
             )
           );
+          
+          // Show toast notification
+          toast({
+            title: "Limited AI Functionality",
+            description: "The AI service is currently unavailable. Using simulated responses instead.",
+            variant: "default"
+          });
+          
+          // Simulate a better response after the error message
+          setTimeout(() => {
+            const simulatedResponse = generateSimulatedResponse(inputValue.trim());
+            setMessages(prev =>
+              prev.map(msg =>
+                msg.id === aiMessageId ? { 
+                  ...msg, 
+                  content: mockResponse + "\n\n" + simulatedResponse 
+                } : msg
+              )
+            );
+          }, 1000);
         }
       } else {
-        // Simulate streaming response if Puter.js is not available
-        const mockResponse = [
-          { text: 'Based on ' },
-          { text: 'what you\'ve drawn on the whiteboard' },
-          { text: ' and your question about ' },
-          { text: inputValue.substring(0, 10) },
-          { text: '..., ' },
-          { text: 'I can explain this concept in detail.\n\n' },
-          { text: 'The key insight is to understand how these mathematical principles connect to real-world applications.' }
-        ];
+        // Provide a more informative message when Puter.js is not available
+        const serviceInfo = !isLoaded ? 
+          "The AI service is still initializing." : 
+          "The AI service is currently unavailable.";
+          
+        toast({
+          title: "Using simulated AI",
+          description: serviceInfo + " Using simulated responses instead.",
+          variant: "default"
+        });
         
-        for (const part of mockResponse) {
-          // Guard against null part
-          if (part == null) continue;
-          
-          // Type guard for text property
-          const text = typeof part === 'object' && 'text' in part 
-            ? String(part.text) 
-            : '';
-          
-          fullResponse += text;
+        // Simulate streaming response if Puter.js is not available
+        const simulatedResponse = generateSimulatedResponse(inputValue.trim());
+        
+        // Split the response into chunks to simulate streaming
+        const chunks = simulatedResponse.split(' ');
+        
+        for (let i = 0; i < chunks.length; i++) {
+          const word = chunks[i] + ' ';
+          fullResponse += word;
           
           // Update message with streaming content
           setMessages(prev =>
@@ -182,19 +216,45 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
             )
           );
           
-          // Speak the part if voice is enabled
-          if (isVoiceEnabled && text.trim()) {
-            await speak(text);
+          // Speak the word if voice is enabled
+          if (isVoiceEnabled && word.trim()) {
+            await speak(word);
           }
           
           // Simulate streaming delay
-          await new Promise(resolve => setTimeout(resolve, 200));
+          await new Promise(resolve => setTimeout(resolve, 50));
         }
       }
     } catch (error) {
       console.error('Error processing message:', error);
+      
+      // Add an error message
+      const errorMessage: Message = {
+        id: `error-${Date.now()}`,
+        sender: 'ai',
+        content: "I'm sorry, I encountered an error while processing your message. Please try again later.",
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsProcessing(false);
+    }
+  };
+  
+  // Generate a simulated response based on the input
+  const generateSimulatedResponse = (input: string) => {
+    // Simplified local keyword matching for simulated responses
+    if (input.toLowerCase().includes('eigenvalue')) {
+      return "Eigenvalues are special scalars associated with linear systems of equations. When we have a matrix A and a vector v, if Av = λv for some scalar λ, then λ is an eigenvalue and v is an eigenvector. This means the vector v is only scaled by λ when multiplied by A, not changing its direction. Eigenvalues are crucial in many applications including principal component analysis, quantum mechanics, and stability analysis.";
+    } else if (input.toLowerCase().includes('linear algebra')) {
+      return "Linear algebra is a branch of mathematics that deals with vector spaces, linear mappings between those spaces, and systems of linear equations. It's fundamental to many fields including computer graphics, machine learning, quantum mechanics, and engineering. Key concepts include matrices, determinants, eigenvalues, and vector spaces.";
+    } else if (input.toLowerCase().includes('calculus')) {
+      return "Calculus is the mathematical study of continuous change. The two major branches are differential calculus (concerning rates of change and slopes of curves) and integral calculus (concerning accumulation of quantities and the areas under curves). These concepts are related by the fundamental theorem of calculus. Calculus has widespread applications in science, economics, and engineering.";
+    } else if (input.toLowerCase().includes('matrix')) {
+      return "A matrix is a rectangular array of numbers, symbols, or expressions arranged in rows and columns. Matrices are used to represent linear transformations, solve systems of linear equations, and work with graph data structures. Matrix operations include addition, multiplication, finding determinants, inverses, and eigenvalues. They're essential tools in linear algebra with applications across many fields.";
+    } else {
+      return "That's an interesting question! In an educational setting, I would normally provide a detailed explanation based on mathematical principles and connect it to practical applications. I encourage you to be specific with your questions so I can give you the most helpful response. What particular concept or problem would you like me to help you understand?";
     }
   };
   
@@ -243,6 +303,13 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
         isRecognitionSupported={isRecognitionSupported}
         isLoaded={isLoaded}
       />
+      
+      {/* Status indicator for Puter services */}
+      {!isLoaded && (
+        <div className="text-xs text-center py-1 bg-amber-50 text-amber-700 border-t border-amber-200">
+          AI services are initializing...
+        </div>
+      )}
     </div>
   );
 };

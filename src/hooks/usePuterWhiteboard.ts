@@ -37,19 +37,43 @@ const generateUserId = () => {
 };
 
 export const usePuterWhiteboard = (initialPage = 1) => {
-  const { puter, isLoaded } = usePuter();
+  const { puter, isLoaded, isDbAvailable } = usePuter();
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentStroke, setCurrentStroke] = useState<Stroke | null>(null);
   const userId = useRef(generateUserId());
+  const localStrokesRef = useRef<Stroke[]>([]);
   const { toast } = useToast();
 
   // Set up database connection when Puter is loaded
   useEffect(() => {
     if (!isLoaded || !puter) return;
-
+    
+    // Check for DB access
+    if (!isDbAvailable) {
+      console.log("Puter.js loaded but DB is not available. Using local storage only.");
+      
+      // If Puter.js is loaded but DB is not available, load strokes from local storage
+      const savedStrokes = localStorage.getItem(`whiteboard_strokes_page_${currentPage}`);
+      if (savedStrokes) {
+        try {
+          const parsedStrokes = JSON.parse(savedStrokes) as Stroke[];
+          setStrokes(parsedStrokes);
+          localStrokesRef.current = parsedStrokes;
+        } catch (error) {
+          console.error("Failed to parse saved strokes:", error);
+        }
+      }
+      
+      return;
+    }
+    
     try {
+      if (!puter.db) {
+        throw new Error("Puter DB is not available");
+      }
+      
       const strokesTable = puter.db.table('whiteboard_strokes');
       
       // Subscribe to new strokes
@@ -71,27 +95,82 @@ export const usePuterWhiteboard = (initialPage = 1) => {
       };
     } catch (error) {
       console.error("Failed to initialize Puter whiteboard:", error);
+      
+      // If DB initialization fails, load strokes from local storage
+      const savedStrokes = localStorage.getItem(`whiteboard_strokes_page_${currentPage}`);
+      if (savedStrokes) {
+        try {
+          setStrokes(JSON.parse(savedStrokes));
+        } catch (e) {
+          console.error("Failed to parse saved strokes:", e);
+        }
+      }
+      
       toast({
-        title: "Connection issue",
-        description: "Failed to connect to the collaborative whiteboard.",
-        variant: "destructive"
+        title: "Using local whiteboard",
+        description: "Your drawings will be saved locally only.",
+        variant: "default"
       });
     }
-  }, [isLoaded, puter, currentPage, toast]);
+  }, [isLoaded, puter, currentPage, toast, isDbAvailable]);
 
   // Handle page change
   useEffect(() => {
-    if (!isLoaded || !puter) return;
+    if (!isLoaded || !puter) {
+      // If Puter.js is not loaded, try to load strokes from local storage
+      const savedStrokes = localStorage.getItem(`whiteboard_strokes_page_${currentPage}`);
+      if (savedStrokes) {
+        try {
+          setStrokes(JSON.parse(savedStrokes));
+        } catch (e) {
+          console.error("Failed to parse saved strokes:", e);
+        }
+      } else {
+        setStrokes([]);
+      }
+      return;
+    }
+    
+    if (!isDbAvailable) {
+      // If DB is not available, load strokes from local storage
+      const savedStrokes = localStorage.getItem(`whiteboard_strokes_page_${currentPage}`);
+      if (savedStrokes) {
+        try {
+          setStrokes(JSON.parse(savedStrokes));
+        } catch (e) {
+          console.error("Failed to parse saved strokes:", e);
+        }
+      } else {
+        setStrokes([]);
+      }
+      return;
+    }
     
     try {
+      if (!puter.db) {
+        throw new Error("Puter DB is not available");
+      }
+      
       const strokesTable = puter.db.table('whiteboard_strokes');
       strokesTable.where('page', '==', currentPage).get().then((existingStrokes: Stroke[]) => {
         setStrokes(existingStrokes || []);
       });
     } catch (error) {
       console.error("Failed to load page data:", error);
+      
+      // If loading fails, try to get data from local storage
+      const savedStrokes = localStorage.getItem(`whiteboard_strokes_page_${currentPage}`);
+      if (savedStrokes) {
+        try {
+          setStrokes(JSON.parse(savedStrokes));
+        } catch (e) {
+          console.error("Failed to parse saved strokes:", e);
+        }
+      } else {
+        setStrokes([]);
+      }
     }
-  }, [currentPage, isLoaded, puter]);
+  }, [currentPage, isLoaded, puter, isDbAvailable]);
 
   const startStroke = (x: number, y: number, tool: 'pen' | 'highlighter' | 'eraser', color: string, size: number) => {
     const newStroke: Stroke = {
@@ -132,18 +211,28 @@ export const usePuterWhiteboard = (initialPage = 1) => {
     // Add stroke to local state
     setStrokes(prev => [...prev, currentStroke]);
     
-    // Save to database if Puter is available
-    if (isLoaded && puter) {
+    // Update local storage reference
+    const updatedStrokes = [...localStrokesRef.current, currentStroke];
+    localStrokesRef.current = updatedStrokes;
+    localStorage.setItem(`whiteboard_strokes_page_${currentPage}`, JSON.stringify(updatedStrokes));
+    
+    // Save to database if Puter is available and DB is accessible
+    if (isLoaded && puter && isDbAvailable && puter.db) {
       try {
         const strokesTable = puter.db.table('whiteboard_strokes');
         await strokesTable.insert(currentStroke);
       } catch (error) {
-        console.error("Failed to save stroke:", error);
-        toast({
-          title: "Sync error",
-          description: "Failed to sync your drawing with others.",
-          variant: "destructive"
-        });
+        console.error("Failed to save stroke to Puter DB:", error);
+        
+        // Already saved to localStorage above, so no additional fallback needed
+        if (!toast.isActive('sync-error')) {
+          toast({
+            id: 'sync-error',
+            title: "Local mode active",
+            description: "Your drawings are saved locally only.",
+            variant: "default"
+          });
+        }
       }
     }
     
@@ -154,17 +243,23 @@ export const usePuterWhiteboard = (initialPage = 1) => {
     // Clear local state
     setStrokes([]);
     
-    // Clear from database if Puter is available
-    if (isLoaded && puter) {
+    // Clear local storage
+    localStorage.setItem(`whiteboard_strokes_page_${currentPage}`, JSON.stringify([]));
+    localStrokesRef.current = [];
+    
+    // Clear from database if Puter is available and DB is accessible
+    if (isLoaded && puter && isDbAvailable && puter.db) {
       try {
         const strokesTable = puter.db.table('whiteboard_strokes');
         await strokesTable.where('page', '==', currentPage).delete();
       } catch (error) {
-        console.error("Failed to clear board:", error);
+        console.error("Failed to clear board from Puter DB:", error);
+        
+        // Already cleared local state above
         toast({
-          title: "Clear error",
-          description: "Failed to clear the whiteboard.",
-          variant: "destructive"
+          title: "Local clear only",
+          description: "The whiteboard was cleared locally only.",
+          variant: "default"
         });
       }
     }
@@ -192,7 +287,8 @@ export const usePuterWhiteboard = (initialPage = 1) => {
     endStroke,
     clearBoard,
     serializeForAI,
-    isLoaded: isLoaded && !!puter,
+    isLoaded: isLoaded, // Keep this as is since components rely on it
+    isDbAvailable, // Add this flag
     userId: userId.current
   };
 };
