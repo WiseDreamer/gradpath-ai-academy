@@ -1,160 +1,203 @@
 
-import React, { useState } from 'react';
-import { usePuterAiTutor } from '@/services/puterAiTutorService';
-import { useToast } from '@/hooks/use-toast';
-import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
-import { SuggestedQuestions } from './chat/SuggestedQuestions';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ChatMessages } from './chat/ChatMessages';
 import { MessageInput } from './chat/MessageInput';
+import { SuggestedQuestions } from './chat/SuggestedQuestions';
+import { Button } from '@/components/ui/button';
+import { Volume, VolumeX } from 'lucide-react';
+import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 
 interface AiTutorChatProps {
   getWhiteboardState: () => string;
-  isVoiceEnabled: boolean;
-  onToggleVoice: () => void;
+  isVoiceEnabled?: boolean;
+  onToggleVoice?: () => void;
 }
 
-interface ChatMessage {
+interface Message {
   id: string;
   sender: 'user' | 'ai';
   content: string;
   timestamp: Date;
 }
 
-export const AiTutorChat: React.FC<AiTutorChatProps> = ({
+export const AiTutorChat: React.FC<AiTutorChatProps> = ({ 
   getWhiteboardState,
-  isVoiceEnabled,
+  isVoiceEnabled = true,
   onToggleVoice
 }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const { askQuestion, speak, isProcessing, isSpeaking, isLoaded } = usePuterAiTutor();
-  const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true); // Simulated loading state
   
-  // Use the speech recognition hook
-  const { isListening, toggleListening, isSupported: isRecognitionSupported } = 
-    useSpeechRecognition({
-      onResult: (transcript) => {
-        setInputValue(transcript);
-      }
-    });
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Speech recognition setup
+  const { 
+    isListening,
+    isRecognitionSupported,
+    startListening,
+    stopListening,
+    transcript
+  } = useSpeechRecognition();
+  
+  // Suggested questions based on current context
+  const suggestedQuestions = [
+    "Can you explain eigenvalues in more detail?",
+    "What's the relationship between eigenvalues and eigenvectors?",
+    "How are these concepts applied in machine learning?",
+    "Can you give me a practical example?"
+  ];
+  
+  // Speech synthesis for AI responses
+  const synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
+  
+  // Handle speech recognition updates
+  useEffect(() => {
+    if (transcript) {
+      setInputValue(transcript);
+    }
+  }, [transcript]);
+  
+  // Function to speak text aloud
+  const speak = async (text: string) => {
+    if (!synth || !isVoiceEnabled) return;
+    
+    // Create a new utterance and speak it
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    synth.speak(utterance);
+  };
+  
+  // Toggle listening state
+  const toggleListening = useCallback(() => {
+    if (isListening) {
+      stopListening();
+    } else {
+      setInputValue('');
+      startListening();
+    }
+  }, [isListening, startListening, stopListening]);
+  
+  // Mock function to simulate AI response
+  const handleSubmitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!inputValue.trim() || !isLoaded) return;
+    if (!inputValue.trim() || isProcessing) return;
     
     // Add user message to chat
-    const userMessage: ChatMessage = {
-      id: `user-${Date.now()}`,
+    const userMessageId = `user-${Date.now()}`;
+    const userMessage: Message = {
+      id: userMessageId,
       sender: 'user',
-      content: inputValue,
+      content: inputValue.trim(),
       timestamp: new Date(),
     };
     
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
+    setIsProcessing(true);
+    
+    // Get whiteboard context to inform AI response
+    const whiteboardState = getWhiteboardState();
     
     try {
-      // Get current whiteboard state
-      const boardState = getWhiteboardState();
+      // Create AI message with placeholder content
+      const aiMessageId = `ai-${Date.now()}`;
+      const initialAiMessage: Message = {
+        id: aiMessageId,
+        sender: 'ai',
+        content: '',
+        timestamp: new Date(),
+      };
       
-      // Send message to AI and get streaming response
-      const response = await askQuestion(userMessage.content, boardState);
+      setMessages(prev => [...prev, initialAiMessage]);
+      
+      // Simulate streaming response
+      const mockResponse = [
+        { text: 'Based on ' },
+        { text: 'what you\'ve drawn on the whiteboard' },
+        { text: ' and your question about ' },
+        { text: inputValue.substring(0, 10) },
+        { text: '..., ' },
+        { text: 'I can explain this concept in detail.\n\n' },
+        { text: 'The key insight is to understand how these mathematical principles connect to real-world applications.' }
+      ];
       
       let fullResponse = '';
-      let aiMessageId = `ai-${Date.now()}`;
       
-      // Add initial AI message with empty content
-      setMessages(prev => [
-        ...prev, 
-        {
-          id: aiMessageId,
-          sender: 'ai',
-          content: '',
-          timestamp: new Date()
-        }
-      ]);
-      
-      // Process streaming response with proper null checks
-      for await (const part of response) {
-        // Early return with robust null/undefined check
+      // Process streaming response
+      for (const part of mockResponse) {
+        // Guard against null part
         if (part == null) continue;
         
-        // Safely extract text with type guards
-        let textPart = '';
-        if (typeof part === 'object' && 'text' in part) {
-          const extractedText = part.text;
-          textPart = extractedText != null ? String(extractedText) : '';
-        }
+        // Type guard for text property
+        const text = typeof part === 'object' && 'text' in part 
+          ? String(part.text) 
+          : '';
         
-        fullResponse += textPart;
+        fullResponse += text;
         
-        // Update AI message with new content
-        setMessages(prev => 
-          prev.map(msg => 
-            msg.id === aiMessageId 
-              ? { ...msg, content: fullResponse } 
-              : msg
+        // Update message with streaming content
+        setMessages(prev =>
+          prev.map(msg =>
+            msg.id === aiMessageId ? { ...msg, content: fullResponse } : msg
           )
         );
         
-        // Speak the response chunk if voice is enabled
-        if (isVoiceEnabled && textPart.trim()) {
-          await speak(textPart);
+        // Speak the part if voice is enabled
+        if (isVoiceEnabled && text.trim()) {
+          await speak(text);
         }
+        
+        // Simulate streaming delay
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
     } catch (error) {
-      console.error('Error getting AI response:', error);
-      
-      // Add error message
-      setMessages(prev => [
-        ...prev,
-        {
-          id: `error-${Date.now()}`,
-          sender: 'ai',
-          content: 'Sorry, I had trouble processing your request. Please try again.',
-          timestamp: new Date()
-        }
-      ]);
-      
-      toast({
-        title: "AI Error",
-        description: "Failed to get a response from the AI tutor.",
-        variant: "destructive"
-      });
+      console.error('Error processing message:', error);
+    } finally {
+      setIsProcessing(false);
     }
   };
   
-  const suggestedQuestions = [
-    "Can you explain eigenvalues?",
-    "How to find eigenvectors?",
-    "What's the characteristic equation?",
-    "Show a 3x3 matrix example"
-  ];
-  
+  // Handle selecting a suggested question
   const handleSelectQuestion = (question: string) => {
     setInputValue(question);
   };
-
+  
   return (
     <div className="flex flex-col h-full">
-      {/* Chat messages */}
+      <div className="flex justify-between items-center p-2 border-b">
+        <h3 className="font-medium">AI Tutor Chat</h3>
+        {onToggleVoice && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleVoice}
+            className="p-1"
+          >
+            {isVoiceEnabled ? (
+              <Volume className="h-4 w-4" />
+            ) : (
+              <VolumeX className="h-4 w-4" />
+            )}
+          </Button>
+        )}
+      </div>
+      
       <ChatMessages 
-        messages={messages} 
-        isProcessing={isProcessing} 
+        messages={messages}
+        isProcessing={isProcessing}
       />
       
-      {/* Suggested questions */}
-      <SuggestedQuestions 
-        questions={suggestedQuestions} 
-        onSelectQuestion={handleSelectQuestion} 
+      <SuggestedQuestions
+        questions={suggestedQuestions}
+        onSelectQuestion={handleSelectQuestion}
       />
       
-      {/* Input form */}
-      <MessageInput 
+      <MessageInput
         inputValue={inputValue}
         onInputChange={setInputValue}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitMessage}
         isProcessing={isProcessing}
         isListening={isListening}
         onToggleListening={toggleListening}
