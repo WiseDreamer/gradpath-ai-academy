@@ -1,12 +1,14 @@
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AnnotationTool } from '@/types/virtualClass';
+import { usePuterWhiteboard } from '@/hooks/usePuterWhiteboard';
 
 interface BoardCanvasProps {
   isPaused: boolean;
   currentPage: number;
+  setCurrentPage: (page: number) => void;
   annotations: any[];
   setAnnotations: (annotations: any[]) => void;
   activeTool: AnnotationTool;
@@ -17,6 +19,7 @@ interface BoardCanvasProps {
 export const BoardCanvas: React.FC<BoardCanvasProps> = ({
   isPaused,
   currentPage,
+  setCurrentPage,
   annotations,
   setAnnotations,
   activeTool,
@@ -25,8 +28,19 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [totalPages] = useState(5); // Mock total pages
+  const [totalPages] = React.useState(5); // Mock total pages
+  const { toast } = useToast();
+
+  const {
+    strokes,
+    currentStroke,
+    isDrawing,
+    startStroke,
+    addPoint,
+    endStroke,
+    clearBoard,
+    isLoaded
+  } = usePuterWhiteboard(currentPage);
 
   // Initialize canvas
   useEffect(() => {
@@ -78,6 +92,80 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
       resizeObserver.disconnect();
     };
   }, [canvasRef, currentPage]);
+
+  // Draw all strokes when they change
+  useEffect(() => {
+    if (!contextRef.current || !canvasRef.current) return;
+    
+    // Clear the canvas
+    const canvas = canvasRef.current;
+    const context = contextRef.current;
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw page content
+    drawPageContent(context, currentPage);
+    
+    // Draw all strokes
+    strokes.forEach(stroke => {
+      if (stroke.points.length < 2) return;
+      
+      context.beginPath();
+      context.moveTo(stroke.points[0].x, stroke.points[0].y);
+      
+      // Set drawing style based on tool
+      if (stroke.tool === 'pen') {
+        context.strokeStyle = stroke.color;
+        context.lineWidth = stroke.size;
+        context.globalAlpha = 1;
+      } else if (stroke.tool === 'highlighter') {
+        context.strokeStyle = stroke.color;
+        context.lineWidth = stroke.size * 3;
+        context.globalAlpha = 0.3;
+      } else if (stroke.tool === 'eraser') {
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = stroke.size * 2;
+        context.globalAlpha = 1;
+      }
+      
+      context.lineCap = 'round';
+      context.lineJoin = 'round';
+      
+      // Draw the line
+      for (let i = 1; i < stroke.points.length; i++) {
+        context.lineTo(stroke.points[i].x, stroke.points[i].y);
+      }
+      
+      context.stroke();
+    });
+    
+    // Draw current stroke if it exists
+    if (currentStroke && currentStroke.points.length >= 2) {
+      context.beginPath();
+      context.moveTo(currentStroke.points[0].x, currentStroke.points[0].y);
+      
+      // Set drawing style based on tool
+      if (currentStroke.tool === 'pen') {
+        context.strokeStyle = currentStroke.color;
+        context.lineWidth = currentStroke.size;
+        context.globalAlpha = 1;
+      } else if (currentStroke.tool === 'highlighter') {
+        context.strokeStyle = currentStroke.color;
+        context.lineWidth = currentStroke.size * 3;
+        context.globalAlpha = 0.3;
+      } else if (currentStroke.tool === 'eraser') {
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = currentStroke.size * 2;
+        context.globalAlpha = 1;
+      }
+      
+      for (let i = 1; i < currentStroke.points.length; i++) {
+        context.lineTo(currentStroke.points[i].x, currentStroke.points[i].y);
+      }
+      
+      context.stroke();
+    }
+  }, [strokes, currentStroke, currentPage]);
   
   // Draw mock content for the page
   const drawPageContent = (ctx: CanvasRenderingContext2D, pageNumber: number) => {
@@ -178,17 +266,11 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
         ctx.fillText('• Many practical applications across various fields', 50, 240);
         break;
     }
-    
-    // Draw existing annotations for this page
-    const pageAnnotations = annotations.filter(annotation => annotation.page === pageNumber);
-    pageAnnotations.forEach(annotation => {
-      // Drawing code for annotations would go here
-    });
   };
 
-  // Handle drawing tools
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (activeTool === 'none' || !contextRef.current || isPaused) return;
+  // Handle pointer events
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (activeTool === 'none' || isPaused) return;
     
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -197,44 +279,17 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(x, y);
-    
-    // Set drawing style based on active tool
-    if (activeTool === 'pen') {
-      contextRef.current.strokeStyle = toolColor;
-      contextRef.current.lineWidth = toolSize;
-      contextRef.current.globalAlpha = 1;
-    } else if (activeTool === 'highlighter') {
-      contextRef.current.strokeStyle = toolColor;
-      contextRef.current.lineWidth = toolSize * 3;
-      contextRef.current.globalAlpha = 0.3;
-    } else if (activeTool === 'eraser') {
-      contextRef.current.strokeStyle = '#FFFFFF';
-      contextRef.current.lineWidth = toolSize * 2;
-      contextRef.current.globalAlpha = 1;
-    }
-    
-    contextRef.current.lineCap = 'round';
-    contextRef.current.lineJoin = 'round';
-    
-    setIsDrawing(true);
-    
-    // Store the starting point for the annotation
-    const newAnnotation = {
-      tool: activeTool,
-      color: toolColor,
-      size: toolSize,
-      page: currentPage,
-      points: [{x, y}]
-    };
-    
-    // Add to annotations
-    setAnnotations([...annotations, newAnnotation]);
+    startStroke(
+      x, 
+      y, 
+      activeTool as 'pen' | 'highlighter' | 'eraser', 
+      toolColor, 
+      toolSize
+    );
   };
-
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing || !contextRef.current || isPaused) return;
+  
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (isPaused) return;
     
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -243,96 +298,18 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    contextRef.current.lineTo(x, y);
-    contextRef.current.stroke();
-    
-    // Update the current annotation with the new point
-    const updatedAnnotations = [...annotations];
-    const currentAnnotation = updatedAnnotations[updatedAnnotations.length - 1];
-    currentAnnotation.points.push({x, y});
-    setAnnotations(updatedAnnotations);
+    addPoint(x, y);
+  };
+  
+  const handlePointerUp = () => {
+    if (isPaused) return;
+    endStroke();
   };
 
-  const stopDrawing = () => {
-    if (!contextRef.current) return;
-    
-    contextRef.current.closePath();
-    setIsDrawing(false);
-  };
-  
-  // Touch event handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    e.preventDefault(); // This is crucial to prevent the error
-    
-    if (!canvasRef.current || !contextRef.current || activeTool === 'none' || isPaused) return;
-    
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const touch = e.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(x, y);
-    
-    // Set drawing style based on active tool
-    if (activeTool === 'pen') {
-      contextRef.current.strokeStyle = toolColor;
-      contextRef.current.lineWidth = toolSize;
-      contextRef.current.globalAlpha = 1;
-    } else if (activeTool === 'highlighter') {
-      contextRef.current.strokeStyle = toolColor;
-      contextRef.current.lineWidth = toolSize * 3;
-      contextRef.current.globalAlpha = 0.3;
-    } else if (activeTool === 'eraser') {
-      contextRef.current.strokeStyle = '#FFFFFF';
-      contextRef.current.lineWidth = toolSize * 2;
-      contextRef.current.globalAlpha = 1;
-    }
-    
-    contextRef.current.lineCap = 'round';
-    contextRef.current.lineJoin = 'round';
-    
-    setIsDrawing(true);
-    
-    // Store the starting point for the annotation
-    const newAnnotation = {
-      tool: activeTool,
-      color: toolColor,
-      size: toolSize,
-      page: currentPage,
-      points: [{x, y}]
-    };
-    
-    // Add to annotations
-    setAnnotations([...annotations, newAnnotation]);
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    e.preventDefault(); // This is crucial to prevent the error
-    
-    if (!isDrawing || !contextRef.current || !canvasRef.current || isPaused) return;
-    
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const touch = e.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    
-    contextRef.current.lineTo(x, y);
-    contextRef.current.stroke();
-    
-    // Update the current annotation with the new point
-    const updatedAnnotations = [...annotations];
-    const currentAnnotation = updatedAnnotations[updatedAnnotations.length - 1];
-    currentAnnotation.points.push({x, y});
-    setAnnotations(updatedAnnotations);
-  };
-  
-  const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    e.preventDefault(); // This is crucial to prevent the error
-    stopDrawing();
-  };
+  // Update parent component's current page when it changes here
+  useEffect(() => {
+    setCurrentPage(currentPage);
+  }, [currentPage, setCurrentPage]);
 
   return (
     <div className="flex-1 relative overflow-hidden touch-none">
@@ -343,14 +320,10 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
           activeTool !== 'none' ? "cursor-crosshair" : "cursor-default",
           isPaused && "opacity-50"
         )}
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
       />
       
       {/* Pause overlay */}
@@ -359,6 +332,16 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
           <div className="bg-white/90 p-6 rounded-lg shadow-lg text-center">
             <h3 className="text-xl font-semibold">Class Paused</h3>
             <p className="text-gray-600 mt-2">Click Resume to continue learning</p>
+          </div>
+        </div>
+      )}
+
+      {/* Loading overlay */}
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-gray-700">Connecting to collaboration server...</p>
           </div>
         </div>
       )}

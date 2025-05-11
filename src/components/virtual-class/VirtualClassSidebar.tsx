@@ -14,6 +14,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
+import { AiTutorChat } from './AiTutorChat';
 
 // Nested components
 import NotesTab from './NotesTab';
@@ -34,6 +35,7 @@ interface VirtualClassSidebarProps {
   onChangeModule?: (moduleName: string) => void;
   onFullscreen?: () => void;
   onSetLessonScope?: () => void;
+  getWhiteboardState: () => string;
 }
 
 export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({ 
@@ -50,7 +52,8 @@ export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({
   setIsPaused,
   onChangeModule,
   onFullscreen,
-  onSetLessonScope
+  onSetLessonScope,
+  getWhiteboardState
 }) => {
   const [activeTab, setActiveTab] = useState<string>('questions');
   const [messages, setMessages] = useState<TutorMessageType[]>(initialMessages);
@@ -100,7 +103,6 @@ export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({
   };
   
   const handleRaiseHand = () => {
-    // Fix: Changed from arrow function to direct boolean value
     setIsHandRaised(!isHandRaised);
     
     if (!isHandRaised) {
@@ -125,7 +127,6 @@ export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({
   };
   
   const handlePauseResume = () => {
-    // Fix: Changed from arrow function to direct boolean value
     setIsPaused(!isPaused);
     
     if (isPaused) {
@@ -215,117 +216,12 @@ export const VirtualClassSidebar: React.FC<VirtualClassSidebarProps> = ({
         </TabsList>
         
         <TabsContent value="questions" className="flex-1 flex flex-col h-0">
-          {/* Chat messages area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map(message => (
-              <div 
-                key={message.id} 
-                className={cn(
-                  "flex flex-col",
-                  message.sender === 'user' ? "items-end" : "items-start"
-                )}
-              >
-                <div 
-                  className={cn(
-                    "max-w-xs sm:max-w-sm rounded-lg p-3",
-                    message.sender === 'user' 
-                      ? "bg-blue-100 rounded-tr-none" 
-                      : "bg-gray-100 rounded-tl-none"
-                  )}
-                >
-                  <p className="text-sm">{message.content}</p>
-                </div>
-                <span className="text-xs text-gray-500 mt-1">
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-          
-          {/* Suggested questions */}
-          <div className="p-2 border-t border-gray-200">
-            <p className="text-xs text-gray-500 mb-2">Suggested Questions:</p>
-            <div className="flex flex-wrap gap-2">
-              {suggestedQuestions.map((question, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  className="text-xs"
-                  onClick={() => {
-                    setInputValue(question);
-                    const inputElement = document.getElementById('message-input');
-                    if (inputElement) {
-                      inputElement.focus();
-                    }
-                  }}
-                >
-                  {question.length > 20 ? `${question.substring(0, 20)}...` : question}
-                </Button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Message input */}
-          <form onSubmit={handleSubmitMessage} className="p-3 border-t border-gray-200">
-            <div className="flex items-center gap-2">
-              <Input
-                id="message-input"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your question..."
-                className="flex-1"
-              />
-              <Button type="submit" size="sm">Send</Button>
-            </div>
-            
-            {/* Control buttons */}
-            <div className="flex justify-between mt-3">
-              <Button
-                type="button"
-                variant={isHandRaised ? "secondary" : "outline"}
-                size="sm"
-                onClick={handleRaiseHand}
-                className="flex items-center gap-1"
-              >
-                <Hand className="h-4 w-4" />
-                <span>Raise Hand</span>
-              </Button>
-              
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant={isMicOn ? "secondary" : "outline"}
-                  size="sm"
-                  onClick={() => setIsMicOn(!isMicOn)}
-                  className="flex items-center gap-1"
-                >
-                  {isMicOn ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </Button>
-                
-                <Button
-                  type="button"
-                  variant={isSpeakerOn ? "secondary" : "outline"}
-                  size="sm"
-                  onClick={() => setIsSpeakerOn(!isSpeakerOn)}
-                  className="flex items-center gap-1"
-                >
-                  {isSpeakerOn ? <Volume className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-                </Button>
-                
-                <Button
-                  type="button"
-                  variant={isPaused ? "secondary" : "outline"}
-                  size="sm"
-                  onClick={handlePauseResume}
-                  className="flex items-center gap-1"
-                >
-                  {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-          </form>
+          {/* AI Tutor Chat */}
+          <AiTutorChat
+            getWhiteboardState={getWhiteboardState}
+            isVoiceEnabled={isSpeakerOn}
+            onToggleVoice={() => setIsSpeakerOn(!isSpeakerOn)}
+          />
         </TabsContent>
         
         <TabsContent value="notes" className="flex-1 h-0">

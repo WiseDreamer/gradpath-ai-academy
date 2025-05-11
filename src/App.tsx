@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { AuthProvider } from "./components/AuthProvider";
+import { PuterProvider } from "./contexts/PuterContext";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
@@ -23,42 +24,59 @@ import SearchPage from "./pages/SearchPage";
 import AchievementsPage from "./pages/AchievementsPage"; 
 import HelpRequestPage from "./pages/HelpRequestPage";
 import LibraryPage from "./pages/LibraryPage";
+import { useEffect } from "react";
 
 // Create a client
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/virtual-class" element={<VirtualClassPage />} />
-              <Route path="/module/:id" element={<ModuleViewPage />} />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/global-chat" element={<GlobalChatPage />} />
-              <Route path="/messages" element={<MessagesPage />} />
-              <Route path="/study-plan" element={<StudyPlanPage />} />
-              <Route path="/practice" element={<PracticePage />} />
-              <Route path="/ai-tutor" element={<AiTutorPage />} />
-              <Route path="/performance" element={<PerformancePage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/achievements" element={<AchievementsPage />} />
-              <Route path="/help-request" element={<HelpRequestPage />} />
-              <Route path="/library" element={<LibraryPage />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Load Puter.js script
+  useEffect(() => {
+    const puterScript = document.createElement('script');
+    puterScript.src = 'https://js.puter.com/v2/';
+    puterScript.async = true;
+    document.body.appendChild(puterScript);
+    
+    return () => {
+      document.body.removeChild(puterScript);
+    };
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <PuterProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
+                <Route path="/" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/virtual-class" element={<VirtualClassPage />} />
+                  <Route path="/module/:id" element={<ModuleViewPage />} />
+                  <Route path="/chat" element={<ChatPage />} />
+                  <Route path="/global-chat" element={<GlobalChatPage />} />
+                  <Route path="/messages" element={<MessagesPage />} />
+                  <Route path="/study-plan" element={<StudyPlanPage />} />
+                  <Route path="/practice" element={<PracticePage />} />
+                  <Route path="/ai-tutor" element={<AiTutorPage />} />
+                  <Route path="/performance" element={<PerformancePage />} />
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route path="/achievements" element={<AchievementsPage />} />
+                  <Route path="/help-request" element={<HelpRequestPage />} />
+                  <Route path="/library" element={<LibraryPage />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
+          </BrowserRouter>
+        </PuterProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+
+import React, { useState, useCallback, useRef } from 'react';
 import NavBar from '@/components/NavBar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileNavBar from '@/components/virtual-class/MobileNavBar';
@@ -64,6 +65,7 @@ const VirtualClassPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLessonScopeOpen, setIsLessonScopeOpen] = useState(false);
+  const [whiteboardState, setWhiteboardState] = useState<string>('{}');
 
   const handleChangeModule = (moduleName: string) => {
     setCurrentModule(moduleName);
@@ -106,6 +108,16 @@ const VirtualClassPage: React.FC = () => {
       description: `Focusing on ${settings.selectedTopics.length} topics with ${settings.depth} depth.`,
     });
   }, [toast]);
+
+  // Get whiteboard state for AI
+  const getWhiteboardState = useCallback(() => {
+    return whiteboardState;
+  }, [whiteboardState]);
+
+  // Update whiteboard state
+  const updateWhiteboardState = useCallback((state: string) => {
+    setWhiteboardState(state);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
@@ -175,6 +187,7 @@ const VirtualClassPage: React.FC = () => {
               setCurrentPage={setCurrentPage}
               annotations={annotations}
               setAnnotations={setAnnotations}
+              getWhiteboardState={updateWhiteboardState}
             />
           </div>
         </div>
@@ -196,6 +209,7 @@ const VirtualClassPage: React.FC = () => {
             onChangeModule={handleChangeModule}
             onFullscreen={toggleFullscreen}
             onSetLessonScope={() => setIsLessonScopeOpen(true)}
+            getWhiteboardState={getWhiteboardState}
           />
         )}
         
@@ -227,6 +241,7 @@ const VirtualClassPage: React.FC = () => {
                 onChangeModule={handleChangeModule}
                 onFullscreen={toggleFullscreen}
                 onSetLessonScope={() => setIsLessonScopeOpen(true)}
+                getWhiteboardState={getWhiteboardState}
               />
             </SheetContent>
           </Sheet>

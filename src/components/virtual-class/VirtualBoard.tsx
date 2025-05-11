@@ -8,6 +8,7 @@ import { AnnotationTool } from '@/types/virtualClass';
 import { BoardToolbar } from './board/BoardToolbar';
 import { BoardCanvas } from './board/BoardCanvas';
 import { BoardNavigation } from './board/BoardNavigation';
+import { usePuterWhiteboard } from '@/hooks/usePuterWhiteboard';
 
 interface VirtualBoardProps {
   isPaused: boolean;
@@ -15,6 +16,7 @@ interface VirtualBoardProps {
   setCurrentPage: (page: number) => void;
   annotations: any[];
   setAnnotations: (annotations: any[]) => void;
+  getWhiteboardState: (state: string) => void;
 }
 
 export const VirtualBoard: React.FC<VirtualBoardProps> = ({
@@ -22,7 +24,8 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
   currentPage,
   setCurrentPage,
   annotations,
-  setAnnotations
+  setAnnotations,
+  getWhiteboardState
 }) => {
   const boardContainerRef = useRef<HTMLDivElement>(null);
   const [activeTool, setActiveTool] = useState<AnnotationTool>('none');
@@ -31,6 +34,7 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
   const [totalPages] = useState(5); // Mock total pages
   const [isBoardFullscreen, setIsBoardFullscreen] = useState(false);
   const { toast } = useToast();
+  const { serializeForAI } = usePuterWhiteboard(currentPage);
 
   const handleToolClick = (tool: AnnotationTool) => {
     setActiveTool(prevTool => prevTool === tool ? 'none' : tool);
@@ -62,6 +66,11 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
     }
   };
 
+  // Update whiteboard state for AI
+  React.useEffect(() => {
+    getWhiteboardState(serializeForAI());
+  }, [serializeForAI, getWhiteboardState]);
+
   return (
     <div 
       ref={boardContainerRef} 
@@ -83,6 +92,7 @@ export const VirtualBoard: React.FC<VirtualBoardProps> = ({
       <BoardCanvas 
         isPaused={isPaused}
         currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
         annotations={annotations}
         setAnnotations={setAnnotations}
         activeTool={activeTool}
