@@ -1,11 +1,12 @@
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChatMessages } from './chat/ChatMessages';
 import { MessageInput } from './chat/MessageInput';
 import { SuggestedQuestions } from './chat/SuggestedQuestions';
 import { Button } from '@/components/ui/button';
 import { Volume, VolumeX } from 'lucide-react';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { usePuter } from '@/contexts/PuterContext';
 
 interface AiTutorChatProps {
   getWhiteboardState: () => string;
@@ -28,7 +29,9 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(true); // Simulated loading state
+  
+  // Get Puter.js context for AI capabilities
+  const { puter, isLoaded } = usePuter();
   
   // Speech recognition setup with proper property destructuring
   const { 
@@ -49,21 +52,30 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
     "Can you give me a practical example?"
   ];
   
-  // Speech synthesis for AI responses
-  const synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
-  
-  // Function to speak text aloud
+  // Function to speak text aloud using Puter TTS or browser TTS as fallback
   const speak = async (text: string) => {
-    if (!synth || !isVoiceEnabled) return;
+    if (!isVoiceEnabled) return;
     
-    // Create a new utterance and speak it
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    synth.speak(utterance);
+    try {
+      // Use Puter TTS if available
+      if (puter?.tts && isLoaded) {
+        await puter.tts.speak(text);
+      } else {
+        // Fallback to browser TTS
+        const synth = window.speechSynthesis;
+        if (synth) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = 1.0;
+          utterance.pitch = 1.0;
+          synth.speak(utterance);
+        }
+      }
+    } catch (error) {
+      console.error('TTS error:', error);
+    }
   };
   
-  // Mock function to simulate AI response
+  // Handle submitting a message to the AI tutor
   const handleSubmitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -97,45 +109,87 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
       
       setMessages(prev => [...prev, initialAiMessage]);
       
-      // Simulate streaming response
-      const mockResponse = [
-        { text: 'Based on ' },
-        { text: 'what you\'ve drawn on the whiteboard' },
-        { text: ' and your question about ' },
-        { text: inputValue.substring(0, 10) },
-        { text: '..., ' },
-        { text: 'I can explain this concept in detail.\n\n' },
-        { text: 'The key insight is to understand how these mathematical principles connect to real-world applications.' }
-      ];
-      
       let fullResponse = '';
       
-      // Process streaming response
-      for (const part of mockResponse) {
-        // Guard against null part
-        if (part == null) continue;
-        
-        // Type guard for text property
-        const text = typeof part === 'object' && 'text' in part 
-          ? String(part.text) 
-          : '';
-        
-        fullResponse += text;
-        
-        // Update message with streaming content
-        setMessages(prev =>
-          prev.map(msg =>
-            msg.id === aiMessageId ? { ...msg, content: fullResponse } : msg
-          )
-        );
-        
-        // Speak the part if voice is enabled
-        if (isVoiceEnabled && text.trim()) {
-          await speak(text);
+      if (puter?.ai && isLoaded) {
+        // Use Puter.js AI for real responses
+        try {
+          const prompt = `You are a helpful AI tutor explaining concepts. 
+          The student has drawn this on the whiteboard: ${whiteboardState}
+          
+          Student question: ${inputValue.trim()}`;
+          
+          const stream = await puter.ai.chat(prompt, { stream: true });
+          
+          // Process streaming response
+          for await (const chunk of stream) {
+            if (chunk && typeof chunk === 'string') {
+              fullResponse += chunk;
+              
+              // Update message with streaming content
+              setMessages(prev =>
+                prev.map(msg =>
+                  msg.id === aiMessageId ? { ...msg, content: fullResponse } : msg
+                )
+              );
+              
+              // Speak the chunk if voice is enabled
+              if (isVoiceEnabled && chunk.trim()) {
+                await speak(chunk);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Puter AI error:', error);
+          
+          // Fallback to mock response if Puter AI fails
+          const mockResponse = "I'm sorry, I couldn't process that request. Please try again.";
+          fullResponse = mockResponse;
+          
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === aiMessageId ? { ...msg, content: mockResponse } : msg
+            )
+          );
         }
+      } else {
+        // Simulate streaming response if Puter.js is not available
+        const mockResponse = [
+          { text: 'Based on ' },
+          { text: 'what you\'ve drawn on the whiteboard' },
+          { text: ' and your question about ' },
+          { text: inputValue.substring(0, 10) },
+          { text: '..., ' },
+          { text: 'I can explain this concept in detail.\n\n' },
+          { text: 'The key insight is to understand how these mathematical principles connect to real-world applications.' }
+        ];
         
-        // Simulate streaming delay
-        await new Promise(resolve => setTimeout(resolve, 200));
+        for (const part of mockResponse) {
+          // Guard against null part
+          if (part == null) continue;
+          
+          // Type guard for text property
+          const text = typeof part === 'object' && 'text' in part 
+            ? String(part.text) 
+            : '';
+          
+          fullResponse += text;
+          
+          // Update message with streaming content
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === aiMessageId ? { ...msg, content: fullResponse } : msg
+            )
+          );
+          
+          // Speak the part if voice is enabled
+          if (isVoiceEnabled && text.trim()) {
+            await speak(text);
+          }
+          
+          // Simulate streaming delay
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
       }
     } catch (error) {
       console.error('Error processing message:', error);
@@ -192,4 +246,3 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
     </div>
   );
 };
-
