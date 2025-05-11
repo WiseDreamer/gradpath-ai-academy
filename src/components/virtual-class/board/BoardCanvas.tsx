@@ -1,9 +1,8 @@
-
 import React, { useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AnnotationTool } from '@/types/virtualClass';
-import { usePuterWhiteboard } from '@/hooks/usePuterWhiteboard';
+import { usePuterWhiteboard, Stroke } from '@/hooks/usePuterWhiteboard';
 
 interface BoardCanvasProps {
   isPaused: boolean;
