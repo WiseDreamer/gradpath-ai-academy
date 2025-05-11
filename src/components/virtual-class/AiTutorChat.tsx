@@ -133,14 +133,15 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
       
       // Process streaming response - Fixed: Handle the streaming part response correctly
       for await (const part of response) {
-        // Fixed: Handle potential null or undefined values properly
+        // Skip null or undefined parts
         if (part === null || part === undefined) continue;
         
-        // Extract text from streaming response
-        // Fixed: Use type guarding to safely access the text property
-        const textPart = typeof part === 'object' && part !== null && 'text' in part 
+        // Extract text from streaming response with proper type checking
+        const textPart = typeof part === 'object' && 'text' in part 
           ? part.text 
           : '';
+        
+        // Make sure textPart is converted to string
         const text = typeof textPart === 'string' ? textPart : '';
         
         fullResponse += text;
@@ -288,3 +289,4 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
     </div>
   );
 };
+
