@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -132,17 +133,16 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
       
       // Process streaming response with proper null checks
       for await (const part of response) {
-        // Skip null or undefined parts
+        // Skip null or undefined parts with explicit check
         if (part === null || part === undefined) continue;
         
+        // At this point TypeScript knows part is not null
         // Extract text from streaming response with proper type checking
-        // Fixed: Add additional null checking with optional chaining to safely access properties
-        const textPart = part && typeof part === 'object' && 'text' in part 
+        const textPart = typeof part === 'object' && 'text' in part 
           ? part.text 
           : '';
         
         // Make sure textPart is converted to string
-        // Fixed: Use optional chaining and nullish coalescing for safe property access
         const text = typeof textPart === 'string' ? textPart : '';
         
         fullResponse += text;
