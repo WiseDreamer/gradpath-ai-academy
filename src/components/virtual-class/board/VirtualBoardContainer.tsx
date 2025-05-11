@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -32,7 +33,7 @@ export const VirtualBoardContainer: React.FC<VirtualBoardContainerProps> = ({
   const [totalPages] = useState(5); // Mock total pages
   const [isBoardFullscreen, setIsBoardFullscreen] = useState(false);
   const { toast } = useToast();
-  const { serializeForAI } = usePuterWhiteboard(currentPage);
+  const { serializeForAI } = usePuterWhiteboard({ initialPage: currentPage });
 
   const handleToolClick = (tool: AnnotationTool) => {
     setActiveTool(prevTool => prevTool === tool ? 'none' : tool);

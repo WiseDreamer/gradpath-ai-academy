@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { AnnotationTool } from '@/types/virtualClass';
 import { usePuterWhiteboard } from '@/hooks/whiteboard';
@@ -27,7 +28,7 @@ export const useCanvasSetup = ({
   toolColor,
   toolSize
 }: UseCanvasSetupProps): UseCanvasSetupResult => {
-  const { startStroke, addPoint, endStroke } = usePuterWhiteboard(currentPage);
+  const { startStroke, addPoint, endStroke } = usePuterWhiteboard({ initialPage: currentPage });
 
   // Initialize canvas
   useEffect(() => {

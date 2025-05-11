@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -42,7 +43,7 @@ export const BoardCanvas: React.FC<BoardCanvasProps> = ({
     currentStroke,
     isLoaded,
     isDbAvailable
-  } = usePuterWhiteboard(currentPage);
+  } = usePuterWhiteboard({ initialPage: currentPage });
 
   // Use our new canvas setup hook
   const {
