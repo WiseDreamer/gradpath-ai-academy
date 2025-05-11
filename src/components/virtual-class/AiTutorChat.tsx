@@ -30,14 +30,16 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true); // Simulated loading state
   
-  // Speech recognition setup
+  // Speech recognition setup with proper property destructuring
   const { 
     isListening,
-    isRecognitionSupported,
-    startListening,
-    stopListening,
-    transcript
-  } = useSpeechRecognition();
+    toggleListening,
+    isSupported: isRecognitionSupported
+  } = useSpeechRecognition({
+    onResult: (transcript) => {
+      setInputValue(transcript);
+    }
+  });
   
   // Suggested questions based on current context
   const suggestedQuestions = [
@@ -50,13 +52,6 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
   // Speech synthesis for AI responses
   const synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
   
-  // Handle speech recognition updates
-  useEffect(() => {
-    if (transcript) {
-      setInputValue(transcript);
-    }
-  }, [transcript]);
-  
   // Function to speak text aloud
   const speak = async (text: string) => {
     if (!synth || !isVoiceEnabled) return;
@@ -67,16 +62,6 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
     utterance.pitch = 1.0;
     synth.speak(utterance);
   };
-  
-  // Toggle listening state
-  const toggleListening = useCallback(() => {
-    if (isListening) {
-      stopListening();
-    } else {
-      setInputValue('');
-      startListening();
-    }
-  }, [isListening, startListening, stopListening]);
   
   // Mock function to simulate AI response
   const handleSubmitMessage = async (e: React.FormEvent) => {
@@ -207,3 +192,4 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
     </div>
   );
 };
+
