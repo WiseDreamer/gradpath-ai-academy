@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef } from 'react';
 import { AnnotationTool } from '@/types/virtualClass';
-import { usePuterWhiteboard } from '@/hooks/usePuterWhiteboard';
+import { usePuterWhiteboard } from '@/hooks/whiteboard';
 
 interface UseCanvasSetupProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;

@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -7,7 +6,7 @@ import { BoardToolbar } from './BoardToolbar';
 import { BoardCanvas } from './BoardCanvas';
 import { BoardNavigation } from './BoardNavigation';
 import { ExitFullscreenButton } from './ExitFullscreenButton';
-import { usePuterWhiteboard } from '@/hooks/usePuterWhiteboard';
+import { usePuterWhiteboard } from '@/hooks/whiteboard';
 
 interface VirtualBoardContainerProps {
   isPaused: boolean;

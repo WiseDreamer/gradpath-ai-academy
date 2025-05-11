@@ -1,9 +1,8 @@
-
 import React, { useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AnnotationTool } from '@/types/virtualClass';
-import { usePuterWhiteboard } from '@/hooks/usePuterWhiteboard';
+import { usePuterWhiteboard } from '@/hooks/whiteboard';
 
 // Import new components
 import { PageContentRenderer } from './canvas/PageContentRenderer';
