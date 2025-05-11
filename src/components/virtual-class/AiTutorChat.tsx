@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -133,19 +132,21 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
       
       // Process streaming response with proper null checks
       for await (const part of response) {
-        // Skip null or undefined parts with explicit check
-        if (part === null || part === undefined) continue;
+        // Early return with robust null/undefined check
+        if (part == null) continue;
         
-        // At this point TypeScript knows part is not null
-        // Extract text from streaming response with proper type checking
-        const textPart = typeof part === 'object' && 'text' in part 
-          ? part.text 
-          : '';
+        // Now TypeScript knows part is not null at this point
         
-        // Make sure textPart is converted to string
-        const text = typeof textPart === 'string' ? textPart : '';
+        // Safely extract text with type guards
+        let textPart = '';
+        if (typeof part === 'object' && part !== null && 'text' in part) {
+          const extractedText = part.text;
+          textPart = extractedText !== null && extractedText !== undefined 
+            ? String(extractedText) 
+            : '';
+        }
         
-        fullResponse += text;
+        fullResponse += textPart;
         
         // Update AI message with new content
         setMessages(prev => 
@@ -157,8 +158,8 @@ export const AiTutorChat: React.FC<AiTutorChatProps> = ({
         );
         
         // Speak the response chunk if voice is enabled
-        if (isVoiceEnabled && text.trim()) {
-          await speak(text);
+        if (isVoiceEnabled && textPart.trim()) {
+          await speak(textPart);
         }
       }
     } catch (error) {
