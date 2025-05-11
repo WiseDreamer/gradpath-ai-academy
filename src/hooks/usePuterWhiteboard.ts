@@ -45,6 +45,8 @@ export const usePuterWhiteboard = (initialPage = 1) => {
   const userId = useRef(generateUserId());
   const localStrokesRef = useRef<Stroke[]>([]);
   const { toast } = useToast();
+  // Track if sync error toast was shown already
+  const syncErrorShown = useRef(false);
 
   // Set up database connection when Puter is loaded
   useEffect(() => {
@@ -225,13 +227,13 @@ export const usePuterWhiteboard = (initialPage = 1) => {
         console.error("Failed to save stroke to Puter DB:", error);
         
         // Already saved to localStorage above, so no additional fallback needed
-        if (!toast.isActive('sync-error')) {
+        if (!syncErrorShown.current) {
           toast({
-            id: 'sync-error',
             title: "Local mode active",
             description: "Your drawings are saved locally only.",
             variant: "default"
           });
+          syncErrorShown.current = true;
         }
       }
     }
