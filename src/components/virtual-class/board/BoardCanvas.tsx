@@ -35,8 +35,22 @@ export const BoardCanvas: React.FC<{
     const canvas = canvasRef.current;
     if (!ctx || !canvas) return;
     const rect = canvas.getBoundingClientRect();
-    PageContentRenderer(ctx, currentPage, rect.width, rect.height);
-    StrokeRenderer(ctx, strokes, currentStroke);
+    
+    // Create a React element for rendering (this will just return null but execute the rendering)
+    PageContentRenderer({
+      context: ctx,
+      currentPage,
+      totalPages: 5, // Assuming 5 total pages from VirtualBoardContainer
+      canvasWidth: rect.width,
+      canvasHeight: rect.height
+    });
+    
+    // Create a React element for stroke rendering
+    StrokeRenderer({
+      context: ctx,
+      strokes,
+      currentStroke
+    });
   }, [strokes, currentStroke, currentPage]);
 
   return (
