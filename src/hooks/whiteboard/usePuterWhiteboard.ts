@@ -10,6 +10,7 @@ import { Stroke } from '@/types/whiteboard';
 
 // Use explicit "export type" for re-exporting types
 export type { Stroke } from '@/types/whiteboard';
+export type { WhiteboardHookProps } from './types';
 
 export const usePuterWhiteboard = ({ initialPage = 1 }: WhiteboardHookProps = {}): WhiteboardHookResult => {
   const { isLoaded, isDbAvailable } = usePuter();
