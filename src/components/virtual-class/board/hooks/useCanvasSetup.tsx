@@ -171,14 +171,27 @@ export const useCanvasSetup = ({
     e.preventDefault();
   }, [endStroke, isPaused]);
 
+  // Create a native event handler for pointercancel
+  const handleNativePointerCancel = useCallback((e: PointerEvent) => {
+    if (!isPaused) {
+      console.log('Pointer cancel - ending stroke');
+      endStroke();
+    }
+    // Prevent default
+    e.preventDefault();
+  }, [endStroke, isPaused]);
+
   // Cancel aborts
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    canvas.addEventListener('pointercancel', handlePointerUp);
-    return () => canvas.removeEventListener('pointercancel', handlePointerUp);
-  }, [handlePointerUp]);
+    // Use native event handler for DOM addEventListener
+    canvas.addEventListener('pointercancel', handleNativePointerCancel);
+    return () => {
+      canvas.removeEventListener('pointercancel', handleNativePointerCancel);
+    };
+  }, [handleNativePointerCancel, canvasRef]);
 
   return { handlePointerDown, handlePointerMove, handlePointerUp };
 };
