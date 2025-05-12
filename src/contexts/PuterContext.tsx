@@ -48,22 +48,40 @@ export const PuterProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isDbAvailable, setIsDbAvailable] = useState(false);
 
   useEffect(() => {
-    const checkPuterLoaded = setInterval(() => {
-      if (window.puter) {
-        setPuter(window.puter);
-        setIsLoaded(true);
-        
-        // Check if DB is available
-        setIsDbAvailable(!!window.puter.db);
-        
-        clearInterval(checkPuterLoaded);
-        
-        console.log("Puter.js loaded. DB available:", !!window.puter.db);
-      }
-    }, 100);
+    // Check for Puter.js script and load it if not already loaded
+    if (!window.puter) {
+      // Try to load Puter.js if not already available
+      const checkPuterLoaded = setInterval(() => {
+        if (window.puter) {
+          setPuter(window.puter);
+          setIsLoaded(true);
+          
+          // Check if DB is available
+          setIsDbAvailable(!!window.puter.db);
+          
+          clearInterval(checkPuterLoaded);
+          
+          console.log("Puter.js loaded. DB available:", !!window.puter.db);
+          
+          // Try to initialize authentication if needed
+          try {
+            // You would typically do something like this if you had an API key:
+            // window.puter.auth.login({ apiKey: 'YOUR_API_KEY' });
+          } catch (error) {
+            console.error("Failed to authenticate with Puter:", error);
+          }
+        }
+      }, 100);
 
-    // Clean up interval
-    return () => clearInterval(checkPuterLoaded);
+      // Clean up interval
+      return () => clearInterval(checkPuterLoaded);
+    } else {
+      // Puter.js is already loaded
+      setPuter(window.puter);
+      setIsLoaded(true);
+      setIsDbAvailable(!!window.puter.db);
+      console.log("Puter.js was already loaded. DB available:", !!window.puter.db);
+    }
   }, []);
 
   return (

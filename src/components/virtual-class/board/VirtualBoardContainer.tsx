@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AnnotationTool } from '@/types/virtualClass';
@@ -8,6 +8,7 @@ import { BoardCanvas } from './BoardCanvas';
 import { BoardNavigation } from './BoardNavigation';
 import { ExitFullscreenButton } from './ExitFullscreenButton';
 import { usePuterWhiteboard } from '@/hooks/whiteboard';
+import { usePuter } from '@/contexts/PuterContext';
 
 interface VirtualBoardContainerProps {
   isPaused: boolean;
@@ -27,13 +28,25 @@ export const VirtualBoardContainer: React.FC<VirtualBoardContainerProps> = ({
   getWhiteboardState
 }) => {
   const boardContainerRef = useRef<HTMLDivElement>(null);
-  const [activeTool, setActiveTool] = useState<AnnotationTool>('none');
+  const [activeTool, setActiveTool] = useState<AnnotationTool>('pen'); // Changed default to 'pen' to enable drawing by default
   const [toolColor, setToolColor] = useState('#000000');
   const [toolSize, setToolSize] = useState(2);
   const [totalPages] = useState(5); // Mock total pages
   const [isBoardFullscreen, setIsBoardFullscreen] = useState(false);
   const { toast } = useToast();
   const { serializeForAI } = usePuterWhiteboard({ initialPage: currentPage });
+  const { isLoaded, isDbAvailable } = usePuter();
+
+  // Show loading toast if Puter is not available
+  useEffect(() => {
+    if (isLoaded && !isDbAvailable) {
+      toast({
+        title: "Using local whiteboard",
+        description: "Your drawings will be saved locally only.",
+        variant: "default"
+      });
+    }
+  }, [isLoaded, isDbAvailable, toast]);
 
   const handleToolClick = (tool: AnnotationTool) => {
     setActiveTool(prevTool => prevTool === tool ? 'none' : tool);
@@ -66,8 +79,11 @@ export const VirtualBoardContainer: React.FC<VirtualBoardContainerProps> = ({
   };
 
   // Update whiteboard state for AI
-  React.useEffect(() => {
-    getWhiteboardState(serializeForAI());
+  useEffect(() => {
+    if (serializeForAI) {
+      const boardState = serializeForAI();
+      getWhiteboardState(boardState);
+    }
   }, [serializeForAI, getWhiteboardState]);
 
   return (

@@ -31,7 +31,7 @@ export const useCanvasSetup = ({
     if (!canvas) return;
 
     const initializeCanvas = () => {
-      const context = canvas.getContext('2d');
+      const context = canvas.getContext('2d', { alpha: false });
       if (!context) {
         console.error('Failed to get canvas context');
         return;
@@ -55,7 +55,7 @@ export const useCanvasSetup = ({
       // Scale context for high DPI display
       context.scale(dpr, dpr);
       
-      // Set initial fill
+      // Set initial fill (this ensures we have a white background)
       context.fillStyle = '#FFFFFF';
       context.fillRect(0, 0, rect.width, rect.height);
       
@@ -111,11 +111,19 @@ export const useCanvasSetup = ({
   // Handle pointer events
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
-      if (isPaused || activeTool === 'none') return;
+      if (isPaused || activeTool === 'none') {
+        console.log('Pointer down ignored - paused:', isPaused, 'activeTool:', activeTool);
+        return;
+      }
+      
       const canvas = canvasRef.current;
-      if (!canvas) return;
+      if (!canvas) {
+        console.error('Canvas ref is null in handlePointerDown');
+        return;
+      }
       
       const rect = canvas.getBoundingClientRect();
+      console.log('PointerDown with tool:', activeTool, 'at position:', e.clientX - rect.left, e.clientY - rect.top);
       
       // Ensure we're passing the correct tool type
       const toolType = activeTool === 'text' ? 'pen' : activeTool;
@@ -127,6 +135,9 @@ export const useCanvasSetup = ({
         toolColor,
         toolSize
       );
+      
+      // Prevent default to stop text selection
+      e.preventDefault();
     },
     [activeTool, isPaused, startStroke, toolColor, toolSize, canvasRef]
   );
@@ -134,6 +145,7 @@ export const useCanvasSetup = ({
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
       if (isPaused) return;
+      
       const canvas = canvasRef.current;
       if (!canvas) return;
       
@@ -142,12 +154,21 @@ export const useCanvasSetup = ({
         (e.clientX - rect.left),
         (e.clientY - rect.top)
       );
+      
+      // Prevent default to stop text selection
+      e.preventDefault();
     },
     [addPoint, isPaused, canvasRef]
   );
 
-  const handlePointerUp = useCallback(() => {
-    if (!isPaused) endStroke();
+  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!isPaused) {
+      console.log('Pointer up - ending stroke');
+      endStroke();
+    }
+    
+    // Prevent default
+    e.preventDefault();
   }, [endStroke, isPaused]);
 
   // Cancel aborts

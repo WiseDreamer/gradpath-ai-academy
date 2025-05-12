@@ -45,6 +45,11 @@ export const BoardCanvas: React.FC<{
     }
 
     const ctx = contextRef.current;
+    if (!ctx) {
+      console.error("Canvas context is null, cannot render");
+      return;
+    }
+    
     const rect = canvas.getBoundingClientRect();
 
     // Clear the canvas first
@@ -71,6 +76,7 @@ export const BoardCanvas: React.FC<{
     <canvas
       ref={canvasRef}
       className={`absolute inset-0 ${activeTool!=='none'?'cursor-crosshair':''} ${isPaused?'opacity-50':''}`}
+      style={{ touchAction: 'none' }} // Prevent browser gestures from interfering
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
