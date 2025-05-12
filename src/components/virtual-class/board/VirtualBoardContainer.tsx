@@ -1,5 +1,5 @@
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AnnotationTool } from '@/types/virtualClass';
@@ -28,7 +28,8 @@ export const VirtualBoardContainer: React.FC<VirtualBoardContainerProps> = ({
   getWhiteboardState
 }) => {
   const boardContainerRef = useRef<HTMLDivElement>(null);
-  const [activeTool, setActiveTool] = useState<AnnotationTool>('pen'); // Changed default to 'pen' to enable drawing by default
+  // Default to 'pen' tool instead of 'none' so users can draw immediately
+  const [activeTool, setActiveTool] = useState<AnnotationTool>('pen');
   const [toolColor, setToolColor] = useState('#000000');
   const [toolSize, setToolSize] = useState(2);
   const [totalPages] = useState(5); // Mock total pages
@@ -49,7 +50,8 @@ export const VirtualBoardContainer: React.FC<VirtualBoardContainerProps> = ({
   }, [isLoaded, isDbAvailable, toast]);
 
   const handleToolClick = (tool: AnnotationTool) => {
-    setActiveTool(prevTool => prevTool === tool ? 'none' : tool);
+    console.log('Tool clicked:', tool, 'current tool:', activeTool);
+    setActiveTool(prevTool => prevTool === tool ? 'pen' : tool);
   };
 
   const nextPage = () => {
@@ -78,13 +80,19 @@ export const VirtualBoardContainer: React.FC<VirtualBoardContainerProps> = ({
     }
   };
 
-  // Update whiteboard state for AI
-  useEffect(() => {
+  // Update whiteboard state for AI - wrapped in useCallback to avoid infinite loops
+  const updateWhiteboardState = useCallback(() => {
     if (serializeForAI) {
       const boardState = serializeForAI();
       getWhiteboardState(boardState);
     }
   }, [serializeForAI, getWhiteboardState]);
+
+  // Use effect with proper dependencies to avoid infinite rendering loops
+  useEffect(() => {
+    // Call once when loaded and when dependencies change
+    updateWhiteboardState();
+  }, [updateWhiteboardState]);
 
   return (
     <div 

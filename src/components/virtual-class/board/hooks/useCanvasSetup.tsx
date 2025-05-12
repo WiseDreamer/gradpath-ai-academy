@@ -1,5 +1,4 @@
 
-// src/components/virtual-class/board/hooks/useCanvasSetup.tsx
 import { useEffect, useRef, useCallback } from 'react';
 import { AnnotationTool } from '@/types/virtualClass';
 import { usePuterWhiteboard } from '@/hooks/whiteboard';
@@ -24,6 +23,7 @@ export const useCanvasSetup = ({
   const { startStroke, addPoint, endStroke } = usePuterWhiteboard({ initialPage: currentPage });
   const lastDpr = useRef(window.devicePixelRatio || 1);
   const isInitialized = useRef(false);
+  const isDrawing = useRef(false);
 
   // Initialize and resize canvas
   useEffect(() => {
@@ -31,6 +31,8 @@ export const useCanvasSetup = ({
     if (!canvas) return;
 
     const initializeCanvas = () => {
+      console.log('Initializing canvas...');
+      
       const context = canvas.getContext('2d', { alpha: false });
       if (!context) {
         console.error('Failed to get canvas context');
@@ -51,6 +53,9 @@ export const useCanvasSetup = ({
       canvas.height = Math.max(1, rect.height * dpr);
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
+      
+      // Reset any transforms before applying new ones
+      context.resetTransform();
       
       // Scale context for high DPI display
       context.scale(dpr, dpr);
@@ -88,31 +93,44 @@ export const useCanvasSetup = ({
           canvas.height !== Math.max(1, rect.height * dpr) ||
           dpr !== lastDpr.current) {
         
+        console.log('Resizing canvas to match container size');
         initializeCanvas();
       }
     };
 
     // Set up resize observer
     const ro = new ResizeObserver(() => {
+      console.log('ResizeObserver triggered');
       resizeCanvas();
     });
     
     ro.observe(canvas.parentElement || canvas);
     
     // Backup with window resize event
-    window.addEventListener('resize', resizeCanvas);
+    const handleResize = () => {
+      console.log('Window resize event');
+      resizeCanvas();
+    };
+    
+    window.addEventListener('resize', handleResize);
     
     return () => {
       ro.disconnect();
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', handleResize);
     };
   }, [canvasRef, contextRef]);
 
   // Handle pointer events
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
-      if (isPaused || activeTool === 'none') {
-        console.log('Pointer down ignored - paused:', isPaused, 'activeTool:', activeTool);
+      if (isPaused) {
+        console.log('Pointer down ignored - paused');
+        return;
+      }
+      
+      // If no tool is selected or tool is 'none', ignore
+      if (activeTool === 'none') {
+        console.log('Pointer down ignored - no active tool');
         return;
       }
       
@@ -125,26 +143,39 @@ export const useCanvasSetup = ({
       const rect = canvas.getBoundingClientRect();
       console.log('PointerDown with tool:', activeTool, 'at position:', e.clientX - rect.left, e.clientY - rect.top);
       
+      // Set drawing flag
+      isDrawing.current = true;
+      
       // Ensure we're passing the correct tool type
       const toolType = activeTool === 'text' ? 'pen' : activeTool;
       
-      startStroke(
-        (e.clientX - rect.left),
-        (e.clientY - rect.top),
-        toolType as 'pen' | 'highlighter' | 'eraser',
-        toolColor,
-        toolSize
-      );
+      // Ensure context is available
+      if (contextRef.current) {
+        startStroke(
+          (e.clientX - rect.left),
+          (e.clientY - rect.top),
+          toolType as 'pen' | 'highlighter' | 'eraser',
+          toolColor,
+          toolSize
+        );
+      } else {
+        console.error('No canvas context available');
+      }
       
       // Prevent default to stop text selection
       e.preventDefault();
+      
+      // Capture the pointer to ensure we get all events
+      canvas.setPointerCapture(e.pointerId);
     },
-    [activeTool, isPaused, startStroke, toolColor, toolSize, canvasRef]
+    [activeTool, isPaused, startStroke, toolColor, toolSize, canvasRef, contextRef]
   );
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
-      if (isPaused) return;
+      if (isPaused || !isDrawing.current) {
+        return;
+      }
       
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -162,20 +193,34 @@ export const useCanvasSetup = ({
   );
 
   const handlePointerUp = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!isPaused) {
+    if (isPaused) return;
+    
+    if (isDrawing.current) {
       console.log('Pointer up - ending stroke');
       endStroke();
+      isDrawing.current = false;
+      
+      // Release pointer capture
+      const canvas = canvasRef.current;
+      if (canvas) {
+        try {
+          canvas.releasePointerCapture(e.pointerId);
+        } catch (err) {
+          console.error('Error releasing pointer capture:', err);
+        }
+      }
     }
     
     // Prevent default
     e.preventDefault();
-  }, [endStroke, isPaused]);
+  }, [endStroke, isPaused, canvasRef]);
 
   // Create a native event handler for pointercancel
   const handleNativePointerCancel = useCallback((e: PointerEvent) => {
-    if (!isPaused) {
+    if (!isPaused && isDrawing.current) {
       console.log('Pointer cancel - ending stroke');
       endStroke();
+      isDrawing.current = false;
     }
     // Prevent default
     e.preventDefault();
