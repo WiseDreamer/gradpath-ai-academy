@@ -31,12 +31,26 @@ export const BoardCanvas: React.FC<{
   const { strokes, currentStroke } = usePuterWhiteboard({ initialPage: currentPage });
 
   useEffect(() => {
-    const ctx = contextRef.current;
     const canvas = canvasRef.current;
-    if (!ctx || !canvas) return;
+    if (!canvas) return;
+
+    // Ensure the context is properly initialized
+    if (!contextRef.current) {
+      const ctx = canvas.getContext('2d');
+      contextRef.current = ctx;
+      if (!ctx) {
+        console.error("Failed to get 2D context from canvas");
+        return;
+      }
+    }
+
+    const ctx = contextRef.current;
     const rect = canvas.getBoundingClientRect();
+
+    // Clear the canvas first
+    ctx.clearRect(0, 0, rect.width, rect.height);
     
-    // Create a React element for rendering (this will just return null but execute the rendering)
+    // Render page content
     PageContentRenderer({
       context: ctx,
       currentPage,
@@ -45,7 +59,7 @@ export const BoardCanvas: React.FC<{
       canvasHeight: rect.height
     });
     
-    // Create a React element for stroke rendering
+    // Render strokes on top
     StrokeRenderer({
       context: ctx,
       strokes,

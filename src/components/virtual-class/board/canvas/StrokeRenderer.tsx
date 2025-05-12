@@ -2,7 +2,7 @@
 import { Stroke } from '@/types/whiteboard';
 
 interface StrokeRendererProps {
-  context: CanvasRenderingContext2D;
+  context: CanvasRenderingContext2D | null;
   strokes: Stroke[];
   currentStroke: Stroke | null;
 }
@@ -12,6 +12,9 @@ export const StrokeRenderer = ({
   strokes,
   currentStroke
 }: StrokeRendererProps) => {
+  // If context is null, don't attempt to render
+  if (!context) return null;
+
   // Configure context for drawing tools
   const configureContextForTool = (ctx: CanvasRenderingContext2D, stroke: Stroke) => {
     if (stroke.tool === 'pen') {

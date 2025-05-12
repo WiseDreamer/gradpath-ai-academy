@@ -23,35 +23,90 @@ export const useCanvasSetup = ({
 }) => {
   const { startStroke, addPoint, endStroke } = usePuterWhiteboard({ initialPage: currentPage });
   const lastDpr = useRef(window.devicePixelRatio || 1);
+  const isInitialized = useRef(false);
 
   // Initialize and resize canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const context = canvas.getContext('2d');
-    if (!context) return;
 
-    const resizeCanvas = () => {
+    const initializeCanvas = () => {
+      const context = canvas.getContext('2d');
+      if (!context) {
+        console.error('Failed to get canvas context');
+        return;
+      }
+      
       const rect = canvas.parentElement?.getBoundingClientRect();
-      if (!rect) return;
+      if (!rect) {
+        console.error('Canvas parent element has no dimensions');
+        return;
+      }
+      
       const dpr = window.devicePixelRatio || 1;
       lastDpr.current = dpr;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      
+      // Set canvas dimensions
+      canvas.width = Math.max(1, rect.width * dpr);
+      canvas.height = Math.max(1, rect.height * dpr);
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
-      context.resetTransform();
+      
+      // Scale context for high DPI display
       context.scale(dpr, dpr);
+      
+      // Set initial fill
       context.fillStyle = '#FFFFFF';
       context.fillRect(0, 0, rect.width, rect.height);
+      
+      // Store the context
       contextRef.current = context;
+      isInitialized.current = true;
+      
+      console.log('Canvas initialized with dimensions:', rect.width, 'x', rect.height);
     };
 
-    resizeCanvas();
-    const ro = new ResizeObserver(resizeCanvas);
-    ro.observe(canvas.parentElement!);
-    return () => ro.disconnect();
-  }, [canvasRef, contextRef, currentPage]);
+    // Initialize canvas if not already done
+    if (!isInitialized.current) {
+      initializeCanvas();
+    }
+
+    const resizeCanvas = () => {
+      if (!canvas.parentElement) return;
+      
+      const rect = canvas.parentElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) {
+        // Try again later when the component is fully rendered
+        requestAnimationFrame(resizeCanvas);
+        return;
+      }
+      
+      const dpr = window.devicePixelRatio || 1;
+      
+      // Only resize if dimensions have changed
+      if (canvas.width !== Math.max(1, rect.width * dpr) || 
+          canvas.height !== Math.max(1, rect.height * dpr) ||
+          dpr !== lastDpr.current) {
+        
+        initializeCanvas();
+      }
+    };
+
+    // Set up resize observer
+    const ro = new ResizeObserver(() => {
+      resizeCanvas();
+    });
+    
+    ro.observe(canvas.parentElement || canvas);
+    
+    // Backup with window resize event
+    window.addEventListener('resize', resizeCanvas);
+    
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, [canvasRef, contextRef]);
 
   // Handle pointer events
   const handlePointerDown = useCallback(
@@ -59,6 +114,7 @@ export const useCanvasSetup = ({
       if (isPaused || activeTool === 'none') return;
       const canvas = canvasRef.current;
       if (!canvas) return;
+      
       const rect = canvas.getBoundingClientRect();
       
       // Ensure we're passing the correct tool type
@@ -80,6 +136,7 @@ export const useCanvasSetup = ({
       if (isPaused) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
+      
       const rect = canvas.getBoundingClientRect();
       addPoint(
         (e.clientX - rect.left),
@@ -97,6 +154,7 @@ export const useCanvasSetup = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    
     canvas.addEventListener('pointercancel', handlePointerUp);
     return () => canvas.removeEventListener('pointercancel', handlePointerUp);
   }, [handlePointerUp]);

@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface PageContentRendererProps {
-  context: CanvasRenderingContext2D;
+  context: CanvasRenderingContext2D | null;
   currentPage: number;
   totalPages: number;
   canvasWidth: number;
@@ -16,6 +16,9 @@ export const PageContentRenderer = ({
   canvasWidth,
   canvasHeight
 }: PageContentRendererProps) => {
+  // If context is null, don't attempt to render
+  if (!context) return null;
+  
   // Clear canvas
   context.fillStyle = '#FFFFFF';
   context.fillRect(0, 0, canvasWidth, canvasHeight);
