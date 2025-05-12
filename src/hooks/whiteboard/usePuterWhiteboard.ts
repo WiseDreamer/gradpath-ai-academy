@@ -8,10 +8,6 @@ import { useWhiteboardStorage } from './useWhiteboardStorage';
 import { WhiteboardHookProps, WhiteboardHookResult } from './types';
 import { Stroke } from '@/types/whiteboard';
 
-// Use explicit "export type" for re-exporting types
-export type { Stroke } from '@/types/whiteboard';
-export type { WhiteboardHookProps } from './types';
-
 export const usePuterWhiteboard = ({ initialPage = 1 }: WhiteboardHookProps = {}): WhiteboardHookResult => {
   const { isLoaded, isDbAvailable } = usePuter();
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -23,7 +19,8 @@ export const usePuterWhiteboard = ({ initialPage = 1 }: WhiteboardHookProps = {}
     setIsDrawing,
     setCurrentStroke,
     startStroke: initStroke,
-    addPoint: addStrokePoint
+    addPoint: addStrokePoint,
+    endStroke: finishStroke
   } = useStrokeOperations(userId, currentPage);
 
   const startStroke = (x: number, y: number, tool: 'pen' | 'highlighter' | 'eraser', color: string, size: number) => {
@@ -35,7 +32,7 @@ export const usePuterWhiteboard = ({ initialPage = 1 }: WhiteboardHookProps = {}
   };
 
   const endStroke = async () => {
-    setIsDrawing(false);
+    finishStroke();
     
     if (!currentStroke || currentStroke.points.length < 2) {
       setCurrentStroke(null);

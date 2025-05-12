@@ -1,3 +1,4 @@
+
 // src/hooks/whiteboard/useStrokeOperations.ts
 import { useState, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -5,8 +6,10 @@ import type { Stroke } from '@/types/whiteboard';
 
 export function useStrokeOperations(userId: string, currentPage: number) {
   const [currentStroke, setCurrentStroke] = useState<Stroke | null>(null);
+  const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
-  const startStroke = useCallback((x: number, y: number, tool: string, color: string, size: number) => {
+  const startStroke = useCallback((x: number, y: number, tool: 'pen' | 'highlighter' | 'eraser', color: string, size: number) => {
+    setIsDrawing(true);
     setCurrentStroke({
       id: uuidv4(),
       tool,
@@ -26,12 +29,16 @@ export function useStrokeOperations(userId: string, currentPage: number) {
   }, []);
 
   const endStroke = useCallback(() => {
-    if (currentStroke) {
-      // Hand off to storage / sync
-      // e.g. storage.addStroke(currentStroke)
-      setCurrentStroke(null);
-    }
-  }, [currentStroke]);
+    setIsDrawing(false);
+  }, []);
 
-  return { currentStroke, startStroke, addPoint, endStroke };
+  return { 
+    currentStroke, 
+    isDrawing, 
+    setIsDrawing,
+    setCurrentStroke,
+    startStroke, 
+    addPoint, 
+    endStroke 
+  };
 }

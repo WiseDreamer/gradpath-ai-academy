@@ -5,12 +5,13 @@ import { useCanvasSetup } from './hooks/useCanvasSetup';
 import { PageContentRenderer } from './canvas/PageContentRenderer';
 import { StrokeRenderer } from './canvas/StrokeRenderer';
 import { usePuterWhiteboard } from '@/hooks/whiteboard';
+import { AnnotationTool } from '@/types/virtualClass';
 
 export const BoardCanvas: React.FC<{
   isPaused: boolean;
   currentPage: number;
   setCurrentPage: (n: number) => void;
-  activeTool: string;
+  activeTool: AnnotationTool;
   toolColor: string;
   toolSize: number;
 }> = ({ isPaused, currentPage, setCurrentPage, activeTool, toolColor, toolSize }) => {

@@ -1,3 +1,4 @@
+
 // src/components/virtual-class/board/hooks/useCanvasSetup.tsx
 import { useEffect, useRef, useCallback } from 'react';
 import { AnnotationTool } from '@/types/virtualClass';
@@ -59,15 +60,19 @@ export const useCanvasSetup = ({
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
+      
+      // Ensure we're passing the correct tool type
+      const toolType = activeTool === 'text' ? 'pen' : activeTool;
+      
       startStroke(
         (e.clientX - rect.left),
         (e.clientY - rect.top),
-        activeTool,
+        toolType as 'pen' | 'highlighter' | 'eraser',
         toolColor,
         toolSize
       );
     },
-    [activeTool, isPaused, startStroke, toolColor, toolSize]
+    [activeTool, isPaused, startStroke, toolColor, toolSize, canvasRef]
   );
 
   const handlePointerMove = useCallback(
@@ -81,7 +86,7 @@ export const useCanvasSetup = ({
         (e.clientY - rect.top)
       );
     },
-    [addPoint, isPaused]
+    [addPoint, isPaused, canvasRef]
   );
 
   const handlePointerUp = useCallback(() => {
