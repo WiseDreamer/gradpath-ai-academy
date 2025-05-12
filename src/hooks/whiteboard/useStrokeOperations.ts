@@ -1,17 +1,13 @@
-
-import { useState } from 'react';
+// src/hooks/whiteboard/useStrokeOperations.ts
+import { useState, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Stroke } from '@/types/whiteboard';
+import type { Stroke } from '@/types/whiteboard';
 
-export const useStrokeOperations = (
-  userId: string, 
-  currentPage: number
-) => {
+export function useStrokeOperations(userId: string, currentPage: number) {
   const [currentStroke, setCurrentStroke] = useState<Stroke | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
 
-  const startStroke = (x: number, y: number, tool: 'pen' | 'highlighter' | 'eraser', color: string, size: number) => {
-    const newStroke: Stroke = {
+  const startStroke = useCallback((x: number, y: number, tool: string, color: string, size: number) => {
+    setCurrentStroke({
       id: uuidv4(),
       tool,
       color,
@@ -20,30 +16,22 @@ export const useStrokeOperations = (
       userId,
       timestamp: Date.now(),
       page: currentPage
-    };
-    
-    setCurrentStroke(newStroke);
-    setIsDrawing(true);
-  };
-
-  const addPoint = (x: number, y: number) => {
-    if (!isDrawing || !currentStroke) return;
-    
-    setCurrentStroke(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        points: [...prev.points, { x, y }]
-      };
     });
-  };
+  }, [userId, currentPage]);
 
-  return {
-    currentStroke,
-    isDrawing,
-    setIsDrawing,
-    setCurrentStroke,
-    startStroke,
-    addPoint
-  };
-};
+  const addPoint = useCallback((x: number, y: number) => {
+    setCurrentStroke(prev =>
+      prev ? { ...prev, points: [...prev.points, { x, y }] } : prev
+    );
+  }, []);
+
+  const endStroke = useCallback(() => {
+    if (currentStroke) {
+      // Hand off to storage / sync
+      // e.g. storage.addStroke(currentStroke)
+      setCurrentStroke(null);
+    }
+  }, [currentStroke]);
+
+  return { currentStroke, startStroke, addPoint, endStroke };
+}
