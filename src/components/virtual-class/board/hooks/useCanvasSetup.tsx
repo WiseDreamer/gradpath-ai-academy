@@ -1,23 +1,7 @@
-
-import React, { useEffect, useRef } from 'react';
+// src/components/virtual-class/board/hooks/useCanvasSetup.tsx
+import { useEffect, useRef, useCallback } from 'react';
 import { AnnotationTool } from '@/types/virtualClass';
 import { usePuterWhiteboard } from '@/hooks/whiteboard';
-
-interface UseCanvasSetupProps {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
-  contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>;
-  currentPage: number;
-  isPaused: boolean;
-  activeTool: AnnotationTool;
-  toolColor: string;
-  toolSize: number;
-}
-
-interface UseCanvasSetupResult {
-  handlePointerDown: (e: React.PointerEvent<HTMLCanvasElement>) => void;
-  handlePointerMove: (e: React.PointerEvent<HTMLCanvasElement>) => void;
-  handlePointerUp: () => void;
-}
 
 export const useCanvasSetup = ({
   canvasRef,
@@ -26,99 +10,91 @@ export const useCanvasSetup = ({
   isPaused,
   activeTool,
   toolColor,
-  toolSize
-}: UseCanvasSetupProps): UseCanvasSetupResult => {
+  toolSize,
+}: {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>;
+  currentPage: number;
+  isPaused: boolean;
+  activeTool: AnnotationTool;
+  toolColor: string;
+  toolSize: number;
+}) => {
   const { startStroke, addPoint, endStroke } = usePuterWhiteboard({ initialPage: currentPage });
+  const lastDpr = useRef(window.devicePixelRatio || 1);
 
-  // Initialize canvas
+  // Initialize and resize canvas
   useEffect(() => {
-    if (!canvasRef.current) return;
-    
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const context = canvas.getContext('2d');
-    
     if (!context) return;
-    
-    // Set up the canvas dimensions
+
     const resizeCanvas = () => {
-      const container = canvas.parentElement;
-      if (!container) return;
-      
-      const { width, height } = container.getBoundingClientRect();
-      
-      // Set canvas display size
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      
-      // Set canvas resolution (accounting for high-DPI displays)
+      const rect = canvas.parentElement?.getBoundingClientRect();
+      if (!rect) return;
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.max(1, width * dpr);
-      canvas.height = Math.max(1, height * dpr);
-      
-      // Scale the context for high-DPI display
+      lastDpr.current = dpr;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      context.resetTransform();
       context.scale(dpr, dpr);
-      
-      // Draw background
       context.fillStyle = '#FFFFFF';
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Store context in the ref
+      context.fillRect(0, 0, rect.width, rect.height);
       contextRef.current = context;
     };
 
     resizeCanvas();
-    
-    // Set up resize observer for more reliable resize detection
-    const resizeObserver = new ResizeObserver(resizeCanvas);
-    resizeObserver.observe(canvas.parentElement || canvas);
-    
-    // Cleanup
-    return () => {
-      resizeObserver.disconnect();
-    };
+    const ro = new ResizeObserver(resizeCanvas);
+    ro.observe(canvas.parentElement!);
+    return () => ro.disconnect();
   }, [canvasRef, contextRef, currentPage]);
 
   // Handle pointer events
-  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (activeTool === 'none' || isPaused) return;
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    startStroke(
-      x, 
-      y, 
-      activeTool as 'pen' | 'highlighter' | 'eraser', 
-      toolColor, 
-      toolSize
-    );
-  };
-  
-  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (isPaused) return;
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    addPoint(x, y);
-  };
-  
-  const handlePointerUp = () => {
-    if (isPaused) return;
-    endStroke();
-  };
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (isPaused || activeTool === 'none') return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      startStroke(
+        (e.clientX - rect.left),
+        (e.clientY - rect.top),
+        activeTool,
+        toolColor,
+        toolSize
+      );
+    },
+    [activeTool, isPaused, startStroke, toolColor, toolSize]
+  );
 
-  return {
-    handlePointerDown,
-    handlePointerMove,
-    handlePointerUp
-  };
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (isPaused) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      addPoint(
+        (e.clientX - rect.left),
+        (e.clientY - rect.top)
+      );
+    },
+    [addPoint, isPaused]
+  );
+
+  const handlePointerUp = useCallback(() => {
+    if (!isPaused) endStroke();
+  }, [endStroke, isPaused]);
+
+  // Cancel aborts
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.addEventListener('pointercancel', handlePointerUp);
+    return () => canvas.removeEventListener('pointercancel', handlePointerUp);
+  }, [handlePointerUp]);
+
+  return { handlePointerDown, handlePointerMove, handlePointerUp };
 };
