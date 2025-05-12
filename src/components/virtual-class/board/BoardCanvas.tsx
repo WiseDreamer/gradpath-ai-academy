@@ -1,8 +1,10 @@
+
 // src/components/virtual-class/board/BoardCanvas.tsx
 import React, { useEffect, useRef } from 'react';
 import { useCanvasSetup } from './hooks/useCanvasSetup';
 import { PageContentRenderer } from './canvas/PageContentRenderer';
 import { StrokeRenderer } from './canvas/StrokeRenderer';
+import { usePuterWhiteboard } from '@/hooks/whiteboard';
 
 export const BoardCanvas: React.FC<{
   isPaused: boolean;
