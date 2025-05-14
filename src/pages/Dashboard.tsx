@@ -12,7 +12,7 @@ import BottomNav from '@/components/BottomNav';
 import DashboardCard from '@/components/DashboardCard';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 import { 
-  Video, Upload, Calendar, FileText, MessageCircle, BarChart, Graduation
+  Video, Upload, Calendar, FileText, MessageCircle, BarChart, GraduationCap
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {

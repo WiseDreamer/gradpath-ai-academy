@@ -5,13 +5,20 @@ import { cn } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
-  color?: 'white' | 'purple';
+  color?: 'white' | 'purple' | 'navy';
   clickable?: boolean;
 }
 
 const Logo: React.FC<LogoProps> = ({ className, color = 'white', clickable = true }) => {
-  const textColor = color === 'purple' ? 'text-gradpath-purple' : 'text-white';
-  const iconColor = color === 'purple' ? 'text-gradpath-purple' : 'text-white';
+  const textColor = 
+    color === 'purple' ? 'text-gradpath-purple' : 
+    color === 'navy' ? 'text-gradpath-navy' :
+    'text-white';
+  
+  const iconColor = 
+    color === 'purple' ? 'text-gradpath-purple' : 
+    color === 'navy' ? 'text-gradpath-navy' :
+    'text-white';
   
   return (
     <div className={cn("flex items-center gap-2", className)}>
