@@ -1,6 +1,6 @@
 
 import React, { useState, useCallback, useRef } from 'react';
-import NavBar from '@/components/navbar';
+import NavBar from '@/components/navbar/index';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileNavBar from '@/components/virtual-class/MobileNavBar';
 import VirtualClassHeader from '@/components/virtual-class/VirtualClassHeader';
