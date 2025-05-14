@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import BottomNav from '@/components/BottomNav';
 import { Button } from '@/components/ui/button';
