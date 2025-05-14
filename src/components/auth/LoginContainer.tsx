@@ -19,12 +19,12 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
   error 
 }) => {
   return (
-    <div className="w-full max-w-md">
-      <div className="rounded-lg shadow-lg p-8 border border-gray-100 bg-purple-200">
+    <div className="w-full max-w-md animate-fade-in">
+      <div className="rounded-xl shadow-lg p-8 border border-gray-200 bg-white backdrop-blur-sm">
         <div className="text-center mb-6">
           <Logo color="purple" className="justify-center" />
-          <h1 className="text-2xl font-bold mt-4">Welcome back</h1>
-          <p className="text-sm text-gray-500 mt-1">Login to your account to continue learning</p>
+          <h1 className="text-2xl font-bold mt-4 text-gray-800">Welcome back</h1>
+          <p className="text-gray-500 mt-1">Login to your academic journey</p>
         </div>
         
         {error && (
@@ -36,10 +36,19 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
         
         <LoginForm isLoading={isLoading} setIsLoading={setIsLoading} />
         
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-gray-300"></span>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-gray-500">Or continue with</span>
+          </div>
+        </div>
+        
         <SocialLogin isLoading={isLoading} setIsLoading={setIsLoading} />
         
         <div className="text-center mt-6">
-          <p className="text-sm text-gray-500">
+          <p className="text-gray-500">
             Don't have an account?{' '}
             <Link to="/register" className="text-gradpath-purple hover:underline font-medium">
               Register

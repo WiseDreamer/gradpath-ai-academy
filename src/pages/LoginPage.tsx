@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
   // Display loading state while checking authentication
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
+      <div className="min-h-screen flex flex-col justify-center items-center p-4 login-background">
         <Logo color="purple" className="mb-4" />
         <div className="w-8 h-8 border-4 border-gradpath-purple border-t-transparent rounded-full animate-spin"></div>
         <p className="mt-4 text-gray-600">Checking authentication...</p>
@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
   if (session && authCheckComplete) {
     console.log("Session found in login page render, should redirect soon");
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center p-4">
+      <div className="min-h-screen flex flex-col justify-center items-center p-4 login-background">
         <Logo color="purple" className="mb-4" />
         <div className="w-8 h-8 border-4 border-gradpath-purple border-t-transparent rounded-full animate-spin"></div>
         <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
@@ -71,7 +71,7 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 login-background">
       <LoginContainer 
         isLoading={isLoading} 
         setIsLoading={setIsLoading} 

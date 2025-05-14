@@ -1,44 +1,48 @@
 
 import React from 'react';
+import DefaultNavBar from './DefaultNavBar';
+import AiTutorNavBar from './AiTutorNavBar';
+import { useAuth } from '@/components/AuthProvider';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { useLocation } from 'react-router-dom';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { useIsMobile } from '@/hooks/use-mobile';
-import AiTutorNavBar from './AiTutorNavBar';
 import MobileSocialNavBar from './MobileSocialNavBar';
 import DesktopGlobalChatNavBar from './DesktopGlobalChatNavBar';
-import DefaultNavBar from './DefaultNavBar';
 
 interface NavBarProps {
-  openMobileMenu?: () => void;
+  variant?: 'default' | 'ai-tutor' | 'social';
   currentPage?: string;
-  variant?: 'learning' | 'social' | 'ai-tutor';
+  openMobileMenu?: () => void;
   useMessagesStyle?: boolean;
 }
 
-const NavBar: React.FC<NavBarProps> = ({
-  openMobileMenu,
+const NavBar: React.FC<NavBarProps> = ({ 
+  variant = 'default', 
   currentPage,
-  variant = 'learning',
-  useMessagesStyle = false
+  openMobileMenu,
+  useMessagesStyle 
 }) => {
-  const location = useLocation();
+  const { user } = useAuth();
   const isMobile = useIsMobile();
-  const {
-    notifications,
-    unreadCount,
-    loading: loadingNotifications,
-    markAsRead
-  } = useNotifications();
-  const {
-    userProfile,
-    loading: loadingProfile
-  } = useUserProfile();
-
-  // AI Tutor variant
+  const location = useLocation();
+  const { notifications, unreadCount, markAsRead, loading: loadingNotifications } = useNotifications();
+  const { userProfile, loading: loadingProfile } = useUserProfile();
+  
+  // Show global chat-specific navbar on desktop for global-chat
+  if (!isMobile && location.pathname === '/global-chat') {
+    return <DesktopGlobalChatNavBar />;
+  }
+  
+  // Show mobile-specific navbar for social pages on mobile
+  if (isMobile && (variant === 'social' || useMessagesStyle)) {
+    return <MobileSocialNavBar currentPage={currentPage || location.pathname} />;
+  }
+  
+  // For AI Tutor
   if (variant === 'ai-tutor') {
     return (
-      <AiTutorNavBar
+      <AiTutorNavBar 
         openMobileMenu={openMobileMenu}
         notifications={notifications}
         unreadCount={unreadCount}
@@ -49,42 +53,11 @@ const NavBar: React.FC<NavBarProps> = ({
       />
     );
   }
-
-  // Mobile Social variant - Now uses MessagesStyle if prop is set
-  if (variant === 'social' && isMobile) {
-    return (
-      <MobileSocialNavBar
-        openMobileMenu={openMobileMenu}
-        currentPage={currentPage}
-        notifications={notifications}
-        unreadCount={unreadCount}
-        markAsRead={markAsRead}
-        loadingNotifications={loadingNotifications}
-        useMessagesStyle={useMessagesStyle}
-      />
-    );
-  }
-
-  // Desktop Global Chat variant
-  if (variant === 'social' && !isMobile && location.pathname === '/global-chat') {
-    return (
-      <DesktopGlobalChatNavBar
-        openMobileMenu={openMobileMenu}
-        currentPage={currentPage}
-        notifications={notifications}
-        unreadCount={unreadCount}
-        markAsRead={markAsRead}
-        loadingNotifications={loadingNotifications}
-        userProfile={userProfile}
-        loadingProfile={loadingProfile}
-      />
-    );
-  }
-
-  // Default variant
+  
+  // Default navbar
   return (
     <DefaultNavBar
-      variant={variant}
+      variant={variant === 'social' ? 'social' : 'learning'}
       currentPage={currentPage}
       notifications={notifications}
       unreadCount={unreadCount}

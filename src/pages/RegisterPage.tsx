@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -98,13 +99,13 @@ const RegisterPage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-white to-gray-100">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-100">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 login-background">
+      <div className="w-full max-w-md animate-fade-in">
+        <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
           <div className="text-center mb-6">
             <Logo className="justify-center" />
-            <h1 className="text-2xl font-bold mt-4">Create an account</h1>
-            <p className="text-sm text-gray-500 mt-1">Join GradPath and enhance your learning journey</p>
+            <h1 className="text-2xl font-bold mt-4 text-gray-800">Create an account</h1>
+            <p className="text-gray-500 mt-1">Join GradPath and enhance your learning journey</p>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -191,13 +192,17 @@ const RegisterPage: React.FC = () => {
               {errors.yearOfStudy && <p className="text-red-500 text-xs mt-1">{errors.yearOfStudy}</p>}
             </div>
             
-            <Button type="submit" className="w-full">
-              Register
+            <Button 
+              type="submit" 
+              className="w-full bg-gradpath-purple hover:bg-gradpath-dark-purple transition-colors"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating account..." : "Register"}
             </Button>
           </form>
           
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-500">
+            <p className="text-gray-500">
               Already have an account?{' '}
               <Link to="/" className="text-gradpath-purple hover:underline font-medium">
                 Login

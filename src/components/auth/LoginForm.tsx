@@ -69,7 +69,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-purple-200">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <FormInput 
         label="Email" 
         id="email" 
@@ -92,13 +92,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
         disabled={isLoading} 
       />
       
-      <div className="flex justify-between items-center text-sm">
+      <div className="flex justify-end items-center text-sm">
         <Link to="/forgot-password" className="text-gradpath-purple hover:underline">
           Forgot password?
         </Link>
       </div>
       
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <Button 
+        type="submit" 
+        className="w-full bg-gradpath-purple hover:bg-gradpath-dark-purple transition-colors" 
+        disabled={isLoading}
+      >
         {isLoading ? "Logging in..." : "Login"}
       </Button>
     </form>
