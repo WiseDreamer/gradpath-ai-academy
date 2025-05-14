@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';

@@ -9,9 +9,11 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import MobileSocialNavBar from './MobileSocialNavBar';
 import DesktopGlobalChatNavBar from './DesktopGlobalChatNavBar';
+import { Notification } from '@/services/notificationService';
+import { UserProfile } from '@/services/userProfileService';
 
 interface NavBarProps {
-  variant?: 'default' | 'ai-tutor' | 'social';
+  variant?: 'default' | 'ai-tutor' | 'social' | 'learning';
   currentPage?: string;
   openMobileMenu?: () => void;
   useMessagesStyle?: boolean;
@@ -31,12 +33,25 @@ const NavBar: React.FC<NavBarProps> = ({
   
   // Show global chat-specific navbar on desktop for global-chat
   if (!isMobile && location.pathname === '/global-chat') {
-    return <DesktopGlobalChatNavBar />;
+    return <DesktopGlobalChatNavBar 
+      notifications={notifications}
+      unreadCount={unreadCount}
+      markAsRead={markAsRead}
+      loadingNotifications={loadingNotifications}
+      userProfile={userProfile}
+      loadingProfile={loadingProfile}
+    />;
   }
   
   // Show mobile-specific navbar for social pages on mobile
   if (isMobile && (variant === 'social' || useMessagesStyle)) {
-    return <MobileSocialNavBar currentPage={currentPage || location.pathname} />;
+    return <MobileSocialNavBar 
+      currentPage={currentPage || location.pathname} 
+      notifications={notifications}
+      unreadCount={unreadCount}
+      markAsRead={markAsRead}
+      loadingNotifications={loadingNotifications}
+    />;
   }
   
   // For AI Tutor

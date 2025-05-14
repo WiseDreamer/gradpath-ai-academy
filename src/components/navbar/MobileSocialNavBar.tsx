@@ -5,13 +5,14 @@ import { Home, Users, Mail, Bell, User, Menu, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from '../Logo';
+import { Notification } from '@/services/notificationService';
 
 interface MobileSocialNavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
-  notifications: any[];
+  notifications: Notification[];
   unreadCount: number;
-  markAsRead: (id: string) => void;
+  markAsRead: (id: string) => Promise<void>;
   loadingNotifications: boolean;
   useMessagesStyle?: boolean;
 }

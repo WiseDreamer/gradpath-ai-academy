@@ -1,6 +1,6 @@
 
 import React from 'react';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { BookOpen } from 'lucide-react';

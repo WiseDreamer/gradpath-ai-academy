@@ -7,15 +7,17 @@ import { cn } from '@/lib/utils';
 import Logo from '../Logo';
 import DesktopNotifications from '../notifications/DesktopNotifications';
 import ProfileMenu from '../profile/ProfileMenu';
+import { Notification } from '@/services/notificationService';
+import { UserProfile } from '@/services/userProfileService';
 
 interface DesktopGlobalChatNavBarProps {
   openMobileMenu?: () => void;
   currentPage?: string;
-  notifications: any[];
+  notifications: Notification[];
   unreadCount: number;
-  markAsRead: (id: string) => void;
+  markAsRead: (id: string) => Promise<void>;
   loadingNotifications: boolean;
-  userProfile: any;
+  userProfile: UserProfile | null;
   loadingProfile: boolean;
 }
 
