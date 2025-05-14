@@ -12,7 +12,7 @@ import BottomNav from '@/components/BottomNav';
 import DashboardCard from '@/components/DashboardCard';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 import { 
-  Video, Upload, Calendar, FileText, MessageCircle, BarChart 
+  Video, Upload, Calendar, FileText, MessageCircle, BarChart, Graduation
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -82,20 +82,20 @@ const Dashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen dashboard-bg">
       <NavBar />
       
       <div className="container mx-auto px-4 py-6 pb-16">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Welcome, {userProfile?.firstName || 'Student'}</h1>
-          <p className="text-gray-600">Access your academic resources and tools</p>
+        <div className="mb-8 bg-gradient-to-r from-gradpath-navy to-gradpath-slate p-6 rounded-xl text-white shadow-lg">
+          <h1 className="text-3xl font-bold">Welcome, {userProfile?.firstName || 'Student'}</h1>
+          <p className="text-gray-200 mt-1">Access your academic resources and tools</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Learning Resources Section */}
           <div className="md:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">Learning Resources</h2>
+              <h2 className="text-xl font-semibold text-gradpath-navy">Learning Resources</h2>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -113,28 +113,28 @@ const Dashboard: React.FC = () => {
                     description="Interactive AI-powered virtual classroom" 
                     icon={Video} 
                     to="/virtual-class" 
-                    color="bg-gradpath-purple" 
+                    color="bg-gradpath-navy" 
                   />
                   <DashboardCard 
                     title="Upload Resources" 
                     description="Upload lecture slides and study material" 
                     icon={Upload} 
                     to="#" 
-                    color="bg-gradpath-bright-blue" 
+                    color="bg-gradpath-teal" 
                   />
                   <DashboardCard 
                     title="Study Plan" 
                     description="View your personalized study schedule" 
                     icon={Calendar} 
                     to="/study-plan" 
-                    color="bg-green-500" 
+                    color="bg-gradpath-emerald" 
                   />
                   <DashboardCard 
                     title="Practice Questions" 
                     description="Test with AI-generated practice questions" 
                     icon={FileText} 
                     to="/practice" 
-                    color="bg-amber-500" 
+                    color="bg-gradpath-amber" 
                   />
                 </>
               )}
@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
           {/* Quick Access Section */}
           <div className="col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">Quick Access</h2>
+              <h2 className="text-xl font-semibold text-gradpath-navy">Quick Access</h2>
             </div>
             
             <div className="space-y-4">
@@ -160,14 +160,14 @@ const Dashboard: React.FC = () => {
                     description="Get instant help with questions" 
                     icon={MessageCircle} 
                     to="#" 
-                    color="bg-gradpath-purple" 
+                    color="bg-gradpath-slate" 
                   />
                   <DashboardCard 
                     title="Track Performance" 
                     description="View your learning analytics" 
                     icon={BarChart} 
                     to="#" 
-                    color="bg-green-500" 
+                    color="bg-gradpath-coral" 
                   />
                 </>
               )}
@@ -176,8 +176,11 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Modules Content */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">Recent Modules</h2>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gradpath-navy">Recent Modules</h2>
+          <Link to="/module/all" className="text-sm font-medium text-gradpath-navy hover:underline">
+            View All
+          </Link>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

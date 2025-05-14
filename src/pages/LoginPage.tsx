@@ -50,9 +50,9 @@ const LoginPage: React.FC = () => {
   // Display loading state while checking authentication
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-white via-purple-50 to-blue-50">
-        <Logo color="purple" className="mb-4" />
-        <div className="w-8 h-8 border-4 border-gradpath-purple border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-silver via-[#F5F7FA] to-[#E6EDF5]">
+        <Logo color="navy" className="mb-4" />
+        <div className="w-8 h-8 border-4 border-gradpath-navy border-t-transparent rounded-full animate-spin"></div>
         <p className="mt-4 text-gray-600">Checking authentication...</p>
       </div>
     );
@@ -62,29 +62,29 @@ const LoginPage: React.FC = () => {
   if (session && authCheckComplete) {
     console.log("Session found in login page render, should redirect soon");
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-white via-purple-50 to-blue-50">
-        <Logo color="purple" className="mb-4" />
-        <div className="w-8 h-8 border-4 border-gradpath-purple border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-silver via-[#F5F7FA] to-[#E6EDF5]">
+        <Logo color="navy" className="mb-4" />
+        <div className="w-8 h-8 border-4 border-gradpath-navy border-t-transparent rounded-full animate-spin"></div>
         <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-white via-[#F0F2FF] to-[#E6EEFF]">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-r from-gradpath-navy to-gradpath-slate">
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="hidden md:flex flex-col items-start justify-center p-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Academic Excellence Starts Here</h1>
-          <p className="text-lg text-gray-600 mb-8">Access personalized learning resources, connect with peers, and achieve your academic goals with our comprehensive education platform.</p>
+        <div className="hidden md:flex flex-col items-start justify-center p-8 text-white">
+          <h1 className="text-4xl font-bold mb-4">Academic Excellence Starts Here</h1>
+          <p className="text-lg text-gray-200 mb-8">Access personalized learning resources, connect with peers, and achieve your academic goals with our comprehensive education platform.</p>
           <div className="flex gap-4">
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
-              <p className="text-sm font-medium text-gray-800">24/7 AI Tutoring</p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
+              <p className="text-sm font-medium">24/7 AI Tutoring</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
-              <p className="text-sm font-medium text-gray-800">Peer Collaboration</p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
+              <p className="text-sm font-medium">Peer Collaboration</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
-              <p className="text-sm font-medium text-gray-800">Study Resources</p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
+              <p className="text-sm font-medium">Study Resources</p>
             </div>
           </div>
         </div>
