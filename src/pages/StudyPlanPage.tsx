@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import NavBar from '@/components/navbar';
+import NavBar from '@/components/navbar/index';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';

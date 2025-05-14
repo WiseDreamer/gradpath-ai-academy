@@ -5,6 +5,8 @@ export interface UserProfile {
   id: string;
   username: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
   avatarUrl?: string;
   role: 'student' | 'teacher' | 'admin';
 }
@@ -26,6 +28,8 @@ export const fetchUserProfile = async (): Promise<UserProfile> => {
     id: '1',
     username: 'student123',
     email: 'student@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
     avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=student123',
     role: 'student'
   };

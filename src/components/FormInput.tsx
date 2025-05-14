@@ -8,6 +8,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   id: string;
   error?: string;
+  icon?: React.ReactNode;
 }
 
 const FormInput: React.FC<FormInputProps> = ({ 
@@ -15,6 +16,7 @@ const FormInput: React.FC<FormInputProps> = ({
   id, 
   error, 
   className,
+  icon,
   ...props 
 }) => {
   return (
@@ -22,14 +24,22 @@ const FormInput: React.FC<FormInputProps> = ({
       <Label htmlFor={id} className="text-sm font-medium">
         {label}
       </Label>
-      <Input
-        id={id}
-        className={cn(
-          error && "border-red-500 focus-visible:ring-red-500",
-          className
+      <div className="relative">
+        {icon && (
+          <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
+            {icon}
+          </div>
         )}
-        {...props}
-      />
+        <Input
+          id={id}
+          className={cn(
+            icon && "pl-10",
+            error && "border-red-500 focus-visible:ring-red-500",
+            className
+          )}
+          {...props}
+        />
+      </div>
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   );
