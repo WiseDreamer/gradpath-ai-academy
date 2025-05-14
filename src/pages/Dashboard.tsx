@@ -1,19 +1,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, ChevronLeft, Menu, Calendar, FileText, LogOut, Video, Upload, BarChart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import DashboardCard from '@/components/DashboardCard';
-import Logo from '@/components/Logo';
 import { useAuth } from '@/components/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
-import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import NavBar from '@/components/navbar/index';
 import BottomNav from '@/components/BottomNav';
+import DashboardCard from '@/components/DashboardCard';
+import AiTutorTab from '@/components/ModuleView/AiTutorTab';
+import { 
+  Video, Upload, Calendar, FileText, MessageCircle, BarChart 
+} from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
@@ -82,78 +82,114 @@ const Dashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7]">
+    <div className="min-h-screen bg-[#F8F9FA]">
       <NavBar />
       
-      {/* Removed all horizontal padding and margins to allow full-width */}
-      <div className="container mx-0 px-0 py-0 w-full max-w-none pb-16">
-        <div className="w-full">
+      <div className="container mx-auto px-4 py-6 pb-16">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Welcome, {userProfile?.firstName || 'Student'}</h1>
+          <p className="text-gray-600">Access your academic resources and tools</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Learning Resources Section */}
-          <div className="mt-0 mb-2 w-full">
-            <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl py-2 shadow-sm text-center border border-gray-100 dark:border-gray-700 w-full">
+          <div className="md:col-span-2">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
               <h2 className="text-xl font-semibold text-gray-800">Learning Resources</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {isLoading ? (
+                <>
+                  <CardSkeleton />
+                  <CardSkeleton />
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </>
+              ) : (
+                <>
+                  <DashboardCard 
+                    title="Join Virtual Class" 
+                    description="Interactive AI-powered virtual classroom" 
+                    icon={Video} 
+                    to="/virtual-class" 
+                    color="bg-gradpath-purple" 
+                  />
+                  <DashboardCard 
+                    title="Upload Resources" 
+                    description="Upload lecture slides and study material" 
+                    icon={Upload} 
+                    to="#" 
+                    color="bg-gradpath-bright-blue" 
+                  />
+                  <DashboardCard 
+                    title="Study Plan" 
+                    description="View your personalized study schedule" 
+                    icon={Calendar} 
+                    to="/study-plan" 
+                    color="bg-green-500" 
+                  />
+                  <DashboardCard 
+                    title="Practice Questions" 
+                    description="Test with AI-generated practice questions" 
+                    icon={FileText} 
+                    to="/practice" 
+                    color="bg-amber-500" 
+                  />
+                </>
+              )}
             </div>
           </div>
           
-          {/* Resource Cards - First Row - with full width */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full px-0 mx-0">
-            {isLoading ? (
-              <>
-                <CardSkeleton />
-                <CardSkeleton />
-              </>
-            ) : (
-              <>
-                <DashboardCard title="Join Virtual Class" description="Jump into an interactive AI-powered virtual classroom" icon={Video} to="/virtual-class" color="bg-gradpath-purple" />
-                <DashboardCard title="Upload Module Resources" description="Upload lecture slides, notes, and study material" icon={Upload} to="#" color="bg-gradpath-bright-blue" />
-              </>
-            )}
+          {/* Quick Access Section */}
+          <div className="col-span-1">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Quick Access</h2>
+            </div>
+            
+            <div className="space-y-4">
+              {isLoading ? (
+                <>
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </>
+              ) : (
+                <>
+                  <DashboardCard 
+                    title="Ask AI Tutor" 
+                    description="Get instant help with questions" 
+                    icon={MessageCircle} 
+                    to="#" 
+                    color="bg-gradpath-purple" 
+                  />
+                  <DashboardCard 
+                    title="Track Performance" 
+                    description="View your learning analytics" 
+                    icon={BarChart} 
+                    to="#" 
+                    color="bg-green-500" 
+                  />
+                </>
+              )}
+            </div>
           </div>
-          
-          {/* Resource Cards - Second Row - with full width */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full px-0 mx-0">
-            {isLoading ? (
-              <>
-                <CardSkeleton />
-                <CardSkeleton />
-              </>
-            ) : (
-              <>
-                <DashboardCard title="Study Plan" description="View and manage your personalized study schedule" icon={Calendar} to="/study-plan" color="bg-green-500" />
-                <DashboardCard title="Practice Questions" description="Test your knowledge with AI-generated practice questions" icon={FileText} to="/practice" color="bg-amber-500" />
-              </>
-            )}
-          </div>
-          
-          {/* AI Tutor and Performance Cards - with full width */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full px-0 mx-0">
-            {isLoading ? (
-              <>
-                <CardSkeleton />
-                <CardSkeleton />
-              </>
-            ) : (
-              <>
-                <DashboardCard title="Ask AI Tutor" description="Get instant help with your questions" icon={MessageCircle} to="#" color="bg-gradpath-purple" />
-                <DashboardCard title="Track My Performance" description="View your learning progress and analytics" icon={BarChart} to="#" color="bg-green-500" />
-              </>
-            )}
-          </div>
+        </div>
 
-          {/* Recent Modules Content - with full width */}
-          <div className="mt-2 w-full px-0 mx-0">
-            {isLoading ? (
-              <div className="space-y-4 w-full">
-                <Skeleton className="h-24 w-full rounded-lg" />
-                <Skeleton className="h-24 w-full rounded-lg" />
-                <Skeleton className="h-24 w-full rounded-lg" />
-              </div>
-            ) : (
-              <AiTutorTab />
-            )}
-          </div>
-
-          {/* Removed the "View All Modules" button */}
+        {/* Recent Modules Content */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">Recent Modules</h2>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          {isLoading ? (
+            <div className="space-y-4 p-4">
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+            </div>
+          ) : (
+            <AiTutorTab />
+          )}
         </div>
       </div>
 

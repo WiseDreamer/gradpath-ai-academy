@@ -5,6 +5,7 @@ import FormInput from '@/components/FormInput';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import { Mail, Lock } from 'lucide-react';
 
 interface LoginFormProps {
   isLoading: boolean;
@@ -70,32 +71,38 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <FormInput 
-        label="Email" 
-        id="email" 
-        type="email" 
-        placeholder="your@email.com" 
-        value={email} 
-        onChange={e => setEmail(e.target.value)} 
-        error={errors.email} 
-        disabled={isLoading} 
-      />
+      <div className="space-y-2">
+        <FormInput 
+          label="Email" 
+          id="email" 
+          type="email" 
+          placeholder="your@email.com" 
+          value={email} 
+          onChange={e => setEmail(e.target.value)} 
+          error={errors.email} 
+          disabled={isLoading}
+          icon={<Mail className="h-4 w-4 text-gray-500" />}
+        />
+      </div>
       
-      <FormInput 
-        label="Password" 
-        id="password" 
-        type="password" 
-        placeholder="••••••••" 
-        value={password} 
-        onChange={e => setPassword(e.target.value)} 
-        error={errors.password} 
-        disabled={isLoading} 
-      />
-      
-      <div className="flex justify-end items-center text-sm">
-        <Link to="/forgot-password" className="text-gradpath-purple hover:underline">
-          Forgot password?
-        </Link>
+      <div className="space-y-2">
+        <FormInput 
+          label="Password" 
+          id="password" 
+          type="password" 
+          placeholder="••••••••" 
+          value={password} 
+          onChange={e => setPassword(e.target.value)} 
+          error={errors.password} 
+          disabled={isLoading}
+          icon={<Lock className="h-4 w-4 text-gray-500" />}
+        />
+        
+        <div className="flex justify-end items-center text-sm">
+          <Link to="/forgot-password" className="text-gradpath-purple hover:underline">
+            Forgot password?
+          </Link>
+        </div>
       </div>
       
       <Button 

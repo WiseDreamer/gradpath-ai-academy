@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import NavBar from '@/components/navbar';
+import NavBar from '@/components/navbar/index';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -75,18 +76,18 @@ const ChatPage: React.FC = () => {
   }, [messages]);
   
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col">
       <NavBar variant="ai-tutor" />
       
       <div className="container mx-auto px-4 py-6 flex-1 flex flex-col">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold">AI Tutor Chat</h1>
+          <h1 className="text-2xl font-bold text-gray-800">AI Tutor Chat</h1>
           <p className="text-gray-600">Ask any academic question and get instant help</p>
         </div>
         
-        <Card className="flex-1 flex flex-col overflow-hidden">
+        <Card className="flex-1 flex flex-col overflow-hidden border-none shadow-lg">
           <div className="flex-1 flex flex-col min-h-[70vh]">
-            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+            <ScrollArea className="flex-1 p-4 bg-white" ref={scrollAreaRef}>
               <div className="space-y-4">
                 {messages.map((message) => (
                   <ChatMessage key={message.id} message={message} />
@@ -96,7 +97,7 @@ const ChatPage: React.FC = () => {
             
             <div className="p-4 border-t bg-white">
               <div className="flex gap-2">
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" className="text-gray-500 hover:text-gradpath-purple hover:border-gradpath-purple">
                   <Upload className="h-4 w-4" />
                 </Button>
                 
@@ -104,7 +105,7 @@ const ChatPage: React.FC = () => {
                   placeholder="Type your question here..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  className="flex-1"
+                  className="flex-1 focus-visible:ring-gradpath-purple"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       sendMessage();
@@ -116,13 +117,13 @@ const ChatPage: React.FC = () => {
                   variant="outline" 
                   size="icon"
                   onClick={toggleRecording}
-                  className={isRecording ? "bg-red-100 text-red-600" : ""}
+                  className={isRecording ? "bg-red-100 text-red-600 border-red-300" : "text-gray-500 hover:text-gradpath-purple hover:border-gradpath-purple"}
                 >
                   {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                 </Button>
                 
-                <Button size="icon" onClick={sendMessage}>
-                  <Send className="h-4 w-4" />
+                <Button size="icon" className="bg-gradpath-purple hover:bg-gradpath-dark-purple">
+                  <Send className="h-4 w-4" onClick={sendMessage} />
                 </Button>
               </div>
               

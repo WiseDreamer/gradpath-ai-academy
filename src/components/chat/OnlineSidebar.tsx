@@ -38,13 +38,13 @@ const trendingTopics = [
   { topic: 'Chemistry Lab Report', posts: 45 },
 ];
 
-const topics = ['Accounting', 'Mathematics', 'Chemistry', 'Physics', 'Economics', 'ComputerScience'];
+const topics = ['Accounting', 'Mathematics', 'Chemistry', 'Physics', 'Economics', 'Computer Science'];
 
 const OnlineSidebar: React.FC = () => {
   return (
-    <aside className="hidden lg:block w-64 space-y-6">
+    <aside className="h-full space-y-4">
       {/* Leaderboards Section */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <div className="flex items-center mb-4">
           <Award className="h-5 w-5 mr-2 text-gradpath-purple" />
           <h3 className="font-semibold">Leaderboards</h3>
@@ -63,7 +63,7 @@ const OnlineSidebar: React.FC = () => {
       </div>
 
       {/* Trending Section */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <div className="flex items-center mb-4">
           <TrendingUp className="h-5 w-5 mr-2 text-gradpath-purple" />
           <h3 className="font-semibold">Trending</h3>
@@ -71,7 +71,7 @@ const OnlineSidebar: React.FC = () => {
         <div className="mb-4">
           <h4 className="text-sm font-medium mb-2">Topics</h4>
           <div className="space-y-2">
-            {topics.map((topic) => (
+            {topics.slice(0, 3).map((topic) => (
               <button 
                 key={topic}
                 className="flex items-center w-full px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
@@ -95,24 +95,8 @@ const OnlineSidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* My University Section */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
-        <div className="flex items-center mb-4">
-          <Users className="h-5 w-5 mr-2 text-gradpath-purple" />
-          <h3 className="font-semibold">My University</h3>
-        </div>
-        <div className="space-y-2">
-          <button className="w-full text-left text-sm font-medium text-gradpath-purple">
-            Oxford University Events
-          </button>
-          <button className="w-full text-left text-sm font-medium text-gradpath-purple">
-            Department Announcements
-          </button>
-        </div>
-      </div>
-
       {/* Online Users Section */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <h3 className="font-semibold mb-4">Online Friends</h3>
         <div className="space-y-4">
           {onlineUsers.map((user) => (

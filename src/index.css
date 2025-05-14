@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 240 33% 98%;
+    --background: 220 33% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -93,11 +93,17 @@
   body {
     margin: 0;
     @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   /* Typography enhancements */
   h1, h2, h3, h4 {
     @apply font-semibold tracking-tight;
+  }
+  
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
   }
 }
 
@@ -122,7 +128,7 @@
   @apply flex flex-col gap-2 w-full;
 }
 
-/* Beautiful whiteboard background */
+/* Professional whiteboard background */
 .whiteboard {
   background-image: 
     linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
@@ -141,7 +147,7 @@
 
 /* Login page background */
 .login-background {
-  @apply bg-gradient-to-br from-white via-purple-50 to-blue-50;
+  @apply bg-gradient-to-br from-white via-[#F0F2FF] to-[#E6EEFF];
 }
 
 /* Dashboard card hover effects */
@@ -151,4 +157,63 @@
 
 .hover-lift:hover {
   @apply -translate-y-1 shadow-lg;
+}
+
+/* Professional glassmorphism effect */
+.glass-card {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg;
+}
+
+/* Input focus styles */
+input:focus, textarea:focus, select:focus {
+  @apply ring-2 ring-offset-0 ring-primary/30 border-primary;
+}
+
+/* Button hover effects */
+.btn-hover-effect {
+  @apply relative overflow-hidden transition-all duration-300;
+}
+
+.btn-hover-effect::after {
+  content: '';
+  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+}
+
+.btn-hover-effect:hover::after {
+  @apply opacity-20;
+}
+
+/* Professional table styles */
+.table-modern {
+  @apply w-full border-collapse;
+}
+
+.table-modern th {
+  @apply bg-gray-50 text-left py-3 px-4 font-medium text-gray-700 border-b border-gray-200;
+}
+
+.table-modern td {
+  @apply py-3 px-4 border-b border-gray-100;
+}
+
+.table-modern tr:hover {
+  @apply bg-gray-50;
+}
+
+/* Card with hover gradient border effect */
+.gradient-border-card {
+  @apply relative p-6 bg-white rounded-xl shadow-sm overflow-hidden;
+}
+
+.gradient-border-card::before {
+  content: "";
+  @apply absolute inset-0 p-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent rounded-xl opacity-0 transition-opacity duration-300;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gradient-border-card:hover::before {
+  @apply opacity-100;
 }

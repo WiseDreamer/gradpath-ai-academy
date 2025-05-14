@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { Hash, Users, TrendingUp, MessageSquare, User, Bookmark, ChevronDown, Compass } from 'lucide-react';
+import { Hash, Users, TrendingUp, User, Bookmark, ChevronDown, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const ChatSidebar: React.FC = () => {
@@ -25,10 +24,10 @@ const ChatSidebar: React.FC = () => {
   const tags = ['Math', 'AI', 'Physics', 'Chemistry', 'Programming'];
 
   return (
-    <aside className="hidden md:block w-64 overflow-y-auto border-r border-gray-200">
+    <aside className="h-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-y-auto">
       <div>
         {/* Profile and Menu */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border-t border-b-0 p-4">
+        <div className="p-4 border-b border-gray-100">
           <nav className="space-y-2">
             <Link to="/profile" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
               <Avatar className="h-10 w-10">
@@ -72,7 +71,7 @@ const ChatSidebar: React.FC = () => {
         </div>
 
         {/* Shortcuts */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border-b-0 p-4">
+        <div className="p-4 border-b border-gray-100">
           <h3 className="px-3 text-sm font-semibold text-gray-500 mb-2">Your Shortcuts</h3>
           <div className="space-y-1">
             {shortcuts.map((shortcut) => (
@@ -87,7 +86,7 @@ const ChatSidebar: React.FC = () => {
         </div>
 
         {/* Topics */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border-b p-4">
+        <div className="p-4 border-b border-gray-100">
           <h3 className="px-3 text-sm font-semibold text-gray-500 mb-2">Topics</h3>
           <div className="space-y-1">
             {tags.map((tag) => (

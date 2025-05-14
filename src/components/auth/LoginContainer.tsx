@@ -20,7 +20,7 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
 }) => {
   return (
     <div className="w-full max-w-md animate-fade-in">
-      <div className="rounded-xl shadow-lg p-8 border border-gray-200 bg-white backdrop-blur-sm">
+      <div className="rounded-xl shadow-lg p-8 border border-gray-200 bg-white/90 backdrop-blur-sm">
         <div className="text-center mb-6">
           <Logo color="purple" className="justify-center" />
           <h1 className="text-2xl font-bold mt-4 text-gray-800">Welcome back</h1>
@@ -35,15 +35,6 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
         )}
         
         <LoginForm isLoading={isLoading} setIsLoading={setIsLoading} />
-        
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-gray-300"></span>
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-gray-500">Or continue with</span>
-          </div>
-        </div>
         
         <SocialLogin isLoading={isLoading} setIsLoading={setIsLoading} />
         
