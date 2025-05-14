@@ -1,48 +1,34 @@
 
 import React, { useState } from 'react';
-import NavBar from '@/components/navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import BottomNav from '@/components/BottomNav';
 import DesktopHelpInterface from '@/components/help-request/DesktopHelpInterface';
 import MobileHelpWizard from '@/components/help-request/MobileHelpWizard';
-import MatchingDialog from '@/components/help-request/MatchingDialog';
-import MatchingDrawer from '@/components/help-request/MatchingDrawer';
+import MatchingOverlay from '@/components/help-request/MatchingOverlay';
 import { MOCK_HELPERS, MOCK_MODULES, MODULE_CHAPTERS } from '@/components/help-request/data';
+import { useHelperMatching } from '@/hooks/useHelperMatching';
+import NavBar from '@/components/navbar';
 
 const HelpRequestPage: React.FC = () => {
   const isMobile = useIsMobile();
   const [step, setStep] = useState<number>(1);
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
-  const [showMatching, setShowMatching] = useState<boolean>(false);
-  const [matchedHelper, setMatchedHelper] = useState<typeof MOCK_HELPERS[0] | null>(null);
-  const [matchProgress, setMatchProgress] = useState<number>(0);
+  
+  // Use our custom hook for matching logic
+  const { 
+    showMatching, 
+    matchedHelper, 
+    matchProgress, 
+    startMatching, 
+    handleStartSession, 
+    closeMatching 
+  } = useHelperMatching();
 
-  const handleRequestHelp = () => {
-    setShowMatching(true);
-    
-    // Simulate matching progress
-    const interval = setInterval(() => {
-      setMatchProgress(prev => {
-        const newProgress = prev + 10;
-        if (newProgress >= 100) {
-          clearInterval(interval);
-          // After 100%, simulate finding a match
-          setTimeout(() => {
-            setMatchedHelper(MOCK_HELPERS[0]);
-          }, 500);
-        }
-        return newProgress;
-      });
-    }, 300);
-  };
-
-  const handleStartSession = () => {
-    // In a real app, this would start the session with the matched helper
-    setShowMatching(false);
-    setMatchedHelper(null);
+  // Reset the wizard step when session starts
+  const onSessionStart = () => {
+    handleStartSession();
     setStep(1);
-    // Would navigate to a chat/voice session page
   };
 
   return (
@@ -64,7 +50,7 @@ const HelpRequestPage: React.FC = () => {
             setSelectedChapter={setSelectedChapter}
             onNextStep={() => setStep(prev => prev + 1)}
             onPrevStep={() => setStep(prev => prev - 1)}
-            onRequestHelp={handleRequestHelp}
+            onRequestHelp={startMatching}
           />
         ) : (
           <DesktopHelpInterface
@@ -75,32 +61,19 @@ const HelpRequestPage: React.FC = () => {
             selectedChapter={selectedChapter}
             setSelectedModule={setSelectedModule}
             setSelectedChapter={setSelectedChapter}
-            onRequestHelp={handleRequestHelp}
+            onRequestHelp={startMatching}
           />
         )}
       </div>
       
-      {/* Matching Overlay - Desktop */}
-      {!isMobile && (
-        <MatchingDialog 
-          open={showMatching} 
-          onOpenChange={setShowMatching}
-          matchProgress={matchProgress}
-          matchedHelper={matchedHelper}
-          onStartSession={handleStartSession}
-        />
-      )}
-
-      {/* Matching Overlay - Mobile */}
-      {isMobile && (
-        <MatchingDrawer
-          open={showMatching}
-          onClose={() => {}}
-          matchProgress={matchProgress}
-          matchedHelper={matchedHelper}
-          onStartSession={handleStartSession}
-        />
-      )}
+      {/* Matching Overlay - handles both mobile and desktop */}
+      <MatchingOverlay 
+        showMatching={showMatching}
+        matchProgress={matchProgress}
+        matchedHelper={matchedHelper}
+        onClose={closeMatching}
+        onStartSession={onSessionStart}
+      />
       
       {isMobile && <BottomNav />}
     </div>
