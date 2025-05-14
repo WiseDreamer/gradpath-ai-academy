@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -9,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { useIsMobile } from '@/hooks/use-mobile';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/navbar';
 
 // Mock data for performance charts
 const performanceData = [
