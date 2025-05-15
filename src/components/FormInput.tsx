@@ -1,46 +1,69 @@
 
-import React from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import React, { ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface FormInputProps {
   label: string;
   id: string;
+  type?: string;
+  placeholder?: string;
+  value?: string | number;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  disabled?: boolean;
+  helper?: string;
+  className?: string;
   icon?: React.ReactNode;
 }
 
-const FormInput: React.FC<FormInputProps> = ({ 
-  label, 
-  id, 
-  error, 
+const FormInput: React.FC<FormInputProps> = ({
+  label,
+  id,
+  type = 'text',
+  placeholder,
+  value,
+  onChange,
+  error,
+  disabled = false,
+  helper,
   className,
-  icon,
-  ...props 
+  icon
 }) => {
   return (
-    <div className="form-group">
-      <Label htmlFor={id} className="text-sm font-medium">
+    <div className={cn("form-group", className)}>
+      <label htmlFor={id} className="text-sm font-medium">
         {label}
-      </Label>
+      </label>
+      
       <div className="relative">
         {icon && (
-          <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             {icon}
           </div>
         )}
-        <Input
+        <input
           id={id}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
           className={cn(
-            icon && "pl-10",
-            error && "border-red-500 focus-visible:ring-red-500",
-            className
+            "w-full px-3 py-2 border rounded-md focus:outline-none transition-colors",
+            error ? "border-red-500" : "border-gray-300 focus:border-gradpath-teal focus:ring-1 focus:ring-gradpath-teal/30",
+            disabled && "bg-gray-100 text-gray-400 cursor-not-allowed",
+            icon && "pl-10"
           )}
-          {...props}
         />
       </div>
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      
+      {error && (
+        <p className="text-red-500 text-xs mt-1">{error}</p>
+      )}
+      
+      {helper && !error && (
+        <p className="text-gray-500 text-xs mt-1">{helper}</p>
+      )}
     </div>
   );
 };

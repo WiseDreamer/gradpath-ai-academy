@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -54,20 +53,26 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				gradpath: {
-					purple: "#7E69AB",
-					"light-purple": "#9b87f5",
-					"dark-purple": "#6E59A5",
-					"soft-green": "#F2FCE2",
-					"soft-blue": "#D3E4FD",
-					"bright-blue": "#1EAEDB",
-					"navy": "#2C3E50",
-					"slate": "#34495E",
-					"teal": "#16A085",
-					"emerald": "#2ECC71",
-					"coral": "#E74C3C",
-					"amber": "#F39C12",
-					"charcoal": "#333333",
-					"silver": "#ECF0F1",
+					navy: "#2C3E50",
+					"dark-navy": "#1A2A36",
+					"light-navy": "#34495E",
+					teal: "#16A085",
+					"light-teal": "#1ABC9C",
+					"dark-teal": "#0E6655",
+					slate: "#34495E",
+					"light-slate": "#5D6D7E",
+					"dark-slate": "#2C3E50",
+					"soft-green": "#E8F8F5",
+					"soft-blue": "#EBF5FB",
+					"bright-blue": "#3498DB",
+					emerald: "#2ECC71",
+					coral: "#E74C3C",
+					amber: "#F39C12",
+					charcoal: "#333333",
+					silver: "#ECF0F1",
+					purple: "#7E69AB", // keeping for backward compatibility
+					"light-purple": "#9b87f5", // keeping for backward compatibility
+					"dark-purple": "#6E59A5", // keeping for backward compatibility
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

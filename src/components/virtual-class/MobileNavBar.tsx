@@ -17,7 +17,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
   };
 
   return (
-    <div className="border-b bg-gradpath-purple text-white sticky top-0 z-50 w-full">
+    <div className="border-b bg-gradpath-navy text-white sticky top-0 z-50 w-full">
       <div className="flex items-center justify-between h-16 px-0">
         <div className="flex items-center">
           <Logo clickable={false} className="ml-0" />

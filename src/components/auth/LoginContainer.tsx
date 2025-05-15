@@ -22,7 +22,7 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
     <div className="w-full max-w-md animate-fade-in">
       <div className="rounded-xl shadow-lg p-8 border border-gray-200 bg-white/90 backdrop-blur-sm">
         <div className="text-center mb-6">
-          <Logo color="purple" className="justify-center" />
+          <Logo color="navy" className="justify-center" />
           <h1 className="text-2xl font-bold mt-4 text-gray-800">Welcome back</h1>
           <p className="text-gray-500 mt-1">Login to your academic journey</p>
         </div>
@@ -41,7 +41,7 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
         <div className="text-center mt-6">
           <p className="text-gray-500">
             Don't have an account?{' '}
-            <Link to="/register" className="text-gradpath-purple hover:underline font-medium">
+            <Link to="/register" className="text-gradpath-teal hover:underline font-medium">
               Register
             </Link>
           </p>

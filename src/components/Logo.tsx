@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
-  color?: 'white' | 'purple' | 'navy';
+  color?: 'white' | 'purple' | 'navy' | 'teal';
   clickable?: boolean;
 }
 
@@ -13,11 +13,13 @@ const Logo: React.FC<LogoProps> = ({ className, color = 'white', clickable = tru
   const textColor = 
     color === 'purple' ? 'text-gradpath-purple' : 
     color === 'navy' ? 'text-gradpath-navy' :
+    color === 'teal' ? 'text-gradpath-teal' :
     'text-white';
   
   const iconColor = 
     color === 'purple' ? 'text-gradpath-purple' : 
     color === 'navy' ? 'text-gradpath-navy' :
+    color === 'teal' ? 'text-gradpath-teal' :
     'text-white';
   
   return (

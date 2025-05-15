@@ -9,8 +9,6 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import MobileSocialNavBar from './MobileSocialNavBar';
 import DesktopGlobalChatNavBar from './DesktopGlobalChatNavBar';
-import { Notification } from '@/services/notificationService';
-import { UserProfile } from '@/services/userProfileService';
 
 interface NavBarProps {
   variant?: 'default' | 'ai-tutor' | 'social' | 'learning';

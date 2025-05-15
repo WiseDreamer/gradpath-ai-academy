@@ -81,7 +81,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
           onChange={e => setEmail(e.target.value)} 
           error={errors.email} 
           disabled={isLoading}
-          icon={<Mail className="h-4 w-4 text-gray-500" />}
         />
       </div>
       
@@ -95,11 +94,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
           onChange={e => setPassword(e.target.value)} 
           error={errors.password} 
           disabled={isLoading}
-          icon={<Lock className="h-4 w-4 text-gray-500" />}
         />
         
         <div className="flex justify-end items-center text-sm">
-          <Link to="/forgot-password" className="text-gradpath-purple hover:underline">
+          <Link to="/forgot-password" className="text-gradpath-teal hover:underline">
             Forgot password?
           </Link>
         </div>
@@ -107,7 +105,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
       
       <Button 
         type="submit" 
-        className="w-full bg-gradpath-purple hover:bg-gradpath-dark-purple transition-colors" 
+        className="w-full bg-gradpath-navy hover:bg-gradpath-dark-navy transition-colors" 
         disabled={isLoading}
       >
         {isLoading ? "Logging in..." : "Login"}

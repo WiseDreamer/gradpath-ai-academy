@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
       <NavBar />
       
       <div className="container mx-auto px-4 py-6 pb-16">
-        <div className="mb-8 bg-gradient-to-r from-gradpath-navy to-gradpath-slate p-6 rounded-xl text-white shadow-lg">
+        <div className="mb-8 bg-gradient-to-r from-gradpath-teal to-gradpath-navy p-6 rounded-xl text-white shadow-lg">
           <h1 className="text-3xl font-bold">Welcome, {userProfile?.firstName || 'Student'}</h1>
           <p className="text-gray-200 mt-1">Access your academic resources and tools</p>
         </div>
@@ -113,21 +113,21 @@ const Dashboard: React.FC = () => {
                     description="Interactive AI-powered virtual classroom" 
                     icon={Video} 
                     to="/virtual-class" 
-                    color="bg-gradpath-navy" 
+                    color="bg-gradpath-teal" 
                   />
                   <DashboardCard 
                     title="Upload Resources" 
                     description="Upload lecture slides and study material" 
                     icon={Upload} 
                     to="#" 
-                    color="bg-gradpath-teal" 
+                    color="bg-gradpath-slate" 
                   />
                   <DashboardCard 
                     title="Study Plan" 
                     description="View your personalized study schedule" 
                     icon={Calendar} 
                     to="/study-plan" 
-                    color="bg-gradpath-emerald" 
+                    color="bg-gradpath-navy" 
                   />
                   <DashboardCard 
                     title="Practice Questions" 
@@ -160,14 +160,14 @@ const Dashboard: React.FC = () => {
                     description="Get instant help with questions" 
                     icon={MessageCircle} 
                     to="#" 
-                    color="bg-gradpath-slate" 
+                    color="bg-gradpath-light-teal" 
                   />
                   <DashboardCard 
                     title="Track Performance" 
                     description="View your learning analytics" 
                     icon={BarChart} 
                     to="#" 
-                    color="bg-gradpath-coral" 
+                    color="bg-gradpath-light-navy" 
                   />
                 </>
               )}
@@ -178,7 +178,7 @@ const Dashboard: React.FC = () => {
         {/* Recent Modules Content */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gradpath-navy">Recent Modules</h2>
-          <Link to="/module/all" className="text-sm font-medium text-gradpath-navy hover:underline">
+          <Link to="/module/all" className="text-sm font-medium text-gradpath-teal hover:underline">
             View All
           </Link>
         </div>
