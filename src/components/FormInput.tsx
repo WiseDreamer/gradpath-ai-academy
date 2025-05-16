@@ -31,13 +31,13 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   return (
     <div className={cn("form-group", className)}>
-      <label htmlFor={id} className="text-sm font-medium">
+      <label htmlFor={id} className="text-sm font-medium mb-1 text-gradpath-slate">
         {label}
       </label>
       
       <div className="relative">
         {icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
             {icon}
           </div>
         )}
@@ -49,10 +49,11 @@ const FormInput: React.FC<FormInputProps> = ({
           onChange={onChange}
           disabled={disabled}
           className={cn(
-            "w-full px-3 py-2 border rounded-md focus:outline-none transition-colors",
+            "w-full px-3 py-2.5 border rounded-md focus:outline-none transition-colors",
             error ? "border-red-500" : "border-gray-300 focus:border-gradpath-teal focus:ring-1 focus:ring-gradpath-teal/30",
-            disabled && "bg-gray-100 text-gray-400 cursor-not-allowed",
-            icon && "pl-10"
+            disabled && "bg-gray-50 text-gray-400 cursor-not-allowed",
+            icon && "pl-10",
+            "font-sans"
           )}
         />
       </div>

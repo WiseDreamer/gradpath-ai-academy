@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
@@ -82,20 +81,20 @@ const Dashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen dashboard-bg">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pattern-bg">
       <NavBar />
       
       <div className="container mx-auto px-4 py-6 pb-16">
-        <div className="mb-8 bg-gradient-to-r from-gradpath-teal to-gradpath-navy p-6 rounded-xl text-white shadow-lg">
-          <h1 className="text-3xl font-bold">Welcome, {userProfile?.firstName || 'Student'}</h1>
-          <p className="text-gray-200 mt-1">Access your academic resources and tools</p>
+        <div className="mb-8 bg-gradient-to-r from-gradpath-navy to-gradpath-dark-navy p-6 rounded-xl text-white shadow-md">
+          <h1 className="text-3xl font-serif font-bold">Welcome, {userProfile?.firstName || 'Student'}</h1>
+          <p className="text-gray-200 mt-1 font-sans">Access your academic resources and tools</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Learning Resources Section */}
           <div className="md:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
-              <h2 className="text-xl font-semibold text-gradpath-navy">Learning Resources</h2>
+              <h2 className="text-xl font-serif font-semibold text-gradpath-navy">Learning Resources</h2>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -113,7 +112,7 @@ const Dashboard: React.FC = () => {
                     description="Interactive AI-powered virtual classroom" 
                     icon={Video} 
                     to="/virtual-class" 
-                    color="bg-gradpath-teal" 
+                    color="bg-gradpath-navy" 
                   />
                   <DashboardCard 
                     title="Upload Resources" 
@@ -127,7 +126,7 @@ const Dashboard: React.FC = () => {
                     description="View your personalized study schedule" 
                     icon={Calendar} 
                     to="/study-plan" 
-                    color="bg-gradpath-navy" 
+                    color="bg-gradpath-teal" 
                   />
                   <DashboardCard 
                     title="Practice Questions" 
@@ -144,7 +143,7 @@ const Dashboard: React.FC = () => {
           {/* Quick Access Section */}
           <div className="col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4">
-              <h2 className="text-xl font-semibold text-gradpath-navy">Quick Access</h2>
+              <h2 className="text-xl font-serif font-semibold text-gradpath-navy">Quick Access</h2>
             </div>
             
             <div className="space-y-4">
@@ -160,14 +159,14 @@ const Dashboard: React.FC = () => {
                     description="Get instant help with questions" 
                     icon={MessageCircle} 
                     to="#" 
-                    color="bg-gradpath-light-teal" 
+                    color="bg-gradpath-dark-teal" 
                   />
                   <DashboardCard 
                     title="Track Performance" 
                     description="View your learning analytics" 
                     icon={BarChart} 
                     to="#" 
-                    color="bg-gradpath-light-navy" 
+                    color="bg-gradpath-dark-navy" 
                   />
                 </>
               )}
@@ -177,7 +176,7 @@ const Dashboard: React.FC = () => {
 
         {/* Recent Modules Content */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gradpath-navy">Recent Modules</h2>
+          <h2 className="text-xl font-serif font-semibold text-gradpath-navy">Recent Modules</h2>
           <Link to="/module/all" className="text-sm font-medium text-gradpath-teal hover:underline">
             View All
           </Link>

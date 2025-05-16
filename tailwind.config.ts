@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'serif': ['Merriweather', 'serif'],
+				'sans': ['Lato', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -53,9 +58,9 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				gradpath: {
-					navy: "#2C3E50",
-					"dark-navy": "#1A2A36",
-					"light-navy": "#34495E",
+					navy: "#1F3A5F",
+					"dark-navy": "#152C48",
+					"light-navy": "#2C4C6F",
 					teal: "#16A085",
 					"light-teal": "#1ABC9C",
 					"dark-teal": "#0E6655",

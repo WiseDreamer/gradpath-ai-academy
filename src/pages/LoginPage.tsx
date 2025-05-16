@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
@@ -53,29 +52,28 @@ const LoginPage: React.FC = () => {
       <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-silver via-[#F5F7FA] to-[#E6EDF5]">
         <Logo color="navy" className="mb-4" />
         <div className="w-8 h-8 border-4 border-gradpath-navy border-t-transparent rounded-full animate-spin"></div>
-        <p className="mt-4 text-gray-600">Checking authentication...</p>
+        <p className="mt-4 text-gradpath-slate">Checking authentication...</p>
       </div>
     );
   }
 
   // If already authenticated and auth check is complete, don't render the login form
   if (session && authCheckComplete) {
-    console.log("Session found in login page render, should redirect soon");
     return (
       <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-silver via-[#F5F7FA] to-[#E6EDF5]">
         <Logo color="navy" className="mb-4" />
         <div className="w-8 h-8 border-4 border-gradpath-navy border-t-transparent rounded-full animate-spin"></div>
-        <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
+        <p className="mt-4 text-gradpath-slate">Redirecting to dashboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-r from-gradpath-navy to-gradpath-slate">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-navy via-gradpath-slate to-gradpath-dark-navy pattern-bg">
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="hidden md:flex flex-col items-start justify-center p-8 text-white">
-          <h1 className="text-4xl font-bold mb-4">Academic Excellence Starts Here</h1>
-          <p className="text-lg text-gray-200 mb-8">Access personalized learning resources, connect with peers, and achieve your academic goals with our comprehensive education platform.</p>
+          <h1 className="text-4xl font-serif font-bold mb-4">Academic Excellence Starts Here</h1>
+          <p className="text-lg text-gray-200 mb-8 font-sans">Access personalized learning resources, connect with peers, and achieve your academic goals with our comprehensive education platform.</p>
           <div className="flex gap-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
               <p className="text-sm font-medium">24/7 AI Tutoring</p>
