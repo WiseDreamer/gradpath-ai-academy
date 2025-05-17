@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, Home, Bell, User, MessageSquare } from 'lucide-react';
+import { Search, Menu, Home, Bell, User, MessageCircle } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -17,14 +17,14 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
   };
 
   return (
-    <div className="border-b bg-gradpath-navy text-white sticky top-0 z-50 w-full">
+    <div className="border-b bg-gradpath-navy text-white sticky top-0 z-50 w-full shadow-md">
       <div className="flex items-center justify-between h-16 px-4">
         <div className="flex items-center">
           <Logo clickable={false} className="ml-0" />
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-            <Search size={24} strokeWidth={1.5} />
+            <Search size={22} strokeWidth={1.5} />
           </Button>
           <Button 
             variant="ghost" 
@@ -32,7 +32,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
             className="text-white hover:bg-white/10"
             onClick={onMenuClick}
           >
-            <Menu size={24} strokeWidth={1.5} />
+            <Menu size={22} strokeWidth={1.5} />
           </Button>
         </div>
       </div>
@@ -43,18 +43,18 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ onMenuClick }) => {
           className="text-white hover:bg-white/10"
           onClick={handleHomeClick}
         >
-          <Home size={24} strokeWidth={1.5} />
+          <Home size={22} strokeWidth={1.5} />
         </Button>
         <Link to="/global-chat">
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-            <MessageSquare size={24} strokeWidth={1.5} />
+            <MessageCircle size={22} strokeWidth={1.5} />
           </Button>
         </Link>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-          <Bell size={24} strokeWidth={1.5} />
+          <Bell size={22} strokeWidth={1.5} />
         </Button>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-          <User size={24} strokeWidth={1.5} />
+          <User size={22} strokeWidth={1.5} />
         </Button>
       </div>
     </div>

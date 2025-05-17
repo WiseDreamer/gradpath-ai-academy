@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
@@ -10,8 +11,6 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [authCheckComplete, setAuthCheckComplete] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
-
-  console.log("Login page rendering, session:", !!session, "loading:", loading);
 
   // Handle URL error parameters (coming back from OAuth failures)
   useEffect(() => {
@@ -34,14 +33,10 @@ const LoginPage: React.FC = () => {
   // Only redirect after auth loading is complete
   useEffect(() => {
     if (!loading) {
-      console.log("Auth loading complete on login page");
       setAuthCheckComplete(true);
       
       if (session) {
-        console.log("Session found, redirecting to dashboard");
         navigate('/dashboard', { replace: true });
-      } else {
-        console.log("No session found, staying on login page");
       }
     }
   }, [session, navigate, loading]);
@@ -69,20 +64,20 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-navy via-gradpath-slate to-gradpath-dark-navy pattern-bg">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-navy via-gradpath-dark-slate to-gradpath-dark-navy pattern-bg">
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="hidden md:flex flex-col items-start justify-center p-8 text-white">
           <h1 className="text-4xl font-serif font-bold mb-4">Academic Excellence Starts Here</h1>
           <p className="text-lg text-gray-200 mb-8 font-sans">Access personalized learning resources, connect with peers, and achieve your academic goals with our comprehensive education platform.</p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
-              <p className="text-sm font-medium">24/7 AI Tutoring</p>
+              <p className="text-sm font-medium">AI Study Assistant</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
               <p className="text-sm font-medium">Peer Collaboration</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-white/20">
-              <p className="text-sm font-medium">Study Resources</p>
+              <p className="text-sm font-medium">Academic Resources</p>
             </div>
           </div>
         </div>

@@ -20,11 +20,11 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
 }) => {
   return (
     <div className="w-full max-w-md animate-fade-in">
-      <div className="rounded-xl shadow-lg p-8 border border-gray-200 bg-white/95 backdrop-blur-sm">
+      <div className="rounded-xl shadow-card p-8 border border-gray-200 bg-white/95 backdrop-blur-sm">
         <div className="text-center mb-6">
-          <Logo color="navy" className="justify-center" />
+          <Logo color="navy" className="justify-center" size="lg" />
           <h1 className="text-2xl font-bold mt-4 text-gradpath-navy">Welcome back</h1>
-          <p className="text-gradpath-slate mt-1">Login to your academic journey</p>
+          <p className="text-gradpath-slate mt-1">Sign in to your academic journey</p>
         </div>
         
         {error && (

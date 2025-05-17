@@ -58,24 +58,24 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				gradpath: {
-					navy: "#1F3A5F",
-					"dark-navy": "#152C48",
-					"light-navy": "#2C4C6F",
-					teal: "#16A085",
-					"light-teal": "#1ABC9C",
-					"dark-teal": "#0E6655",
-					slate: "#34495E",
-					"light-slate": "#5D6D7E",
-					"dark-slate": "#2C3E50",
-					"soft-green": "#E8F8F5",
-					"soft-blue": "#EBF5FB",
-					"bright-blue": "#3498DB",
-					emerald: "#2ECC71",
-					coral: "#E74C3C",
-					amber: "#F39C12",
-					charcoal: "#333333",
-					silver: "#ECF0F1",
-					purple: "#7E69AB", // keeping for backward compatibility
+					navy: "#1F3A5F",        // Deep Indigo/Oxford Blue
+					"dark-navy": "#152C48", // Darker shade
+					"light-navy": "#2C4C6F", // Lighter shade
+					teal: "#16A085",        // Cool Teal
+					"light-teal": "#1ABC9C", // Lighter teal
+					"dark-teal": "#0E6655", // Darker teal
+					slate: "#34495E",       // Slate Gray
+					"light-slate": "#5D6D7E", // Lighter slate
+					"dark-slate": "#2C3E50", // Darker slate
+					"soft-green": "#E8F8F5", // Soft background for hints/tips
+					"soft-blue": "#EBF5FB", // Soft background for info
+					"bright-blue": "#3498DB", // Accent blue
+					emerald: "#2ECC71",     // Emerald accent
+					coral: "#E74C3C",       // Muted coral accent
+					amber: "#F39C12",       // Soft amber/gold
+					charcoal: "#333333",     // Dark text
+					silver: "#ECF0F1",      // Light background
+					purple: "#7E69AB",      // keeping for backward compatibility
 					"light-purple": "#9b87f5", // keeping for backward compatibility
 					"dark-purple": "#6E59A5", // keeping for backward compatibility
 				},
@@ -94,6 +94,12 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			boxShadow: {
+				'card': '0 4px 12px rgba(0, 0, 0, 0.05)',
+				'card-hover': '0 8px 16px rgba(0, 0, 0, 0.08)',
+				'subtle': '0 2px 6px rgba(0, 0, 0, 0.05)',
+				'elevated': '0 10px 25px -3px rgba(0, 0, 0, 0.1)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -140,6 +146,24 @@ export default {
 						opacity: '0.5',
 					},
 				},
+				'slide-in': {
+					'0%': {
+						transform: 'translateX(-100%)'
+					},
+					'100%': {
+						transform: 'translateX(0)'
+					}
+				},
+				'scale-in': {
+					'0%': {
+						transform: 'scale(0.95)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -147,6 +171,8 @@ export default {
 				'fade-in': 'fade-in 0.3s ease-out',
 				'fade-out': 'fade-out 0.3s ease-out',
 				'pulse-slow': 'pulse-slow 3s infinite',
+				'slide-in': 'slide-in 0.3s ease-out',
+				'scale-in': 'scale-in 0.2s ease-out',
 			}
 		}
 	},
