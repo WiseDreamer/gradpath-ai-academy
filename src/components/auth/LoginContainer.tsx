@@ -45,6 +45,17 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
               Register
             </Link>
           </p>
+          
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            <p className="text-xs text-gray-500 text-center">
+              Student community with over 10,000 members
+            </p>
+            <div className="flex justify-center mt-3 space-x-2">
+              <img src="/images/university-logos/oxford.png" alt="University" className="h-6 w-auto opacity-50 hover:opacity-100 transition-opacity" />
+              <img src="/images/university-logos/harvard.png" alt="University" className="h-6 w-auto opacity-50 hover:opacity-100 transition-opacity" />
+              <img src="/images/university-logos/mit.png" alt="University" className="h-6 w-auto opacity-50 hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

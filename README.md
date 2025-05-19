@@ -1,73 +1,29 @@
-# Welcome to your Lovable project
 
-## Project info
+# GradPath - Academic Learning Platform
 
-**URL**: https://lovable.dev/projects/56c4ecc7-e609-4e5b-8694-c165cce99b92
+## Image Resources
+This project requires several student-themed images to be placed in the following directories:
 
-## How can I edit this code?
+### University-Related Images
+Place the following images in `/public/images/`:
+- `university-students.jpg` - A group of university students studying together (login page background)
+- `campus-library.jpg` - A university library or study hall image (dashboard header)
+- `virtual-class.jpg` - An image representing virtual learning (dashboard card)
+- `study-group.jpg` - Students collaborating or studying together (dashboard card)
+- `math-formulas.jpg` - Mathematical formulas on a blackboard/whiteboard (module view header)
+- `profile-avatar.jpg` - A professional headshot for the professor profile
 
-There are several ways of editing your application.
+### University Logos
+Place university logos in `/public/images/university-logos/`:
+- `oxford.png` - Oxford University logo
+- `harvard.png` - Harvard University logo
+- `mit.png` - MIT logo
 
-**Use Lovable**
+You can use placeholder images during development and replace them with appropriate images before deployment.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/56c4ecc7-e609-4e5b-8694-c165cce99b92) and start prompting.
+## Recommended Image Sources
+- Free stock photography sites (Unsplash, Pexels)
+- University websites (for logos, ensure proper usage rights)
+- Generated imagery that represents academic environments
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/56c4ecc7-e609-4e5b-8694-c165cce99b92) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Please ensure all images are appropriately sized and optimized for web use.

@@ -12,7 +12,7 @@ import BottomNav from '@/components/BottomNav';
 import DashboardCard from '@/components/DashboardCard';
 import AiTutorTab from '@/components/ModuleView/AiTutorTab';
 import { 
-  Video, Upload, Calendar, FileText, MessageCircle, BarChart, GraduationCap
+  Video, Upload, Calendar, FileText, MessageCircle, BarChart, GraduationCap, BookOpen
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -72,9 +72,19 @@ const Dashboard: React.FC = () => {
       <NavBar />
       
       <div className="container mx-auto px-4 py-6 pb-24 md:pb-16">
-        <div className="mb-8 bg-gradient-to-r from-gradpath-navy to-gradpath-dark-navy p-6 sm:p-8 rounded-xl text-white shadow-card">
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold">Welcome, {userProfile?.firstName || 'Student'}</h1>
-          <p className="text-gray-200 mt-1 font-sans">Access your academic resources and learning tools</p>
+        <div className="mb-8 bg-gradient-to-r from-gradpath-navy to-gradpath-dark-navy p-6 sm:p-8 rounded-xl text-white shadow-card relative overflow-hidden">
+          <div className="absolute inset-0 opacity-20" 
+               style={{
+                 backgroundImage: `url('/images/campus-library.jpg')`,
+                 backgroundSize: 'cover',
+                 backgroundPosition: 'center',
+                 mixBlendMode: 'overlay'
+               }}>
+          </div>
+          <div className="relative z-10">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold">Welcome, {userProfile?.firstName || 'Student'}</h1>
+            <p className="text-gray-200 mt-1 font-sans">Access your academic resources and learning tools</p>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -100,6 +110,7 @@ const Dashboard: React.FC = () => {
                     icon={Video} 
                     to="/virtual-class" 
                     color="bg-gradpath-navy" 
+                    className="bg-[url('/images/virtual-class.jpg')] bg-cover bg-center text-white"
                   />
                   <DashboardCard 
                     title="My Materials" 
@@ -147,6 +158,7 @@ const Dashboard: React.FC = () => {
                     icon={MessageCircle} 
                     to="#" 
                     color="bg-gradpath-dark-teal" 
+                    className="bg-[url('/images/study-group.jpg')] bg-cover bg-center text-white"
                   />
                   <DashboardCard 
                     title="Review Progress" 

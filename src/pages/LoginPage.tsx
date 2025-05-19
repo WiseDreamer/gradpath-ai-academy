@@ -64,9 +64,16 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-navy via-gradpath-dark-slate to-gradpath-dark-navy pattern-bg">
+    <div 
+      className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-br from-gradpath-navy via-gradpath-dark-slate to-gradpath-dark-navy pattern-bg"
+      style={{
+        backgroundImage: `linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.7)), url('/images/university-students.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+    >
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="hidden md:flex flex-col items-start justify-center p-8 text-white">
+        <div className="hidden md:flex flex-col items-start justify-center p-8 text-white backdrop-blur-sm rounded-xl bg-white/5">
           <h1 className="text-4xl font-serif font-bold mb-4">Academic Excellence Starts Here</h1>
           <p className="text-lg text-gray-200 mb-8 font-sans">Access personalized learning resources, connect with peers, and achieve your academic goals with our comprehensive education platform.</p>
           <div className="flex flex-wrap gap-4">
